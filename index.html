@@ -19,7 +19,7 @@
 <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; img-src 'self' data:; script-src 'unsafe-inline'; base-uri 'none'; form-action 'none'; connect-src 'none';">
 <title>mbwishlist.online</title>
 <meta name="theme-color" content="#0e6878">
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 28 28'%3E%3Crect width='28' height='28' rx='6' fill='%230e6878'/%3E%3Cg transform='translate(6 6) scale(.6667)' fill='none' stroke='%23fff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 3.8h2.3l2.4 11.4a1.4 1.4 0 0 0 1.4 1.1h8.9a1.4 1.4 0 0 0 1.4-1l2-7.5H6.4'/%3E%3Ccircle cx='9.8' cy='20' r='1.5' fill='%23fff' stroke='none'/%3E%3Ccircle cx='17.7' cy='20' r='1.5' fill='%23fff' stroke='none'/%3E%3C/g%3E%3C/svg%3E">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='13' fill='%230E6878'/%3E%3Cpath d='M17 25H47L44.5 51H19.5Z' fill='none' stroke='%23fff' stroke-width='6' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M25 25V21a7 7 0 0 1 14 0V25' fill='none' stroke='%23fff' stroke-width='6' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M32 45.5c-4.6-3-7.2-5.4-7.2-8.1a3.7 3.7 0 0 1 7.2-1.2a3.7 3.7 0 0 1 7.2 1.2c0 2.7-2.6 5.1-7.2 8.1z' fill='%23F2B640'/%3E%3C/svg%3E">
 <script>
 /* Always load light; only go dark if dark was picked last time (ecosystem rule).
    Runs before first paint so a dark-OS first visit never flashes dark. */
@@ -679,10 +679,15 @@ nav.tabs button{min-height:44px}
 .tablewrap{border-top:1px solid var(--border)}
 .card.tile{padding:12px 14px}
 @media(max-width:520px){.card.tile{padding:10px 12px}.tile .val{font-size:19px}}
+/* App mark: the logo SVG carries its own petrol tile, so the box is transparent and
+   the mark looks identical in light and dark mode (matches the favicon). */
+.logo{background:none!important;box-shadow:none!important}
+.logo .logo-mark{width:100%;height:100%;display:block}
 </style>
 </head>
 <body>
 <svg xmlns="http://www.w3.org/2000/svg" style="display:none" aria-hidden="true">
+  <symbol id="i-logo" viewBox="0 0 64 64"><rect width="64" height="64" rx="13" fill="#0E6878"/><path d="M17 25H47L44.5 51H19.5Z" fill="none" stroke="#fff" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/><path d="M25 25V21a7 7 0 0 1 14 0V25" fill="none" stroke="#fff" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/><path d="M32 45.5c-4.6-3-7.2-5.4-7.2-8.1a3.7 3.7 0 0 1 7.2-1.2a3.7 3.7 0 0 1 7.2 1.2c0 2.7-2.6 5.1-7.2 8.1z" fill="#F2B640"/></symbol>
   <symbol id="i-cart" viewBox="0 0 24 24"><path d="M3 3.8h2.3l2.4 11.4a1.4 1.4 0 0 0 1.4 1.1h8.9a1.4 1.4 0 0 0 1.4-1l2-7.5H6.4"/><circle cx="9.8" cy="20" r="1.5" fill="currentColor" stroke="none"/><circle cx="17.7" cy="20" r="1.5" fill="currentColor" stroke="none"/></symbol>
   <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.35-4.35"/></symbol>
   <symbol id="i-data" viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v14c0 1.66 3.58 3 8 3s8-1.34 8-3V5"/><path d="M4 12c0 1.66 3.58 3 8 3s8-1.34 8-3"/></symbol>
@@ -719,8 +724,8 @@ nav.tabs button{min-height:44px}
 <header class="top" id="siteHeader">
   <div class="wrap">
     <a class="brand" href="#main" aria-label="mbwishlist.online">
-      <span class="logo" aria-hidden="true"><svg class="i"><use href="#i-cart"/></svg></span>
-      <span class="bt"><b>mbwishlist</b><span>Want list &amp; shopping cart</span></span>
+      <span class="logo" aria-hidden="true"><svg class="logo-mark"><use href="#i-logo"/></svg></span>
+      <span class="bt"><b>mbwishlist.online</b><span>Want list &amp; shopping cart</span></span>
     </a>
     <nav class="tabs" id="siteNav" aria-label="Sections">
       <button type="button" id="tabWishlist" data-tab="wishlist" aria-current="page"><svg class="i" aria-hidden="true"><use href="#i-list"/></svg>Wishlist <span class="count" id="countWishlist"></span></button>
@@ -1034,9 +1039,9 @@ nav.tabs button{min-height:44px}
 <div class="modal-overlay" id="onboardingOverlay" hidden>
   <div class="modal sm" role="dialog" aria-modal="true" aria-labelledby="obTitle" style="max-width:440px">
     <div class="ob-head">
-      <span class="logo lg" aria-hidden="true"><svg class="i"><use href="#i-cart"/></svg></span>
+      <span class="logo lg" aria-hidden="true"><svg class="logo-mark"><use href="#i-logo"/></svg></span>
       <div>
-        <h2 id="obTitle">Welcome to mbwishlist</h2>
+        <h2 id="obTitle">Welcome to mbwishlist.online</h2>
         <p class="modal-sub" style="margin-bottom:0">One list for everything you plan to buy, with totals, need-by dates, and a cart for checking out across stores.</p>
       </div>
     </div>
@@ -1074,7 +1079,15 @@ nav.tabs button{min-height:44px}
     <h2 id="relTitle">Release notes</h2>
     <div class="release-list">
       <div class="release-entry">
-        <div class="rel-head"><span class="rel-version">v1.5</span><span class="pill">Latest</span><span class="rel-date">Sep 28, 2026</span></div>
+        <div class="rel-head"><span class="rel-version">v1.6</span><span class="pill">Latest</span><span class="rel-date">Sep 28, 2026</span></div>
+        <ul>
+          <li>New app icon: a shopping bag with a gold heart replaces the shopping cart, in the header, the welcome screen, and the browser tab</li>
+          <li>The header and welcome screen now show the full name, mbwishlist.online</li>
+          <li>The icon now looks the same in dark mode instead of switching to a lighter tile</li>
+        </ul>
+      </div>
+      <div class="release-entry">
+        <div class="rel-head"><span class="rel-version">v1.5</span><span class="rel-date">Sep 28, 2026</span></div>
         <ul>
           <li>New look that matches the rest of the mb apps: system font, squared panels, a petrol accent, and a compact top bar with tabs (a bottom bar on phones)</li>
           <li>Always opens in light mode, and remembers dark if you picked it last time. The theme toggle is now a switch in the header</li>
