@@ -1,0 +1,2889 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<!-- Defense-in-depth against injected/malicious content: this app has no external
+     scripts, no fetch/XHR calls, no web fonts and no forms, so everything outside
+     the page itself is locked to none. 'unsafe-inline' is required for script-src/
+     style-src because this is a single-file page with inline <script>/<style> and
+     no build step; it does not protect against inline script injected via innerHTML
+     (escapeHtml/isSafeUrl in the app's own code do that), but it does stop a remote
+     script, remote stylesheet, or data-exfiltration request from ever being loaded,
+     even if one were somehow injected. Response headers set by whatever host serves
+     this file (a real Content-Security-Policy header, X-Frame-Options, and HSTS)
+     offer stronger protection than this meta tag and are recommended in addition. -->
+<!-- frame-ancestors is deliberately left out here: browsers ignore it in a <meta> tag
+     (it only works as a real HTTP response header), so it needs to be set at the
+     hosting/server level instead. -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; img-src 'self' data:; script-src 'unsafe-inline'; base-uri 'none'; form-action 'none'; connect-src 'none';">
+<title>mbwishlist.online</title>
+<meta name="theme-color" content="#0e6878">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 28 28'%3E%3Crect width='28' height='28' rx='6' fill='%230e6878'/%3E%3Cg transform='translate(6 6) scale(.6667)' fill='none' stroke='%23fff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 3.8h2.3l2.4 11.4a1.4 1.4 0 0 0 1.4 1.1h8.9a1.4 1.4 0 0 0 1.4-1l2-7.5H6.4'/%3E%3Ccircle cx='9.8' cy='20' r='1.5' fill='%23fff' stroke='none'/%3E%3Ccircle cx='17.7' cy='20' r='1.5' fill='%23fff' stroke='none'/%3E%3C/g%3E%3C/svg%3E">
+<script>
+/* Always load light; only go dark if dark was picked last time (ecosystem rule).
+   Runs before first paint so a dark-OS first visit never flashes dark. */
+(function(){
+  var t = null;
+  try{ t = localStorage.getItem('wantlist_theme'); }catch(e){}
+  document.documentElement.setAttribute('data-theme', t === 'dark' ? 'dark' : 'light');
+})();
+</script>
+<style>
+/* ---- theme: "Utility" (Wishlist Petrol) — neutral desktop-software palette, one petrol accent, light + dark ---- */
+:root{
+  color-scheme:light;
+  --font:"Segoe UI Variable Text","Segoe UI",system-ui,-apple-system,BlinkMacSystemFont,Roboto,"Helvetica Neue",Arial,sans-serif;
+  --mono:ui-monospace,"Cascadia Mono",Consolas,"SF Mono",Menlo,monospace;
+  /* geometry: one radius for panels, one for controls */
+  --r:6px; --r-sm:4px; --ctl:38px; --ctl-sm:32px; --ease:120ms ease;
+  --bg:#f3f4f6; --surface:#ffffff; --surface-2:#f6f7f9; --surface-3:#eceef2; --ink:#1b1f24; --ink-2:#48505c; --muted:#5f6773;
+  --grid:rgba(20,24,31,.07); --axis:rgba(20,24,31,.24); --border:#dfe2e7; --border-strong:#c6cbd3;
+  --accent:#0e6878; --accent-hover:#0a5260; --accent-ink:#ffffff; --accent-soft:rgba(14,104,120,.09); --accent-line:rgba(14,104,120,.38);
+  --accent-grad:var(--accent); --accent-2:#2f8a9a;
+  --s1:#0e6878; --s2:#b07a1f; --s3:#5aa3b0; --s4:#6b7684; --s5:#e87ba4; --s6:#008300; --s7:#4a3aa7; --s8:#e34948;
+  --seq-track:#e6e9ee; --seq-fill:var(--accent); --done-fill:var(--good);
+  --good:#16a34a; --good-ink:#0b7a35; --warn:#e5a100; --warn-ink:#8a5a00; --serious:#ec835a; --crit:#c9302c;
+  --shadow:0 1px 2px rgba(20,24,31,.06);
+  --shadow-pop:0 8px 24px -6px rgba(20,24,31,.22),0 1px 3px rgba(20,24,31,.08);
+  --mesh1:transparent; --mesh2:transparent; --glowp:0%;
+  --area-top:.14; --area-bot:0; --bar-bot:1; --hover-band:rgba(20,24,31,.045);
+  /* app-specific: need/want priority, rating stars, toast link */
+  --need:#a24d22; --need-soft:#fbeee6; --want:#4f5f7a; --want-soft:#eef1f6; --star:#b98b1d; --toast-link:#7fd0dc;
+}
+@media (prefers-color-scheme:dark){
+  :root:where(:not([data-theme="light"])){
+    color-scheme:dark;
+    --bg:#16181c; --surface:#1e2126; --surface-2:#25292f; --surface-3:#2d3238; --ink:#e9ecf0; --ink-2:#b4bbc5; --muted:#8e97a3;
+    --grid:rgba(255,255,255,.07); --axis:rgba(255,255,255,.2); --border:#30353c; --border-strong:#434a53;
+    --accent:#4fb6c6; --accent-hover:#74c8d5; --accent-ink:#04262c; --accent-soft:rgba(79,182,198,.13); --accent-line:rgba(79,182,198,.45);
+    --accent-grad:var(--accent); --accent-2:#8dd3de;
+    --s1:#4fb6c6; --s2:#d9a24a; --s3:#a3dbe4; --s4:#8a94a1; --s5:#d55181; --s6:#008300; --s7:#9085e9; --s8:#e66767;
+    --seq-track:#2f343b; --seq-fill:var(--accent); --done-fill:var(--good);
+    --good:#22c55e; --good-ink:#4ade80; --warn:#f0b429; --warn-ink:#f5c95c; --crit:#ff6b6b;
+    --shadow:0 1px 2px rgba(0,0,0,.3);
+    --shadow-pop:0 10px 28px -6px rgba(0,0,0,.6),0 0 0 1px rgba(255,255,255,.03);
+    --area-top:.2; --area-bot:0; --bar-bot:1; --hover-band:rgba(255,255,255,.05);
+    --need:#e08a5c; --need-soft:#3a2a20; --want:#a3b1c6; --want-soft:#27303c; --star:#e0b559; --toast-link:#0e6878;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#16181c; --surface:#1e2126; --surface-2:#25292f; --surface-3:#2d3238; --ink:#e9ecf0; --ink-2:#b4bbc5; --muted:#8e97a3;
+  --grid:rgba(255,255,255,.07); --axis:rgba(255,255,255,.2); --border:#30353c; --border-strong:#434a53;
+  --accent:#4fb6c6; --accent-hover:#74c8d5; --accent-ink:#04262c; --accent-soft:rgba(79,182,198,.13); --accent-line:rgba(79,182,198,.45);
+  --accent-grad:var(--accent); --accent-2:#8dd3de;
+  --s1:#4fb6c6; --s2:#d9a24a; --s3:#a3dbe4; --s4:#8a94a1; --s5:#d55181; --s6:#008300; --s7:#9085e9; --s8:#e66767;
+  --seq-track:#2f343b; --seq-fill:var(--accent); --done-fill:var(--good);
+  --good:#22c55e; --good-ink:#4ade80; --warn:#f0b429; --warn-ink:#f5c95c; --crit:#ff6b6b;
+  --shadow:0 1px 2px rgba(0,0,0,.3);
+  --shadow-pop:0 10px 28px -6px rgba(0,0,0,.6),0 0 0 1px rgba(255,255,255,.03);
+  --area-top:.2; --area-bot:0; --bar-bot:1; --hover-band:rgba(255,255,255,.05);
+  --need:#e08a5c; --need-soft:#3a2a20; --want:#a3b1c6; --want-soft:#27303c; --star:#e0b559; --toast-link:#0e6878;
+}
+
+/* =====================================================================
+   APP BASE — mbwishlist components, written in the Utility language.
+   The shared Utility layer below loads last and sets the family look.
+   ===================================================================== */
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;color:var(--ink);background:var(--bg)}
+h1,h2,h3,h4{margin:0;color:var(--ink)}
+p{margin:0}
+a{color:var(--accent)}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+[hidden]{display:none!important}
+.wrap{max-width:1180px;margin-inline:auto;padding-inline:20px}
+.money,.num{font-variant-numeric:tabular-nums}
+svg.i{width:16px;height:16px;flex-shrink:0;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;vertical-align:middle}
+.sr-only{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.skip{position:fixed;top:-60px;left:10px;z-index:100;background:var(--accent);color:var(--accent-ink);padding:10px 14px;font-weight:600;text-decoration:none;transition:top var(--ease)}
+.skip:focus{top:10px}
+.scroll-progress{position:fixed;top:0;left:0;height:2px;width:0;background:var(--accent);z-index:61;pointer-events:none}
+kbd{font-family:var(--font);font-size:11px;font-weight:600;line-height:1;padding:3px 5px;border:1px solid var(--border-strong);border-bottom-width:2px;background:var(--surface-2);color:var(--ink-2)}
+.linkbtn{background:none;border:0;padding:0;color:var(--accent);font-weight:600;text-decoration:underline;text-underline-offset:2px;font-size:inherit}
+.linkbtn:hover{color:var(--accent-hover)}
+
+/* --- app bar --- */
+.top{position:sticky;top:0;z-index:50}
+.top .wrap{display:flex;align-items:stretch;gap:12px 16px;min-height:48px}
+.brand{display:flex;align-items:center;align-self:center;color:var(--ink);text-decoration:none;flex-shrink:0}
+.brand .logo{display:grid;place-items:center;color:#fff;flex-shrink:0}
+.brand .bt{display:flex;flex-direction:column;line-height:1.15}
+.brand .bt b{color:var(--ink)}
+nav.tabs{display:flex;align-items:stretch;margin-left:6px}
+nav.tabs button{display:inline-flex;align-items:center;gap:7px;border:0;font-size:13.5px;white-space:nowrap}
+.count{display:inline-block;min-width:18px;padding:0 5px;border-radius:3px;background:var(--surface-3);color:var(--ink-2);font-size:11px;font-weight:600;line-height:17px;text-align:center;font-variant-numeric:tabular-nums}
+.count:empty{display:none}
+nav.tabs button[aria-current="page"] .count{background:var(--accent-soft);color:var(--accent)}
+.actions{display:flex;align-items:center;margin-left:auto;align-self:center}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;white-space:nowrap;text-decoration:none;line-height:1.2;cursor:pointer}
+.btn.icon{width:var(--ctl-sm);padding:0}
+.btn.buy{color:var(--accent);border-color:var(--accent-line);background:var(--surface)}
+.btn.buy:hover{background:var(--accent-soft);border-color:var(--accent)}
+#searchBtn{gap:8px;color:var(--ink-2)}
+.bk-chip{display:inline-flex;align-items:center;gap:6px;min-height:var(--ctl-sm);padding:0 10px;border:1px solid var(--border);border-radius:var(--r-sm);background:var(--surface-2);color:var(--ink-2);font-size:12px;font-weight:550;white-space:nowrap;transition:background-color var(--ease),border-color var(--ease),color var(--ease)}
+.bk-chip svg.i{width:14px;height:14px}
+.bk-chip:hover{border-color:var(--border-strong);color:var(--ink)}
+.bk-chip.warn{background:color-mix(in srgb,var(--warn) 14%,var(--surface));border-color:color-mix(in srgb,var(--warn) 55%,transparent);color:var(--warn-ink)}
+.bk-chip:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+.menu-wrap{position:relative}
+#menuToggle{position:relative}
+#menuToggle .dot{position:absolute;top:5px;right:5px;width:7px;height:7px;border-radius:2px;background:var(--warn);display:none}
+
+/* light/dark switch (.themesw — shared component) */
+.themesw{display:inline-flex;align-items:center;justify-content:center;min-height:var(--ctl-sm);padding:0 2px;background:none;border:0}
+.themesw .tk{position:relative;display:block;border:1px solid var(--border-strong);background:var(--surface-2)}
+.themesw .th{position:absolute;left:2px;display:grid;place-items:center;color:var(--accent-ink)}
+.themesw .th svg.i{width:12px;height:12px;stroke-width:2.4}
+.themesw .th .moon,.themesw[aria-checked="true"] .th .sun{display:none}
+.themesw[aria-checked="true"] .th .moon{display:block}
+
+/* Data menu */
+.dm-panel{position:absolute;right:0;top:calc(100% + 6px);z-index:70;width:330px;max-width:calc(100vw - 24px);background:var(--surface);border:1px solid var(--border-strong)}
+.dm-item{display:flex;align-items:center;gap:10px;width:100%;text-align:left;background:none;border:0;color:var(--ink);font-size:13.5px}
+.dm-item > svg.i{color:var(--ink-2)}
+.dm-t{display:flex;flex-direction:column;flex:1;min-width:0;line-height:1.3}
+.dm-t b{font-weight:600}
+.dm-t small{font-size:12px;color:var(--muted);overflow-wrap:anywhere}
+.dm-item.primary{background:var(--accent);color:var(--accent-ink)}
+.dm-item.primary > svg.i,.dm-item.primary .dm-t small{color:inherit}
+.dm-item.primary .dm-t small{opacity:.85}
+.dm-item.primary:hover,.dm-item.primary:focus-visible{background:var(--accent-hover)}
+.dm-item.primary kbd{background:transparent;color:inherit;border-color:color-mix(in srgb,var(--accent-ink) 45%,transparent)}
+.dm-item.danger,.dm-item.danger > svg.i{color:var(--crit)}
+.dm-item.danger:hover{background:color-mix(in srgb,var(--crit) 8%,var(--surface))}
+.dm-sep{height:1px;background:var(--border);margin:4px 6px}
+.dm-foot{border-top:1px solid var(--border);margin-top:4px;padding:10px 12px 8px;font-size:12px;color:var(--muted);display:flex;flex-direction:column;gap:4px;line-height:1.4}
+.dm-foot b{color:var(--ink-2);font-weight:600}
+.dm-foot .st-warn{color:var(--warn-ink);font-weight:600}
+
+/* --- page structure --- */
+main.wrap{min-height:60vh}
+.page-h{display:flex;flex-wrap:wrap;gap:10px 16px;justify-content:space-between}
+.page-h p{color:var(--muted);margin-top:2px}
+.ph-actions{display:flex;gap:8px;flex-wrap:wrap}
+.banner{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px;font-size:13.5px;flex-wrap:wrap}
+.banner strong{color:var(--accent)}
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));margin-bottom:16px}
+.card.tile{padding:12px 14px}
+.tile .lbl{display:flex;align-items:center;gap:6px}
+.tile .lbl i{width:8px;height:8px;border-radius:2px;background:var(--c,var(--accent));flex-shrink:0}
+.tile .val{font-variant-numeric:tabular-nums;line-height:1.2}
+.tile .note{color:var(--muted);margin-top:2px}
+
+/* toolbar */
+.toolbar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:12px}
+.toolbar .search{position:relative;flex:1 1 220px;min-width:180px}
+.toolbar .search svg.i{position:absolute;left:10px;top:50%;transform:translateY(-50%);color:var(--muted);pointer-events:none}
+.toolbar .search input{width:100%;padding-left:32px}
+.segv{display:inline-flex}
+.segv .chip{display:inline-flex;align-items:center;gap:6px;border-radius:0;margin-left:-1px;min-height:var(--ctl)}
+.segv .chip:first-child{border-radius:var(--r-sm) 0 0 var(--r-sm);margin-left:0}
+.segv .chip:last-child{border-radius:0 var(--r-sm) var(--r-sm) 0}
+.segv .chip[aria-pressed="true"]{position:relative;z-index:1}
+.tb-meta{font-size:12.5px;color:var(--muted);white-space:nowrap;margin-left:auto}
+.tb-meta b{color:var(--ink);font-weight:600}
+
+/* item cards (grid view) */
+.wgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(224px,1fr));gap:12px}
+.wcard{position:relative;display:flex;flex-direction:column;background:var(--surface);border:1px solid var(--border);border-radius:var(--r);box-shadow:var(--shadow);overflow:hidden;transition:border-color var(--ease),box-shadow var(--ease)}
+.wcard:hover{border-color:var(--border-strong)}
+.wcard.sel{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent)}
+.wcard .thumb{position:relative;aspect-ratio:2/1;background:var(--surface-2);border-bottom:1px solid var(--border);overflow:hidden}
+.thumb img,.th-sm img{width:100%;height:100%;object-fit:cover;display:block}
+.letter{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-weight:650;font-size:34px;background:color-mix(in srgb,var(--cc,#6b7684) 13%,var(--surface-2));color:color-mix(in srgb,var(--cc,#6b7684) 78%,var(--ink))}
+.selbox{position:absolute;top:8px;left:8px;z-index:2;width:30px;height:30px;display:grid;place-items:center;background:var(--surface);border:1px solid var(--border-strong);border-radius:var(--r-sm);box-shadow:var(--shadow);cursor:pointer}
+.selbox input,.datatable input[type=checkbox]{margin:0;width:16px;height:16px;cursor:pointer}
+.wcard .pflag{position:absolute;top:8px;right:8px}
+.pill{display:inline-flex;align-items:center;gap:4px;border:1px solid var(--border);color:var(--ink-2);white-space:nowrap;line-height:1.35}
+.pill.need{background:var(--need-soft);color:var(--need);border-color:color-mix(in srgb,var(--need) 35%,transparent);font-weight:650}
+.pill.want{background:var(--want-soft);color:var(--want);border-color:color-mix(in srgb,var(--want) 30%,transparent);font-weight:650}
+.pill.overdue{background:color-mix(in srgb,var(--crit) 11%,var(--surface));color:var(--crit);border-color:color-mix(in srgb,var(--crit) 40%,transparent)}
+.pill.soon{background:color-mix(in srgb,var(--warn) 15%,var(--surface));color:var(--warn-ink);border-color:color-mix(in srgb,var(--warn) 50%,transparent)}
+.pill.normal{background:var(--surface-2);color:var(--ink-2)}
+.tag{display:inline-block;font-size:11.5px;color:var(--ink-2);background:var(--surface-2);border:1px solid var(--border);border-radius:3px;padding:0 6px;line-height:18px;white-space:nowrap;max-width:100%;overflow:hidden;text-overflow:ellipsis}
+.wcard .body{padding:10px 12px 12px;display:flex;flex-direction:column;gap:8px;flex:1}
+.wcard .name{font-weight:600;font-size:14px;line-height:1.3;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.meta-row{display:flex;align-items:center;justify-content:space-between;gap:6px;flex-wrap:wrap}
+.tags{display:flex;gap:4px;flex-wrap:wrap;min-width:0}
+.stars{color:var(--star);font-size:12px;letter-spacing:1px;white-space:nowrap}
+.stars .off{color:var(--border-strong)}
+.qty{display:inline-flex;align-items:center;border:1px solid var(--border-strong);border-radius:var(--r-sm);height:var(--ctl-sm);background:var(--surface)}
+.qty button{width:28px;height:100%;background:none;border:0;color:var(--ink-2);font-size:16px;line-height:1;transition:background-color var(--ease)}
+.qty button:first-child{border-radius:var(--r-sm) 0 0 var(--r-sm)}
+.qty button:last-child{border-radius:0 var(--r-sm) var(--r-sm) 0}
+.qty button:hover{background:var(--surface-2);color:var(--ink)}
+.qty .n{min-width:24px;text-align:center;font-size:13px;font-weight:600;font-variant-numeric:tabular-nums}
+.unit{font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums}
+.price-row{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:auto;padding-top:8px;border-top:1px solid var(--border)}
+.price-row .total{font-size:17px;font-weight:650;font-variant-numeric:tabular-nums}
+.card-actions .btn{width:100%}
+.ib{display:inline-grid;place-items:center;width:var(--ctl-sm);height:var(--ctl-sm);border:1px solid transparent;border-radius:var(--r-sm);background:none;color:var(--ink-2);transition:background-color var(--ease),color var(--ease)}
+.ib:hover{background:var(--surface-2);color:var(--ink)}
+.ib.danger:hover{background:color-mix(in srgb,var(--crit) 10%,transparent);color:var(--crit)}
+.ib:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+.rowact{display:flex;gap:2px;justify-content:flex-end;align-items:center}
+
+/* tables (table view, purchased) */
+.tablewrap{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);box-shadow:var(--shadow);overflow-x:auto}
+table.datatable{width:100%;border-collapse:collapse}
+.datatable th{text-align:left;color:var(--ink-2);white-space:nowrap}
+.datatable td{border-top:1px solid var(--border);vertical-align:middle}
+.datatable th.r,.datatable td.r{text-align:right}
+.datatable th.c,.datatable td.c{text-align:center;width:40px}
+.datatable td.money{font-weight:600;white-space:nowrap}
+.datatable tr.sel td{background:var(--accent-soft)}
+.datatable tfoot td{background:var(--surface-2);font-weight:600;border-top:1px solid var(--border-strong);padding:8px}
+.it{display:flex;align-items:center;gap:10px;min-width:0}
+.th-sm{width:40px;height:40px;border-radius:var(--r-sm);overflow:hidden;flex-shrink:0;border:1px solid var(--border);background:var(--surface-2)}
+.th-sm .letter{font-size:16px}
+.it .nm{font-weight:600;overflow-wrap:anywhere;line-height:1.3}
+.it .sub{display:flex;flex-wrap:wrap;align-items:center;gap:4px 6px;margin-top:3px;font-size:12px;color:var(--muted)}
+.m-only{display:none!important}
+.skeleton-card{height:300px;background:var(--surface);border:1px solid var(--border);border-radius:var(--r)}
+
+.empty-state{text-align:center;padding:36px 16px;border:1px dashed var(--border-strong);border-radius:var(--r);color:var(--ink-2)}
+.empty-state h3{font-size:15px;font-weight:600;margin-bottom:4px}
+.empty-state p{color:var(--muted);max-width:460px;margin:0 auto;font-size:13.5px}
+.es-act{display:flex;gap:8px;justify-content:center;margin-top:14px;flex-wrap:wrap}
+
+/* cart bar */
+.cartbar{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(16px + env(safe-area-inset-bottom,0px));width:min(760px,calc(100% - 24px));z-index:40;display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:10px 12px 10px 16px;background:var(--surface);border:1px solid var(--border-strong);border-left:3px solid var(--accent);border-radius:var(--r);box-shadow:var(--shadow-pop)}
+.cart-sum{display:flex;align-items:center;gap:12px;margin-right:auto;min-width:0}
+.cartbar .cart-info{color:var(--ink-2);font-size:13px;display:flex;align-items:center;gap:8px;white-space:nowrap}
+.cartbar .cart-info svg.i{color:var(--accent)}
+.cartbar .cart-total{font-size:17px;font-weight:650;font-variant-numeric:tabular-nums}
+body.has-cart main.wrap{padding-bottom:110px}
+
+/* modals */
+.modal-overlay{position:fixed;inset:0;z-index:80;display:flex;align-items:flex-start;justify-content:center;padding:6vh 16px 24px;overflow-y:auto;background:rgba(10,12,16,.45)}
+.modal{width:100%;max-width:560px;background:var(--surface);border:1px solid var(--border);border-radius:8px;box-shadow:var(--shadow-pop);padding:20px}
+.modal.sm{max-width:400px}
+.modal h2{font-size:17px;font-weight:650}
+.modal-sub{color:var(--muted);font-size:13px;margin:4px 0 14px}
+.modal-actions{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-top:16px;padding-top:14px;border-top:1px solid var(--border)}
+.modal-actions .right{display:flex;gap:8px;margin-left:auto}
+.field{display:flex;flex-direction:column;gap:4px;margin:0 0 12px;font-size:12.5px;font-weight:550;color:var(--ink-2)}
+fieldset.field{border:0;padding:0;min-width:0}
+.field legend{padding:0;margin-bottom:4px;float:left;width:100%}
+.field legend + *{clear:both}
+.field input,.field select,.field textarea{width:100%}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:0 12px}
+input[type=url],input[type=email]{background:var(--surface);border:1px solid var(--border-strong);border-radius:var(--r-sm);padding:6px 9px;font-size:14px;font-weight:400;color:var(--ink);box-shadow:none;min-height:var(--ctl)}
+textarea{resize:vertical;min-height:60px;line-height:1.4}
+.hint{font-size:12px;color:var(--muted);font-weight:400}
+.segmented{display:flex}
+.segmented button{flex:1;min-height:var(--ctl);background:var(--surface);border:1px solid var(--border-strong);margin-left:-1px;color:var(--ink-2);font-weight:600;font-size:13.5px;transition:background-color var(--ease),color var(--ease)}
+.segmented button:first-child{margin-left:0;border-radius:var(--r-sm) 0 0 var(--r-sm)}
+.segmented button:last-child{border-radius:0 var(--r-sm) var(--r-sm) 0}
+.segmented button:hover{background:var(--surface-2);color:var(--ink)}
+.segmented button.active{position:relative;z-index:1}
+.segmented button.active.need{background:var(--need-soft);color:var(--need);border-color:var(--need)}
+.segmented button.active.want{background:var(--want-soft);color:var(--want);border-color:var(--want)}
+.star-picker{display:flex;gap:2px}
+.star-picker button{background:none;border:1px solid transparent;border-radius:var(--r-sm);font-size:20px;line-height:1;width:36px;height:36px;color:var(--border-strong);transition:color var(--ease),background-color var(--ease)}
+.star-picker button:hover{color:var(--star);background:var(--surface-2)}
+.star-picker button.filled{color:var(--star)}
+.image-picker{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.image-preview{width:56px;height:56px;border-radius:var(--r-sm);background:var(--surface-2);border:1px solid var(--border);flex-shrink:0;display:flex;align-items:center;justify-content:center;overflow:hidden;color:var(--muted)}
+.image-preview img{width:100%;height:100%;object-fit:cover}
+.more-details-toggle{display:flex;align-items:center;gap:6px;width:100%;background:none;border:0;border-top:1px solid var(--border);padding:12px 0 8px;margin-top:2px;font-size:13.5px;font-weight:600;color:var(--accent);text-align:left}
+.more-details-toggle:hover{color:var(--accent-hover)}
+.more-details-toggle svg.i{transition:transform var(--ease)}
+.more-details-toggle[aria-expanded="true"] svg.i{transform:rotate(180deg)}
+.more-details-hint{color:var(--muted);font-weight:400;font-size:12.5px}
+.checkout-progress-bar{height:8px;border-radius:2px;background:var(--seq-track);overflow:hidden;margin:0 0 12px}
+.checkout-progress-fill{height:100%;width:0;background:var(--accent);border-radius:2px}
+.checkout-list{display:flex;flex-direction:column;gap:6px;max-height:50vh;overflow-y:auto}
+.checkout-row{display:flex;align-items:center;gap:10px;border:1px solid var(--border);border-radius:var(--r-sm);padding:8px 10px}
+.checkout-row .name{flex:1;font-size:13.5px;font-weight:600;min-width:0;overflow-wrap:anywhere}
+.checkout-row .price{font-size:13px;color:var(--ink-2)}
+.checkout-row.done{background:var(--surface-2)}
+.checkout-row.done .name{color:var(--muted);text-decoration:line-through}
+.checkout-row .ok{display:none;color:var(--good-ink);font-size:12.5px;font-weight:600;align-items:center;gap:4px}
+.checkout-row.done .ok{display:inline-flex}
+.checkout-row.done .btn{display:none}
+
+/* toast, back-to-top, notice */
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(20px + env(safe-area-inset-bottom,0px));z-index:90;display:flex;align-items:center;gap:12px;padding:10px 14px;color:var(--bg);font-size:13.5px;max-width:calc(100% - 24px)}
+body.has-cart .toast{bottom:calc(92px + env(safe-area-inset-bottom,0px))}
+.toast button{background:none;border:0;color:var(--toast-link);font-weight:700;padding:4px 6px;border-radius:var(--r-sm)}
+.totop{position:fixed;right:16px;bottom:calc(20px + env(safe-area-inset-bottom,0px));z-index:30;display:grid;place-items:center;border:1px solid var(--border);color:var(--ink-2);opacity:0;visibility:hidden}
+.totop.visible{opacity:1;visibility:visible}
+body.has-cart .totop{bottom:calc(92px + env(safe-area-inset-bottom,0px))}
+.notice{position:fixed;left:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:60;border:1px solid var(--border-strong);display:flex;flex-direction:column;gap:0}
+.notice b{font-size:13.5px}
+.notice .actions{margin:0;align-self:flex-end}
+
+/* FAQ */
+.faq-list{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);box-shadow:var(--shadow);padding:0 16px}
+.faq-item + .faq-item{border-top:1px solid var(--border)}
+.faq-q{width:100%;display:flex;align-items:center;justify-content:space-between;gap:12px;background:none;border:0;text-align:left;font-weight:600;color:var(--ink)}
+.faq-q:hover{color:var(--accent)}
+.faq-q .chev{color:var(--muted);flex-shrink:0}
+.faq-item.open .faq-q .chev{transform:rotate(180deg)}
+.faq-answer{display:none}
+.faq-item.open .faq-answer{display:block}
+.faq-answer p{padding:0 0 14px;color:var(--ink-2);font-size:13.5px;line-height:1.55;max-width:760px}
+
+/* search + release notes + legal */
+.search-modal{max-width:520px}
+.search-modal .search input{width:100%;padding-left:32px}
+.search-modal .search{position:relative}
+.search-modal .search svg.i{position:absolute;left:10px;top:50%;transform:translateY(-50%);color:var(--muted)}
+.search-results{margin-top:10px;max-height:50vh;overflow-y:auto;display:flex;flex-direction:column;gap:2px}
+.search-group-label{font-size:11.5px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin:10px 2px 4px}
+.search-result{display:flex;align-items:center;gap:8px;width:100%;text-align:left;background:none;border:0;border-radius:var(--r-sm);padding:8px 10px;font-size:13.5px;color:var(--ink)}
+.search-result:hover,.search-result:focus-visible{background:var(--surface-2)}
+.release-list,.legal-text{max-height:60vh;overflow-y:auto;margin:10px 0 0;padding-right:4px}
+.release-list{display:flex;flex-direction:column;gap:16px}
+.release-entry .rel-head{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+.release-entry .rel-version{font-weight:650;font-variant-numeric:tabular-nums}
+.release-entry .rel-date{color:var(--muted);font-size:12.5px}
+.release-entry ul,.legal-text ul{margin:0;padding-left:18px;font-size:13.5px;color:var(--ink-2);line-height:1.55}
+.release-entry li + li{margin-top:2px}
+.legal-text{font-size:13.5px;line-height:1.6;color:var(--ink)}
+.legal-text h3{margin:16px 0 4px;font-size:14px}
+.legal-text h3:first-child{margin-top:0}
+.legal-text p{margin:0 0 8px}
+.legal-text ul{margin:0 0 10px}
+.legal-text code{font-family:var(--mono);font-size:12.5px;background:var(--surface-2);border:1px solid var(--border);border-radius:3px;padding:0 4px}
+.legal-updated{color:var(--muted);font-size:12.5px;margin-bottom:12px!important}
+
+/* onboarding */
+.ob-head{display:flex;gap:14px;align-items:flex-start;margin-bottom:6px}
+.logo.lg{width:52px;height:52px;border-radius:8px;background:var(--accent);color:#fff;display:grid;place-items:center;flex-shrink:0}
+.logo.lg svg.i{width:28px;height:28px}
+.onboarding-list{margin:6px 0 16px;padding-left:18px;display:flex;flex-direction:column;gap:6px;font-size:13.5px;color:var(--ink-2);line-height:1.5}
+.onboarding-list li::marker{color:var(--accent)}
+
+/* footer */
+.site-footer{display:flex;flex-wrap:wrap;gap:8px 16px;justify-content:space-between;align-items:center;border-top:1px solid var(--border);margin-top:8px;padding-top:14px;padding-bottom:24px;color:var(--muted);font-size:12.5px}
+.site-footer .footer-links{display:flex;flex-wrap:wrap;gap:4px 14px}
+.site-footer button{background:none;border:0;padding:0;color:var(--muted);text-decoration:underline;text-underline-offset:2px;font-size:inherit}
+.site-footer button:hover{color:var(--ink)}
+
+/* mobile bottom nav (shared pattern) */
+.bnav,.bn-sheet{display:none}
+
+@media(max-width:860px){
+  nav.tabs{display:none}
+  .stats{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .bnav{display:grid;grid-template-columns:repeat(4,1fr);position:fixed;left:0;right:0;bottom:0;z-index:55;padding-bottom:env(safe-area-inset-bottom,0px)}
+  .bnav button{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;background:none;border:0;color:var(--ink-2);font-weight:550}
+  .bnav button svg.i{width:20px;height:20px}
+  .bn-sheet{display:flex;flex-direction:column;gap:4px;position:fixed;left:8px;right:8px;z-index:56;background:var(--surface);border:1px solid var(--border-strong);padding:6px}
+  .bn-item{display:flex;align-items:center;gap:10px;min-height:48px;padding:0 12px;border:0;text-align:left;color:var(--ink);font-size:14px}
+  .bn-item svg.i{color:var(--ink-2)}
+  .site-footer{padding-bottom:calc(84px + env(safe-area-inset-bottom,0px))}
+  .cartbar{bottom:calc(64px + env(safe-area-inset-bottom,0px))}
+  .toast,.totop,.notice{bottom:calc(68px + env(safe-area-inset-bottom,0px))}
+  body.has-cart .toast,body.has-cart .totop{bottom:calc(140px + env(safe-area-inset-bottom,0px))}
+  body.has-cart main.wrap{padding-bottom:130px}
+  #searchBtn kbd{display:none}
+}
+@media(max-width:700px){
+  .toolbar{display:grid;grid-template-columns:repeat(3,minmax(0,1fr))}
+  .toolbar .search,.tb-meta{grid-column:1/-1}
+  .toolbar select{min-width:0;width:100%}
+  .segv{grid-column:span 2}
+  .segv .chip{flex:1;justify-content:center}
+  .tb-meta{margin-left:0}
+  .datatable .d-only{display:none}
+  .m-only{display:flex!important}
+  .it{align-items:flex-start}
+  .field-row{grid-template-columns:1fr}
+}
+@media(max-width:520px){
+  .wrap{padding-inline:12px}
+  .bk-chip{display:none}
+  #menuToggle.stale .dot{display:block}
+  #menuToggle .lbl-t{display:none}
+  .dm-panel{position:fixed;left:8px;right:8px;top:58px;width:auto;max-width:none;max-height:calc(100vh - 140px);overflow-y:auto}
+  .page-h .ph-actions .btn{flex:1}
+  .page-h .ph-actions{width:100%}
+  .wgrid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+  .wcard .body{padding:8px 10px 10px}
+  .wcard .price-row .total{font-size:15px}
+  .cartbar{flex-wrap:nowrap;gap:8px;padding:8px 8px 8px 12px}
+  .cart-sum{flex-direction:column;align-items:flex-start;gap:0}
+  .cartbar .cart-info{font-size:12px}
+  .cartbar .cart-info svg.i{display:none}
+  .cartbar .btn{padding:0 12px}
+  .notice{left:8px;right:8px;max-width:none!important}
+  .modal-overlay{padding:0;align-items:flex-end}
+  .modal{border-radius:8px 8px 0 0;max-height:94vh;overflow-y:auto}
+}
+@media(max-width:380px){.wgrid{grid-template-columns:1fr}}
+@media print{
+  .top,.bnav,.bn-sheet,.cartbar,.totop,.notice,.toolbar,.scroll-progress,#toastHost,.site-footer,.ph-actions,.banner{display:none!important}
+  body{background:#fff}
+}
+
+/* =====================================================================
+   UTILITY THEME — desktop-software look. Loaded last; overrides the
+   earlier decorative layers (gradients, glow, lifts, long animations).
+   Geometry: --r for panels, --r-sm for controls. Motion: <=120ms.
+   (Shared ecosystem layer — kept verbatim across apps.)
+   ===================================================================== */
+body{font-family:var(--font);font-size:14px;line-height:1.45;background:var(--bg);font-feature-settings:normal}
+.plot text{font-family:var(--font)}
+h1,h2,h3,h4{font-weight:600;letter-spacing:-.005em}
+::selection{background:color-mix(in srgb,var(--accent) 28%,transparent)}
+/* --- motion: no lifts, no sheen, no entrance choreography --- */
+.rise,.anim path.dl,.anim path.fa,.anim path.bar,
+.meter .fill,.hrow .trk .f,.hrow .bar,.lvl .bar i,.nu .track i,
+dialog,.toast,.notice,.dm-panel,.bn-sheet,.unlock .badgewrap,.unlock .lvbig,
+.ach.unlocked:hover .badgewrap{animation:none}
+.meter .fill::after,.lvl .bar i::after,.ach::after{display:none}
+.unlock{animation:fadein .12s both}
+.unlock.out{animation:fadein .12s reverse both}
+.btn,.chip,.tile,.card,.ach,.nu,.about-step,.lvlchip,.totop,nav.tabs button,.faq-q,.dm-item,.ps-item,
+input,select,textarea{transition:background-color var(--ease),border-color var(--ease),color var(--ease),box-shadow var(--ease)}
+.btn:hover,.btn:active,.chip:hover,.card.tile:hover,.ach.unlocked:hover,.ach.locked:hover,.nu:hover,.about-step:hover,.lvlchip:hover,.totop:hover{transform:none}
+/* --- header: solid app bar + underline tabs --- */
+.top{background:var(--surface);backdrop-filter:none;-webkit-backdrop-filter:none;border-bottom:1px solid var(--border);box-shadow:var(--shadow)}
+.top .wrap{padding-top:8px;padding-bottom:0;row-gap:4px}
+.brand{gap:9px}
+.brand .logo{width:28px;height:28px;border-radius:var(--r);background:var(--accent);box-shadow:none}
+.brand .logo svg{width:16px;height:16px}
+.brand b,.brand h1{font-size:14.5px;font-weight:650}
+.brand span{font-size:11px;color:var(--muted);letter-spacing:.01em}
+nav.tabs{gap:0}
+nav.tabs button{position:relative;border-radius:0;padding:0 12px;min-height:40px;color:var(--ink-2);font-weight:500;box-shadow:none;background:none}
+nav.tabs button:hover{background:var(--surface-2);color:var(--ink)}
+nav.tabs button[aria-current="page"]{background:none;color:var(--accent);font-weight:600;box-shadow:inset 0 -2px 0 var(--accent)}
+nav.tabs button svg{opacity:.75}
+nav.tabs button:focus-visible{outline-offset:-2px}
+.tabarrow{border-radius:var(--r-sm);box-shadow:var(--shadow-pop);width:32px;height:32px;font-size:18px}
+.actions{gap:6px}
+.saved{font-size:12px}
+/* --- page structure --- */
+main.wrap{padding-top:20px}
+@media(max-width:1360px){main.wrap{padding-top:20px}}
+main{padding-bottom:48px}
+.page-h{margin-bottom:14px;align-items:flex-end}
+.page-h h2{font-size:22px;font-weight:650;letter-spacing:-.015em}
+.page-h p{font-size:13.5px}
+.sect-t{font-size:11.5px;letter-spacing:.06em;margin:20px 0 8px;color:var(--muted)}
+.sect-t::after{background:var(--border)}
+.grid{gap:12px}
+.mt{margin-top:12px}.mt2{margin-top:20px}
+/* --- cards / panels --- */
+.card{border-radius:var(--r);background:var(--surface);border:1px solid var(--border);box-shadow:var(--shadow);padding:16px}
+.card:not(.hero):not(.chartcard):not(.ach):hover{border-color:var(--border)}
+.card h3{font-size:14.5px;font-weight:600}
+.card .sub{font-size:12.5px}
+.card.tile:hover{border-color:var(--border-strong);box-shadow:var(--shadow)}
+.tile .lbl{font-size:12px;font-weight:600;color:var(--ink-2)}
+.tile .val{font-size:22px;font-weight:650;letter-spacing:-.01em;margin-top:4px}
+.tile .note{font-size:12px}
+.hero{padding:18px 20px;background:var(--surface);border-left:3px solid var(--accent)}
+.hero .big{font-size:clamp(36px,6vw,48px);font-weight:650;letter-spacing:-.02em;background:none;-webkit-text-fill-color:currentColor;color:var(--ink)}
+.hero .big.neg{-webkit-text-fill-color:currentColor;color:var(--crit)}
+.hero .lbl{font-size:11.5px;letter-spacing:.06em;font-weight:600}
+.banner{background:var(--accent-soft);border:1px solid var(--accent-line);border-left:3px solid var(--accent);border-radius:var(--r);padding:10px 14px}
+.pill{border-radius:var(--r-sm);font-size:11.5px;font-weight:550;padding:2px 7px;background:var(--surface-2)}
+.pill.warn{background:color-mix(in srgb,var(--warn) 18%,var(--surface));color:var(--ink);border-color:color-mix(in srgb,var(--warn) 55%,transparent)}
+.kv{padding:7px 0}
+.empty{padding:28px 8px;font-size:13.5px}
+.empty-state{border-style:dashed;box-shadow:none;background:var(--surface-2)}
+code.k,kbd{border-radius:3px}
+.stamp{font-size:11.5px}
+/* --- buttons --- */
+.btn{border-radius:var(--r-sm);min-height:var(--ctl);padding:0 14px;font-weight:550;font-size:13.5px;background:var(--surface);border:1px solid var(--border-strong);color:var(--ink);box-shadow:none}
+.btn:hover{background:var(--surface-2);border-color:color-mix(in srgb,var(--ink) 30%,var(--border-strong))}
+.btn:active{background:var(--surface-3)}
+.btn.sm{min-height:var(--ctl-sm);padding:0 10px;font-size:13px}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);box-shadow:none;font-weight:600}
+.btn.primary:hover{background:var(--accent-hover);border-color:var(--accent-hover);filter:none;box-shadow:none}
+.btn.primary:active{filter:brightness(.94)}
+.btn.danger{color:var(--crit);border-color:color-mix(in srgb,var(--crit) 45%,var(--border-strong));background:var(--surface)}
+.btn.danger:hover{background:color-mix(in srgb,var(--crit) 8%,var(--surface));border-color:var(--crit)}
+.btn.ghost,.btn.ghost.danger{background:none;border-color:transparent}
+.btn.ghost:hover{background:var(--surface-2);border-color:transparent}
+.btn.ghost.danger:hover{background:color-mix(in srgb,var(--crit) 10%,transparent)}
+.btn.on{border-color:var(--accent);color:var(--accent);background:var(--accent-soft)}
+.btn:disabled,.btn:disabled:hover{opacity:1;background:var(--surface-2);border-color:var(--border);color:var(--muted);filter:none;cursor:not-allowed}
+.btn.primary:disabled,.btn.primary:disabled:hover{background:color-mix(in srgb,var(--accent) 35%,var(--surface-2));border-color:transparent;color:color-mix(in srgb,var(--accent-ink) 80%,transparent)}
+a.btn{color:var(--ink)}
+.btn:focus-visible,nav.tabs button:focus-visible,summary:focus-visible,.chip:focus-visible,.ach:focus-visible,.nu:focus-visible,.dm-item:focus-visible,.bn-item:focus-visible,.bnav button:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+/* segmented toggles (chips) */
+.chips{gap:6px}
+.chip{border-radius:var(--r-sm);min-height:var(--ctl-sm);padding:0 12px;font-size:13px;font-weight:500;background:var(--surface);border:1px solid var(--border-strong);color:var(--ink-2)}
+.chip:hover{border-color:var(--accent);color:var(--ink);background:var(--surface-2)}
+.chip[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);box-shadow:none;font-weight:600}
+.fld .chips{flex-wrap:nowrap;gap:0}
+.fld .chips .chip{flex:1;border-radius:0;min-height:var(--ctl);margin-left:-1px}
+.fld .chips .chip:first-child{border-radius:var(--r-sm) 0 0 var(--r-sm);margin-left:0}
+.fld .chips .chip:last-child{border-radius:0 var(--r-sm) var(--r-sm) 0}
+.fld .chips .chip[aria-pressed="true"]{position:relative;z-index:1}
+/* --- forms --- */
+.fld{display:flex;flex-direction:column;gap:4px;font-size:12.5px;font-weight:550;color:var(--ink-2)}
+input[type=text],input[type=number],input[type=date],input[type=month],input[type=search],select,textarea{background:var(--surface);border:1px solid var(--border-strong);border-radius:var(--r-sm);padding:6px 9px;font-size:14px;font-weight:400;color:var(--ink);box-shadow:none}
+select,input[type=text],input[type=search],input[type=date],input[type=month],input[type=number]{min-height:var(--ctl)}
+input:hover:not(:focus):not(:disabled),select:hover:not(:focus):not(:disabled),textarea:hover:not(:focus){border-color:color-mix(in srgb,var(--ink) 35%,var(--border-strong))}
+input:focus,select:focus,textarea:focus{outline:none!important;border-color:var(--accent)!important;box-shadow:0 0 0 1px var(--accent)}
+input::placeholder,textarea::placeholder{color:var(--muted);opacity:.85}
+input[type=checkbox]{accent-color:var(--accent)}
+input[type=range]{height:4px;border-radius:2px}
+input[type=range]::-webkit-slider-thumb{width:18px;height:18px;border:2px solid var(--accent);background:var(--surface);box-shadow:0 1px 3px rgba(0,0,0,.25)}
+input[type=range]::-webkit-slider-thumb:hover{transform:none;background:var(--accent-soft)}
+input[type=range]::-moz-range-thumb{width:14px;height:14px;border:2px solid var(--accent);background:var(--surface);box-shadow:0 1px 3px rgba(0,0,0,.25)}
+.add-hint{color:var(--warn-ink)}
+/* --- tables --- */
+.datatable{font-size:13px}
+.datatable th{font-size:12px;font-weight:600;background:var(--surface-2);border-bottom:1px solid var(--border-strong);padding:6px 8px}
+.datatable td{padding:5px 8px}
+.datatable tbody tr:hover td{background:var(--hover-band)}
+.grid-scroll{border-radius:var(--r);box-shadow:var(--shadow)}
+table.bud thead th{font-size:12px;background:var(--surface-2)}
+table.bud tr.top td,table.bud tr.top th{background:color-mix(in srgb,var(--accent) 7%,var(--surface))}
+table.bud .rn button,.brow .bn button{border-radius:var(--r-sm)}
+table.bud .rn button:hover,.brow .bn button:hover{background:var(--surface-3);color:var(--ink)}
+table.tx{font-size:13.5px}
+table.tx th{font-size:12px;background:var(--surface-2);padding:7px 8px;color:var(--ink-2)}
+table.tx th:hover{color:var(--ink)}
+table.tx td input,table.tx td select{border-radius:var(--r-sm)}
+table.tx tbody tr:hover{background:var(--hover-band)}
+table.tx tr.flash td{animation:flash .9s ease-out}
+.tablewrap{border-top:1px solid var(--border)}
+.pager{font-size:12.5px}
+/* --- bars & meters: flat, squared --- */
+.meter .track,.pbar,.sp-bar,.nu .track,.brow .mini,.lvlchip .xb,.lvl .bar{border-radius:2px}
+.meter .track{height:8px}
+.meter .fill,.pbar i,.nu .track i,.brow .mini i,.lvlchip .xb i,.lvl .bar i{border-radius:2px;background:var(--seq-fill);box-shadow:none}
+.meter.done .fill{background:var(--good)}
+.hrow{border-radius:0}
+.hrow:hover{border-radius:var(--r-sm);background:var(--hover-band)}
+.hrow .trk,.hrow .trk .f{border-radius:0 2px 2px 0;height:12px}
+.hrow .bar{border-radius:0 2px 2px 0}
+.gt-t,.gt-t i{border-radius:3px}
+.pbar{height:8px}
+.lvl .bar{height:10px}
+.legend i.sw,.sp-key i,.rar-dot{border-radius:2px}
+/* --- charts --- */
+.chartcard{padding:14px 16px 10px}
+.chartcard .tblbtn{border-radius:var(--r-sm);background:var(--surface);border:1px solid var(--border-strong);min-height:28px;padding:0 10px;font-size:12px;font-weight:550;color:var(--ink-2)}
+.chartcard .tblbtn:hover{background:var(--surface-2);color:var(--ink)}
+.tip{background:var(--surface);backdrop-filter:none;-webkit-backdrop-filter:none;border-radius:var(--r-sm);box-shadow:var(--shadow-pop);padding:7px 10px}
+.tip .tr i{border-radius:2px}
+/* --- overlays: dialog, palette, menus, toasts --- */
+dialog{border-radius:8px;box-shadow:var(--shadow-pop);padding:20px}
+dialog::backdrop{background:rgba(10,12,16,.45);backdrop-filter:none;-webkit-backdrop-filter:none}
+dialog h3{font-size:17px}
+dialog .btns{border-top:1px solid var(--border);padding-top:14px}
+dialog.palette{border-radius:8px}
+.ps-top{padding:12px 14px}
+.ps-item{border-radius:var(--r-sm);padding:8px 10px}
+.ps-item.on{box-shadow:inset 2px 0 0 var(--accent)}
+.ps-ic{border-radius:var(--r-sm)}
+.ps-item.on .ps-ic{background:var(--accent)}
+.dm-panel{border-radius:var(--r);box-shadow:var(--shadow-pop);padding:4px}
+.dm-item{border-radius:var(--r-sm);min-height:48px;padding:8px 12px}
+.dm-item:hover,.dm-item:focus-visible{background:var(--surface-2)}
+.toast{border-radius:var(--r);background:var(--ink);box-shadow:var(--shadow-pop)}
+.unlock{border-radius:var(--r);background:var(--surface);backdrop-filter:none;-webkit-backdrop-filter:none;box-shadow:var(--shadow-pop);border:1px solid var(--border-strong);border-left:3px solid var(--rc,var(--accent))}
+.unlock .lvbig{border-radius:var(--r);background:var(--accent)}
+.notice{border-radius:var(--r);background:var(--surface);backdrop-filter:none;-webkit-backdrop-filter:none;box-shadow:var(--shadow-pop);padding:14px 16px;max-width:380px}
+.notice p{font-size:13px;margin:4px 0 10px}
+.busy{background:rgba(10,12,16,.5);backdrop-filter:none;-webkit-backdrop-filter:none}
+.spinner{width:32px;height:32px;border-width:3px}
+#splash{background:var(--bg);transition:opacity .15s ease}
+#splash.out{transform:none}
+.sp-logo{border-radius:8px;background:var(--accent);animation:none;box-shadow:none;width:52px;height:52px}
+.sp-logo svg{width:28px;height:28px}
+#splash .sp-bar{border-radius:2px;height:3px}
+#splash .sp-bar i{border-radius:2px;background:var(--accent)}
+/* --- header controls --- */
+.lvlchip{border-radius:var(--r-sm);padding:0 10px 0 4px;box-shadow:none;font-weight:600}
+.lvlchip:hover{box-shadow:none;background:var(--surface-2)}
+.lvlchip .lv{border-radius:3px;background:var(--accent);height:24px;min-width:24px}
+.lvlchip.pulse{animation:none;box-shadow:0 0 0 2px var(--accent-line)}
+.themesw{border-radius:var(--r-sm)}
+.themesw .tk{border-radius:var(--r-sm);width:52px;height:26px}
+.themesw .th{border-radius:3px;background:var(--accent);box-shadow:none;width:22px;height:20px;top:2px;transition:transform var(--ease)}
+.themesw[aria-checked="true"] .th{transform:translateX(24px)}
+#searchBtn kbd,.palette kbd{border-radius:3px;font-family:var(--font)}
+.totop{border-radius:var(--r);width:40px;height:40px;background:var(--surface);backdrop-filter:none;-webkit-backdrop-filter:none;box-shadow:var(--shadow-pop);transform:none;transition:opacity var(--ease),visibility var(--ease)}
+.totop:hover{background:var(--surface-2);color:var(--ink);border-color:var(--border-strong)}
+.skip{border-radius:var(--r-sm)}
+/* --- dashboard widgets --- */
+.insight{padding:12px 16px}
+.insight .ic{border-radius:var(--r-sm);width:34px;height:34px;font-size:17px}
+.insight .dots i{border-radius:1px;height:4px}
+.insight .dots i.on{width:14px}
+.insight .tx{font-size:14px}
+.nu{border-radius:var(--r);background:var(--surface);padding:10px 12px}
+.nu:hover{border-color:color-mix(in srgb,var(--rc) 55%,var(--border));box-shadow:none;background:var(--surface-2)}
+.sp-big{font-size:clamp(28px,3.6vw,34px);font-weight:650;letter-spacing:-.02em}
+.sp-side .val{font-size:22px;font-weight:650}
+.wi-big{background:none;-webkit-text-fill-color:currentColor;color:var(--accent);font-weight:650;font-size:clamp(32px,5vw,44px);letter-spacing:-.02em}
+.up-d{border-radius:var(--r-sm)}
+.about-step{border-radius:var(--r);background:var(--surface);padding:12px}
+.about-step:hover{border-color:var(--accent-line);box-shadow:none;background:var(--surface-2)}
+.as-n{border-radius:var(--r-sm)}
+.about-step.ok .as-n{background:var(--accent)}
+.steps-card.complete{border-color:var(--accent-line)}
+.pdet,.pbulk{border-radius:var(--r)}
+.ptag{border-radius:3px}
+.faq-q{font-size:14px;padding:12px 0}
+.faq-q .chev{transition:transform var(--ease)}
+.faq-a,.faq-a>div{transition:none}
+.hl{animation:hlflash 1.2s ease-out}
+/* --- achievements: keep the rarity colours, drop the theatrics --- */
+.lvl{background:var(--surface);border-left:3px solid var(--accent)}
+.lvl b.big{font-size:22px}
+.ach{border-radius:var(--r);padding:12px;box-shadow:none}
+.ach.unlocked{background:var(--surface);border-color:var(--border);border-top:3px solid var(--rc);box-shadow:none}
+.ach.unlocked:hover{box-shadow:none;border-color:var(--border-strong);border-top-color:var(--rc);background:var(--surface-2)}
+.ach.locked{border-style:dashed;background:var(--surface-2)}
+.ach.unlocked .badgewrap{filter:none}
+.dm-big .badgewrap{filter:none}
+/* --- mobile bottom nav --- */
+@media(max-width:860px){
+.top .wrap{padding-bottom:8px}
+.bnav{background:var(--surface);backdrop-filter:none;-webkit-backdrop-filter:none;border-top:1px solid var(--border-strong);padding-top:0;gap:2px}
+.bnav button{border-radius:0;position:relative;min-height:54px}
+.bnav button[aria-current="page"]{background:none;color:var(--accent);box-shadow:inset 0 2px 0 var(--accent)}
+.bn-sheet{border-radius:var(--r);box-shadow:var(--shadow-pop);bottom:calc(66px + env(safe-area-inset-bottom))}
+.bn-item{border-radius:var(--r-sm);background:var(--surface)}
+.bn-item[aria-current="page"]{box-shadow:inset 3px 0 0 var(--accent)}
+}
+/* --- touch & small screens: keep 44px targets --- */
+@media(pointer:coarse),(max-width:700px){
+:root{--ctl:44px;--ctl-sm:44px}
+.fld .chips .chip,.chartcard .tblbtn{min-height:44px}
+nav.tabs button{min-height:44px}
+}
+@media(max-width:520px){
+.card{padding:14px}
+.page-h h2{font-size:20px}
+.hero{padding:16px}
+}
+@media print{.top{box-shadow:none}.hero,.lvl{border-left-width:1px}}
+/* header actions share one compact height */
+.actions .btn,.actions .lvlchip,#searchBtn{min-height:var(--ctl-sm)}
+@media(max-width:860px){.bnav button{font-size:10.5px;letter-spacing:-.02em}}
+@media(max-width:430px){.brand .bt{display:none}.top .wrap{flex-wrap:nowrap}}
+/* budget progress bars follow the app accent (over-budget stays red) */
+.hrow .trk .f:not(.over),.brow .mini i:not(.over){background:var(--accent)}
+:root[data-theme="light"] .about-step .as-go{color:var(--accent)}
+
+/* --- app overrides that must follow the shared layer --- */
+.empty-state{background:var(--surface)}
+.tablewrap{border-top:1px solid var(--border)}
+.card.tile{padding:12px 14px}
+@media(max-width:520px){.card.tile{padding:10px 12px}.tile .val{font-size:19px}}
+</style>
+</head>
+<body>
+<svg xmlns="http://www.w3.org/2000/svg" style="display:none" aria-hidden="true">
+  <symbol id="i-cart" viewBox="0 0 24 24"><path d="M3 3.8h2.3l2.4 11.4a1.4 1.4 0 0 0 1.4 1.1h8.9a1.4 1.4 0 0 0 1.4-1l2-7.5H6.4"/><circle cx="9.8" cy="20" r="1.5" fill="currentColor" stroke="none"/><circle cx="17.7" cy="20" r="1.5" fill="currentColor" stroke="none"/></symbol>
+  <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.35-4.35"/></symbol>
+  <symbol id="i-data" viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v14c0 1.66 3.58 3 8 3s8-1.34 8-3V5"/><path d="M4 12c0 1.66 3.58 3 8 3s8-1.34 8-3"/></symbol>
+  <symbol id="i-chev" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></symbol>
+  <symbol id="i-save" viewBox="0 0 24 24"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><path d="M17 21v-8H7v8M7 3v5h8"/></symbol>
+  <symbol id="i-download" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5M12 15V3"/></symbol>
+  <symbol id="i-upload" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M17 8l-5-5-5 5M12 3v12"/></symbol>
+  <symbol id="i-sheet" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M3 15h18M9 3v18"/></symbol>
+  <symbol id="i-grid" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></symbol>
+  <symbol id="i-rows" viewBox="0 0 24 24"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></symbol>
+  <symbol id="i-edit" viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4z"/></symbol>
+  <symbol id="i-trash" viewBox="0 0 24 24"><path d="M3 6h18"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></symbol>
+  <symbol id="i-undo" viewBox="0 0 24 24"><path d="M9 14L4 9l5-5"/><path d="M20 20v-7a4 4 0 0 0-4-4H4"/></symbol>
+  <symbol id="i-ext" viewBox="0 0 24 24"><path d="M15 3h6v6M10 14L21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></symbol>
+  <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+  <symbol id="i-help" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.1 9a3 3 0 0 1 5.8 1c0 2-3 3-3 3M12 17h.01"/></symbol>
+  <symbol id="i-more" viewBox="0 0 24 24"><circle cx="5" cy="12" r="1.3" fill="currentColor"/><circle cx="12" cy="12" r="1.3" fill="currentColor"/><circle cx="19" cy="12" r="1.3" fill="currentColor"/></symbol>
+  <symbol id="i-bought" viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></symbol>
+  <symbol id="i-list" viewBox="0 0 24 24"><path d="M9 6h12M9 12h12M9 18h12"/><path d="M4 6l1 1 1.5-2M4 12l1 1 1.5-2M4 18l1 1 1.5-2"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
+  <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></symbol>
+  <symbol id="i-moon" viewBox="0 0 24 24"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></symbol>
+  <symbol id="i-up" viewBox="0 0 24 24"><path d="M12 19V5M5 12l7-7 7 7"/></symbol>
+  <symbol id="i-doc" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8"/></symbol>
+  <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></symbol>
+  <symbol id="i-folder" viewBox="0 0 24 24"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></symbol>
+  <symbol id="i-image" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></symbol>
+</svg>
+
+<a href="#main" class="skip">Skip to content</a>
+<div class="scroll-progress" id="scrollProgress"></div>
+
+<header class="top" id="siteHeader">
+  <div class="wrap">
+    <a class="brand" href="#main" aria-label="mbwishlist.online">
+      <span class="logo" aria-hidden="true"><svg class="i"><use href="#i-cart"/></svg></span>
+      <span class="bt"><b>mbwishlist</b><span>Want list &amp; shopping cart</span></span>
+    </a>
+    <nav class="tabs" id="siteNav" aria-label="Sections">
+      <button type="button" id="tabWishlist" data-tab="wishlist" aria-current="page"><svg class="i" aria-hidden="true"><use href="#i-list"/></svg>Wishlist <span class="count" id="countWishlist"></span></button>
+      <button type="button" id="tabPurchased" data-tab="purchased"><svg class="i" aria-hidden="true"><use href="#i-bought"/></svg>Purchased <span class="count" id="countPurchased"></span></button>
+      <button type="button" id="tabFaq" data-tab="faq"><svg class="i" aria-hidden="true"><use href="#i-help"/></svg>FAQ</button>
+    </nav>
+    <div class="actions">
+      <button type="button" class="bk-chip" id="bkChip" title="Save a backup now"><svg class="i" aria-hidden="true"><use href="#i-clock"/></svg><span id="bkChipText">Never backed up</span></button>
+      <div class="menu-wrap">
+        <button type="button" class="btn sm" id="menuToggle" aria-haspopup="true" aria-expanded="false" aria-controls="settingsMenu" title="Data: backup, import, export">
+          <svg class="i" aria-hidden="true"><use href="#i-data"/></svg><span class="lbl-t">Data</span><svg class="i" aria-hidden="true" style="width:14px;height:14px"><use href="#i-chev"/></svg><span class="dot" aria-hidden="true"></span>
+        </button>
+        <div class="dm-panel" id="settingsMenu" role="menu" aria-label="Data" hidden>
+          <button type="button" class="dm-item primary" id="saveNowBtn" role="menuitem">
+            <svg class="i" aria-hidden="true"><use href="#i-save"/></svg>
+            <span class="dm-t"><b>Save backup now</b><small id="saveNowSub">Choose where to save it the first time</small></span>
+            <kbd id="saveNowKbd">Ctrl S</kbd>
+          </button>
+          <button type="button" class="dm-item" id="exportJsonBtn" role="menuitem">
+            <svg class="i" aria-hidden="true"><use href="#i-download"/></svg>
+            <span class="dm-t"><b>Export All (JSON)…</b><small>Full backup. Pick the folder and file name</small></span>
+          </button>
+          <button type="button" class="dm-item" id="importBtn" role="menuitem">
+            <svg class="i" aria-hidden="true"><use href="#i-upload"/></svg>
+            <span class="dm-t"><b>Import Backup (JSON)…</b><small>Adds items. Skips ones already on your list</small></span>
+          </button>
+          <button type="button" class="dm-item" id="exportCsvBtn" role="menuitem">
+            <svg class="i" aria-hidden="true"><use href="#i-sheet"/></svg>
+            <span class="dm-t"><b>Export All (CSV)…</b><small>Every item, for Excel or Sheets</small></span>
+          </button>
+          <div class="dm-sep" role="separator"></div>
+          <button type="button" class="dm-item danger" id="resetAllBtn" role="menuitem">
+            <svg class="i" aria-hidden="true"><use href="#i-trash"/></svg>
+            <span class="dm-t"><b>Clear wishlist items…</b></span>
+          </button>
+          <button type="button" class="dm-item danger" id="clearAllDataBtn" role="menuitem">
+            <svg class="i" aria-hidden="true"><use href="#i-trash"/></svg>
+            <span class="dm-t"><b>Clear all data…</b></span>
+          </button>
+          <div class="dm-foot" id="dmFoot">
+            <div id="bkStatusLine">Never backed up</div>
+            <div id="bkFileLine"></div>
+            <div id="bkCsvLine" hidden></div>
+          </div>
+        </div>
+      </div>
+      <input type="file" id="importFileInput" accept="application/json,.json" hidden>
+      <button type="button" class="btn sm ghost" id="searchBtn" aria-label="Search (Ctrl/Cmd+K)" title="Search (Ctrl/Cmd+K)"><svg class="i" aria-hidden="true"><use href="#i-search"/></svg><kbd>Ctrl K</kbd></button>
+      <button type="button" class="themesw" id="themeToggleBtn" role="switch" aria-checked="false" aria-label="Dark mode" title="Dark mode">
+        <span class="tk"><span class="th"><svg class="i sun" aria-hidden="true"><use href="#i-sun"/></svg><svg class="i moon" aria-hidden="true"><use href="#i-moon"/></svg></span></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main class="wrap" id="main" tabindex="-1">
+  <div class="page-h">
+    <div>
+      <h2 id="pageTitle">Wishlist</h2>
+      <p id="pageSub">Planned purchases, in one place.</p>
+    </div>
+    <div class="ph-actions">
+      <button type="button" class="btn" id="releaseNotesBtn" hidden><svg class="i" aria-hidden="true"><use href="#i-doc"/></svg>Release notes</button>
+      <button type="button" class="btn primary" id="addItemBtn"><svg class="i" aria-hidden="true"><use href="#i-plus"/></svg>Add item</button>
+    </div>
+  </div>
+
+  <div class="banner" id="demoBanner" hidden>
+    <span><strong>Sample data.</strong> Clear it and start your own list.</span>
+    <button type="button" class="btn sm" id="clearDemoBtn">Clear sample items</button>
+  </div>
+
+  <div class="stats grid" id="statsRow"></div>
+
+  <section id="wishlistPane" aria-labelledby="pageTitle">
+    <div class="toolbar" id="wishlistToolbar">
+      <label class="search"><span class="sr-only">Search the wishlist</span><svg class="i" aria-hidden="true"><use href="#i-search"/></svg><input type="search" id="searchInput" placeholder="Search items or categories…"></label>
+      <label class="sr-only" for="categoryFilter">Category</label>
+      <select id="categoryFilter"><option value="">All categories</option></select>
+      <label class="sr-only" for="priorityFilter">Priority</label>
+      <select id="priorityFilter">
+        <option value="">Need &amp; Want</option>
+        <option value="need">Need only</option>
+        <option value="want">Want only</option>
+      </select>
+      <label class="sr-only" for="sortSelect">Sort</label>
+      <select id="sortSelect">
+        <option value="needdate">Sort: Need-by date</option>
+        <option value="priority">Sort: Priority</option>
+        <option value="pricehigh">Sort: Price, high to low</option>
+        <option value="pricelow">Sort: Price, low to high</option>
+        <option value="recent">Sort: Recently added</option>
+      </select>
+      <div class="segv" role="group" aria-label="View">
+        <button type="button" class="chip" data-view="grid" aria-pressed="true" title="Grid view"><svg class="i" aria-hidden="true"><use href="#i-grid"/></svg><span>Grid</span></button>
+        <button type="button" class="chip" data-view="table" aria-pressed="false" title="Table view"><svg class="i" aria-hidden="true"><use href="#i-rows"/></svg><span>Table</span></button>
+      </div>
+      <span class="tb-meta" id="resultMeta" aria-live="polite"></span>
+    </div>
+
+    <div id="wishlistResults">
+      <div id="wishlistGrid" class="wgrid">
+        <div class="skeleton-card"></div><div class="skeleton-card"></div><div class="skeleton-card"></div>
+      </div>
+      <div id="wishlistTable" class="tablewrap" hidden></div>
+    </div>
+    <div id="wishlistEmpty" class="empty-state" hidden>
+      <h3 id="wishlistEmptyTitle">Nothing here yet</h3>
+      <p id="wishlistEmptyText">Add something you're planning to buy. Paste a link, or fill it in by hand.</p>
+      <div class="es-act" id="wishlistEmptyActions"></div>
+    </div>
+  </section>
+
+  <section id="purchasedPane" hidden>
+    <div id="purchasedList" class="tablewrap"></div>
+    <div id="purchasedEmpty" class="empty-state" hidden>
+      <h3>No purchases yet</h3>
+      <p>Items you mark purchased land here with what you spent, so you can see where the money went.</p>
+    </div>
+  </section>
+
+  <section id="faqSection" hidden>
+    <div class="faq-list" id="faqList">
+      <div class="faq-item" id="faq-1">
+        <button class="faq-q" aria-expanded="false"><span>Where is my list saved?</span><svg class="i chev" aria-hidden="true"><use href="#i-chev"/></svg></button>
+        <div class="faq-answer"><p>In this browser's local storage, on this device only. Nothing is sent to a server. Clearing your browser data, or opening the list in a different browser, shows an empty list. Back it up from the Data menu.</p></div>
+      </div>
+      <div class="faq-item" id="faq-2">
+        <button class="faq-q" aria-expanded="false"><span>Can I pull a product's photo or price automatically from a link?</span><svg class="i chev" aria-hidden="true"><use href="#i-chev"/></svg></button>
+        <div class="faq-answer"><p>No. Nothing is fetched from the link you paste. Copy the title and price off the product page, paste them into the "paste copied title &amp; price" box, or upload a photo yourself and fill in the fields by hand.</p></div>
+      </div>
+      <div class="faq-item" id="faq-3">
+        <button class="faq-q" aria-expanded="false"><span>How do I back up or move my list to another device?</span><svg class="i chev" aria-hidden="true"><use href="#i-chev"/></svg></button>
+        <div class="faq-answer"><p>Open the Data menu. "Export All (JSON)" saves a full backup, and "Export All (CSV)" saves a copy you can open in Excel or Sheets. On the new device, use "Import Backup (JSON)" to bring the items back in. Importing the same file twice won't double anything.</p></div>
+      </div>
+      <div class="faq-item" id="faq-7">
+        <button class="faq-q" aria-expanded="false"><span>Where do backups get saved?</span><svg class="i chev" aria-hidden="true"><use href="#i-chev"/></svg></button>
+        <div class="faq-answer"><p>Wherever you choose. The first time you save, the browser asks for a folder and file name. After that, "Save backup now" (or Ctrl/Cmd+S) overwrites that same file in one click, and also refreshes your CSV if you've saved one. Browsers only tell the page the file name, not the full folder path. Firefox, Safari and phone browsers can't do this, so there the backup downloads to your Downloads folder instead.</p></div>
+      </div>
+      <div class="faq-item" id="faq-4">
+        <button class="faq-q" aria-expanded="false"><span>What happens when I delete or clear items?</span><svg class="i chev" aria-hidden="true"><use href="#i-chev"/></svg></button>
+        <div class="faq-answer"><p>Deleting a single item shows an "Undo" toast for a few seconds. Clearing your list or all data always asks you to confirm first. Save a backup beforehand if you want to keep a copy.</p></div>
+      </div>
+      <div class="faq-item" id="faq-5">
+        <button class="faq-q" aria-expanded="false"><span>Does anyone else see my list?</span><svg class="i chev" aria-hidden="true"><use href="#i-chev"/></svg></button>
+        <div class="faq-answer"><p>No. There's no account and no server. It lives in local storage, on whichever browser and device you added it from.</p></div>
+      </div>
+      <div class="faq-item" id="faq-6">
+        <button class="faq-q" aria-expanded="false"><span>What are the small store labels on my items, like "Amazon" or "Walmart"?</span><svg class="i chev" aria-hidden="true"><use href="#i-chev"/></svg></button>
+        <div class="faq-answer"><p>When a link you paste matches a store this app recognizes, it shows that store's name as a label so you can tell items apart at a glance. It's just describing the link you added. This app isn't affiliated with, endorsed by, or sponsored by any store it labels.</p></div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="wrap site-footer">
+  <span>mbwishlist.online · Your data stays in this browser.</span>
+  <span class="footer-links">
+    <button type="button" id="releaseNotesFooterBtn">Release notes</button>
+    <button type="button" id="cookieBannerReopenBtn">Privacy &amp; storage</button>
+    <button type="button" id="privacyFooterBtn">Privacy Policy</button>
+    <button type="button" id="termsFooterBtn">Terms of Use</button>
+  </span>
+</footer>
+
+<nav class="bnav" id="bnav" aria-label="Sections">
+  <button type="button" data-tab="wishlist" aria-current="page"><svg class="i" aria-hidden="true"><use href="#i-list"/></svg><span>Wishlist</span></button>
+  <button type="button" data-tab="purchased"><svg class="i" aria-hidden="true"><use href="#i-bought"/></svg><span>Purchased</span></button>
+  <button type="button" data-tab="faq"><svg class="i" aria-hidden="true"><use href="#i-help"/></svg><span>FAQ</span></button>
+  <button type="button" id="bnMoreBtn" aria-expanded="false" aria-controls="bnSheet"><svg class="i" aria-hidden="true"><use href="#i-more"/></svg><span>More</span></button>
+</nav>
+<div class="bn-sheet" id="bnSheet" hidden>
+  <button type="button" class="bn-item" data-sheet="search"><svg class="i" aria-hidden="true"><use href="#i-search"/></svg>Search</button>
+  <button type="button" class="bn-item" data-sheet="release"><svg class="i" aria-hidden="true"><use href="#i-doc"/></svg>Release notes</button>
+  <button type="button" class="bn-item" data-sheet="storage"><svg class="i" aria-hidden="true"><use href="#i-shield"/></svg>Privacy &amp; storage</button>
+  <button type="button" class="bn-item" data-sheet="privacy"><svg class="i" aria-hidden="true"><use href="#i-doc"/></svg>Privacy Policy</button>
+  <button type="button" class="bn-item" data-sheet="terms"><svg class="i" aria-hidden="true"><use href="#i-doc"/></svg>Terms of Use</button>
+</div>
+
+<div class="cartbar" id="cartBar" hidden>
+  <div class="cart-sum">
+    <div class="cart-info"><svg class="i" aria-hidden="true"><use href="#i-cart"/></svg><span><span id="cartCount">0</span> selected</span></div>
+    <div class="cart-total money">$<span id="cartTotal">0.00</span></div>
+  </div>
+  <button type="button" class="btn sm ghost" id="cartClearBtn">Clear</button>
+  <button type="button" class="btn primary" id="cartBuyBtn">Buy selected</button>
+</div>
+
+<div class="modal-overlay" id="itemModalOverlay" hidden>
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <h2 id="modalTitle">Add item</h2>
+    <p class="modal-sub">Paste a link and the details you copied, or fill it in yourself.</p>
+
+    <div class="field">
+      <label for="fieldUrl">Purchase link</label>
+      <input type="url" id="fieldUrl" placeholder="https://…" autocomplete="off">
+      <span class="hint" id="urlHint"></span>
+    </div>
+
+    <div class="field paste-box">
+      <label for="fieldPaste">Paste copied title &amp; price (optional)</label>
+      <textarea id="fieldPaste" placeholder="Select the product title and price on the page, copy them, and paste here. I'll split them into the fields below."></textarea>
+      <span class="hint">This runs entirely in your browser. Nothing is fetched from the link.</span>
+    </div>
+
+    <div class="field">
+      <label for="fieldName">Name *</label>
+      <input type="text" id="fieldName" placeholder="What is it?" autocomplete="off">
+    </div>
+
+    <fieldset class="field">
+      <legend>Priority</legend>
+      <div class="segmented" id="priorityToggle">
+        <button type="button" data-value="need" class="need" aria-pressed="false">Need</button>
+        <button type="button" data-value="want" class="want" aria-pressed="true">Want</button>
+      </div>
+    </fieldset>
+
+    <div class="field-row">
+      <div class="field">
+        <label for="fieldCost">Unit cost ($)</label>
+        <input type="number" id="fieldCost" min="0" step="0.01" placeholder="0.00" inputmode="decimal">
+      </div>
+      <div class="field">
+        <label for="fieldQty">Quantity</label>
+        <input type="number" id="fieldQty" min="1" step="1" value="1" inputmode="numeric">
+      </div>
+    </div>
+
+    <button type="button" class="more-details-toggle" id="moreDetailsToggle" aria-expanded="false" aria-controls="moreDetailsPanel">
+      <svg class="i" aria-hidden="true"><use href="#i-chev"/></svg> More details <span class="more-details-hint">(category, date, rating, photo, notes)</span>
+    </button>
+
+    <div class="more-details-panel" id="moreDetailsPanel" hidden>
+      <div class="field-row">
+        <div class="field">
+          <label for="fieldCategory">Category</label>
+          <input type="text" id="fieldCategory" list="categoryList" placeholder="e.g. Tools, Gifts…" autocomplete="off">
+          <datalist id="categoryList"></datalist>
+        </div>
+        <div class="field">
+          <label for="fieldNeedBy">Need by</label>
+          <input type="date" id="fieldNeedBy">
+        </div>
+      </div>
+
+      <fieldset class="field">
+        <legend>How badly?</legend>
+        <div class="star-picker" id="starPicker">
+          <button type="button" data-value="1" aria-label="1 star">★</button>
+          <button type="button" data-value="2" aria-label="2 stars">★</button>
+          <button type="button" data-value="3" aria-label="3 stars">★</button>
+          <button type="button" data-value="4" aria-label="4 stars">★</button>
+          <button type="button" data-value="5" aria-label="5 stars">★</button>
+        </div>
+      </fieldset>
+
+      <div class="field">
+        <span>Photo</span>
+        <div class="image-picker">
+          <div class="image-preview" id="imagePreview">—</div>
+          <button type="button" class="btn sm" id="pickImageBtn"><svg class="i" aria-hidden="true"><use href="#i-image"/></svg>Upload photo</button>
+          <button type="button" class="btn sm ghost" id="removeImageBtn" hidden>Remove</button>
+          <input type="file" id="imageFileInput" accept="image/*" hidden>
+        </div>
+        <span class="hint">Links can't pull a photo automatically. Upload one to see it on the card.</span>
+      </div>
+
+      <div class="field">
+        <label for="fieldNotes">Notes</label>
+        <textarea id="fieldNotes" placeholder="Optional: size, color, where to get it…"></textarea>
+        <span class="hint">Don't enter passwords, card numbers, or other sensitive info. This list is saved in plain text in your browser.</span>
+      </div>
+    </div>
+
+    <div class="modal-actions">
+      <button type="button" class="btn danger" id="deleteItemBtn" hidden><svg class="i" aria-hidden="true"><use href="#i-trash"/></svg>Delete</button>
+      <div class="right">
+        <button type="button" class="btn" id="cancelModalBtn">Cancel</button>
+        <button type="button" class="btn primary" id="saveItemBtn">Save item</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="checkoutOverlay" hidden>
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="checkoutTitle">
+    <h2 id="checkoutTitle">Checkout</h2>
+    <p class="modal-sub" id="checkoutProgressText">Click each link to open it and mark it purchased.</p>
+    <div class="checkout-progress-bar"><div class="checkout-progress-fill" id="checkoutProgressFill" role="progressbar" aria-label="Checkout progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"></div></div>
+    <div class="checkout-list" id="checkoutList"></div>
+    <div class="modal-actions">
+      <div class="right"><button type="button" class="btn primary" id="checkoutDoneBtn">Done</button></div>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="confirmOverlay" hidden>
+  <div class="modal sm" role="alertdialog" aria-modal="true" aria-labelledby="confirmTitle" aria-describedby="confirmBody">
+    <h2 id="confirmTitle">Are you sure?</h2>
+    <p class="modal-sub" id="confirmBody"></p>
+    <div class="modal-actions">
+      <div class="right">
+        <button type="button" class="btn" id="confirmCancelBtn">Cancel</button>
+        <button type="button" class="btn danger" id="confirmOkBtn">Yes, do it</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="onboardingOverlay" hidden>
+  <div class="modal sm" role="dialog" aria-modal="true" aria-labelledby="obTitle" style="max-width:440px">
+    <div class="ob-head">
+      <span class="logo lg" aria-hidden="true"><svg class="i"><use href="#i-cart"/></svg></span>
+      <div>
+        <h2 id="obTitle">Welcome to mbwishlist</h2>
+        <p class="modal-sub" style="margin-bottom:0">One list for everything you plan to buy, with totals, need-by dates, and a cart for checking out across stores.</p>
+      </div>
+    </div>
+    <ul class="onboarding-list">
+      <li>Browse the sample items to see how it works</li>
+      <li>Everything saves to your browser. Nothing leaves your device</li>
+      <li>Hit <strong>Add item</strong> when you're ready to start your own list</li>
+    </ul>
+    <div class="field">
+      <span id="obThemeLbl">Appearance</span>
+      <div class="segv" role="group" aria-labelledby="obThemeLbl" id="obTheme">
+        <button type="button" class="chip" data-theme-pick="light" aria-pressed="true"><svg class="i" aria-hidden="true"><use href="#i-sun"/></svg>Light</button>
+        <button type="button" class="chip" data-theme-pick="dark" aria-pressed="false"><svg class="i" aria-hidden="true"><use href="#i-moon"/></svg>Dark</button>
+      </div>
+    </div>
+    <p class="hint" style="font-size:13px">Have a backup file? <button type="button" class="linkbtn" id="obImportBtn">Import it now</button></p>
+    <div class="modal-actions">
+      <div class="right"><button type="button" class="btn primary" id="onboardingDismissBtn">Get started</button></div>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="searchOverlay" hidden>
+  <div class="modal search-modal" role="dialog" aria-modal="true" aria-labelledby="searchTitle">
+    <h2 id="searchTitle">Search</h2>
+    <p class="modal-sub">Search your wishlist items and the FAQ.</p>
+    <label class="search"><span class="sr-only">Search</span><svg class="i" aria-hidden="true"><use href="#i-search"/></svg><input type="search" id="siteSearchInput" placeholder="Search…"></label>
+    <div class="search-results" id="siteSearchResults"></div>
+    <div class="modal-actions"><div class="right"><button type="button" class="btn" id="searchCloseBtn">Close</button></div></div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="releaseNotesOverlay" hidden>
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="relTitle">
+    <h2 id="relTitle">Release notes</h2>
+    <div class="release-list">
+      <div class="release-entry">
+        <div class="rel-head"><span class="rel-version">v1.5</span><span class="pill">Latest</span><span class="rel-date">Sep 28, 2026</span></div>
+        <ul>
+          <li>New look that matches the rest of the mb apps: system font, squared panels, a petrol accent, and a compact top bar with tabs (a bottom bar on phones)</li>
+          <li>Always opens in light mode, and remembers dark if you picked it last time. The theme toggle is now a switch in the header</li>
+          <li>New Data menu: Save backup now, Export All (JSON), Import Backup, and Export All (CSV)</li>
+          <li>You pick where backups go. Exports open a save dialog so you choose the folder and file name, instead of always landing in Downloads</li>
+          <li>The app remembers your backup file. Save backup now (or Ctrl/Cmd+S) overwrites it in one click, and refreshes your CSV too once you've saved one. Firefox, Safari and phones still download to Downloads</li>
+          <li>Import opens in your backup folder and skips items already on your list, so importing the same backup twice doesn't double anything</li>
+          <li>A "Backed up…" status sits next to the Data button. It turns amber after 7 days, or if you have your own items and have never backed up. Click it to back up</li>
+          <li>Wishlist can switch between Grid and Table view. Table view has select-all for the cart, and Purchased is now a table with a total</li>
+          <li>FAQ is now its own tab, with a new answer about where backups are saved</li>
+          <li>The welcome screen now lets you pick light or dark and import a backup</li>
+          <li>Removed Google Fonts, so the page makes no outside requests at all. The Privacy Policy is updated to match</li>
+          <li>Consistent line icons instead of emoji</li>
+          <li>Fixed: pressing Esc cleared the items you'd selected for the cart</li>
+          <li>Fixed: the Purchased tab count only updated while you were on that tab</li>
+          <li>CSV exports now open cleanly in Excel with special characters intact, and can't be used to sneak spreadsheet formulas into Excel</li>
+        </ul>
+      </div>
+      <div class="release-entry">
+        <div class="rel-head"><span class="rel-version">v1.4</span><span class="rel-date">Sep 28, 2026</span></div>
+        <ul>
+          <li>Added a Privacy Policy and Terms of Use, linked from the footer</li>
+          <li>Fixed a bug that could let a pasted or imported link run code instead of opening a website</li>
+          <li>Backup imports are now checked and cleaned up before they're added to your list</li>
+          <li>Improved color contrast in a few spots so text is easier to read for low-vision users</li>
+          <li>Added labels for screen readers on quantity, select, and star-rating controls</li>
+          <li>Added a heads-up not to store passwords or other sensitive info in notes</li>
+        </ul>
+      </div>
+      <div class="release-entry">
+        <div class="rel-head"><span class="rel-version">v1.3</span><span class="rel-date">Sep 28, 2026</span></div>
+        <ul>
+          <li>Added a one-time welcome screen for first-time visits</li>
+          <li>The add-item form now shows the essentials first, with category, date, rating, photo, and notes tucked under "More details"</li>
+          <li>Checkout now shows live progress as you mark items purchased</li>
+          <li>Larger buttons and tap targets throughout</li>
+          <li>Added "Clear all data" to fully reset the site, separate from clearing just your items</li>
+          <li>Fixed a bug that let a negative unit cost throw off your totals</li>
+        </ul>
+      </div>
+      <div class="release-entry">
+        <div class="rel-head"><span class="rel-version">v1.2</span><span class="rel-date">Sep 28, 2026</span></div>
+        <ul>
+          <li>Removed the email sign-up</li>
+          <li>Tightened the copy across the site</li>
+        </ul>
+      </div>
+      <div class="release-entry">
+        <div class="rel-head"><span class="rel-version">v1.1</span><span class="rel-date">Sep 28, 2026</span></div>
+        <ul>
+          <li>Renamed the site to mbwishlist.online</li>
+          <li>Added dark mode, a sticky header, and a mobile menu</li>
+          <li>Added a search shortcut (Ctrl/Cmd+K) that covers items and the FAQ</li>
+          <li>Added a scroll progress bar and a back-to-top button</li>
+          <li>Added an FAQ section</li>
+          <li>Added a privacy/storage notice banner</li>
+        </ul>
+      </div>
+      <div class="release-entry">
+        <div class="rel-head"><span class="rel-version">v1.0</span><span class="rel-date">Earlier</span></div>
+        <ul>
+          <li>Add, edit, and delete wishlist items with photos, categories, and priority</li>
+          <li>Need vs. Want priority with a 1–5 star rating</li>
+          <li>Multi-select cart with checkout, plus per-item "Buy now"</li>
+          <li>Purchased history with spend totals</li>
+          <li>Backup export/import (.json) and spreadsheet export (.csv)</li>
+        </ul>
+      </div>
+    </div>
+    <div class="modal-actions"><div class="right"><button type="button" class="btn primary" id="releaseNotesCloseBtn">Close</button></div></div>
+  </div>
+</div>
+
+<div class="notice" id="cookieBanner" role="region" aria-label="Privacy and storage" hidden>
+  <b>Privacy &amp; storage</b>
+  <p>This list saves to your browser's local storage, not cookies. Nothing is sent to a server or shared with anyone.</p>
+  <div class="actions"><button type="button" class="btn primary sm" id="cookieAcceptBtn">Got it</button></div>
+</div>
+
+<div class="modal-overlay" id="privacyOverlay" hidden>
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="privTitle">
+    <h2 id="privTitle">Privacy Policy</h2>
+    <div class="legal-text">
+      <p class="legal-updated">Last updated: September 28, 2026</p>
+      <p>mbwishlist.online is a free tool built by one person. There's no company, no account system, and no server database behind it. This page explains exactly what happens to your information.</p>
+
+      <h3>What's stored, and where</h3>
+      <p>Everything you enter (item names, categories, priority, star ratings, cost, quantity, need-by dates, notes, purchase links, and any photo you upload) is saved only in your browser's local storage, a feature browsers provide for websites to save data on your own device. It is not sent to a server, because this app doesn't have one.</p>
+      <p>The specific browser storage keys this app uses are: <code>wantlist_items_v1</code> (your list), <code>wantlist_theme</code> (light/dark mode), <code>wantlist_view</code> (grid or table view), <code>wantlist_last_backup</code> (when you last saved a backup), <code>wantlist_privacy_ack</code> (whether you've dismissed the storage notice), and <code>wantlist_onboarded</code> (whether you've seen the welcome screen).</p>
+      <p>If your browser supports choosing a save location, the app also keeps a reference to the backup file you picked in the browser's IndexedDB storage (database <code>mbwishlist</code>), so "Save backup now" can write to it again. That reference only lets this page write to that one file after your browser grants permission. Browsers never give the page the full folder path.</p>
+
+      <h3>What this app does not do</h3>
+      <ul>
+        <li>No account or sign-up, so there's no password or profile to store</li>
+        <li>No server or database. Nothing you type is transmitted or stored outside your browser</li>
+        <li>No analytics, tracking scripts, web fonts, or advertising of any kind. The page makes no requests to outside servers</li>
+        <li>No cookies are set by this app (the storage notice is about local storage, not cookies)</li>
+      </ul>
+
+      <h3>Product links</h3>
+      <p>Purchase links you add point to third-party retailer sites (Amazon, Walmart, and similar, when the app recognizes the link and shows a small label for it). Clicking one takes you to that outside site, which has its own privacy practices and may track your visit there. This app has no partnership with, and gets no data back from, any retailer.</p>
+
+      <h3>Your data, your control</h3>
+      <ul>
+        <li><strong>Export:</strong> the Data menu saves a copy of your list as a JSON backup or a CSV spreadsheet, any time, to a location you choose (or to Downloads in browsers that don't support choosing).</li>
+        <li><strong>Delete:</strong> "Clear wishlist items" removes your items. "Clear all data" wipes everything this app has stored in your browser, including the remembered backup file location. Backup files you saved yourself are never touched.</li>
+        <li>Because nothing exists outside your browser, clearing your browser's site data, switching browsers or devices, or using private/incognito mode also means the data simply isn't there. There's no copy elsewhere to recover it from, other than backups you saved.</li>
+      </ul>
+
+      <h3>Sensitive information</h3>
+      <p>Please don't enter passwords, card numbers, government ID numbers, or other sensitive information. This is a plain local list, not a secure vault, and anything you save stays in your browser's storage indefinitely, in plain text, until you delete it. Backup files are plain text too.</p>
+
+      <h3>Children's privacy</h3>
+      <p>This app isn't directed at children and doesn't knowingly collect information from anyone, of any age. It doesn't collect information at all, since nothing leaves your browser.</p>
+
+      <h3>Changes to this policy</h3>
+      <p>This policy may be updated if the app changes. Check back here occasionally.</p>
+
+      <h3>Contact</h3>
+      <p>Questions about this policy: <a href="mailto:hewbroyer@gmail.com">hewbroyer@gmail.com</a></p>
+    </div>
+    <div class="modal-actions"><div class="right"><button type="button" class="btn primary" id="privacyCloseBtn">Close</button></div></div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="termsOverlay" hidden>
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="termsTitle">
+    <h2 id="termsTitle">Terms of Use</h2>
+    <div class="legal-text">
+      <p class="legal-updated">Last updated: September 28, 2026</p>
+      <p>mbwishlist.online is a free tool built and run by one individual developer, not a company. By using it, you agree to the following.</p>
+
+      <h3>What this is for</h3>
+      <p>This app is meant for personal, non-commercial use: keeping track of things you're thinking about buying. It's a convenience tool, not a purchasing, financial, or professional service of any kind.</p>
+
+      <h3>Acceptable use</h3>
+      <p>Please don't use this app to store or transmit unlawful content, attempt to attack, scrape, or overload the site, or use it in a way that could harm the service or other visitors.</p>
+
+      <h3>No warranty</h3>
+      <p>This app is provided "as is," with no guarantee that it will be error-free, uninterrupted, secure, or available at any given time. As a free, individually run project, it may change, break, or be taken down without notice.</p>
+
+      <h3>Not professional advice</h3>
+      <p>Price totals, category groupings, and every other calculation are for your own personal reference. They are not financial, legal, tax, or purchasing advice, and may contain errors. Double-check anything that matters before you rely on it or complete a purchase.</p>
+
+      <h3>Your data</h3>
+      <p>Your list lives only in your own browser (see the Privacy Policy). Because there is no server-side copy, the developer cannot recover lost data, whether from clearing browser storage, switching devices, browser bugs, or anything else. Saving a backup regularly is the only safeguard.</p>
+
+      <h3>Ownership</h3>
+      <p>The design, code, and text of this app belong to its developer. Any retailer or brand names shown (for example, when the app recognizes a link you pasted) belong to their respective owners and are used only to describe links you chose to add. This app isn't affiliated with, endorsed by, or sponsored by any retailer it references.</p>
+
+      <h3>Limitation of liability</h3>
+      <p>To the fullest extent the law allows, the developer isn't liable for any loss or damage arising from your use of this app, including lost or inaccurate data. Use it at your own discretion.</p>
+
+      <h3>Changes to these terms</h3>
+      <p>These terms may be updated as the app changes. Continued use after a change means you accept the updated terms.</p>
+
+      <h3>Contact</h3>
+      <p>Questions about these terms: <a href="mailto:hewbroyer@gmail.com">hewbroyer@gmail.com</a></p>
+    </div>
+    <div class="modal-actions"><div class="right"><button type="button" class="btn primary" id="termsCloseBtn">Close</button></div></div>
+  </div>
+</div>
+
+<button type="button" class="totop" id="backToTopBtn" aria-label="Back to top" title="Back to top"><svg class="i" aria-hidden="true"><use href="#i-up"/></svg></button>
+
+<div id="toastHost" role="status" aria-live="polite"></div>
+
+<script>
+(function(){
+  "use strict";
+  var STORAGE_KEY = "wantlist_items_v1";
+  // Letter-tile colors for categories: muted tones that sit with the petrol accent
+  // instead of a rainbow. Tiles also show the item's initial, so color is never
+  // the only cue.
+  var CATEGORY_PALETTE = ["#0e6878","#6b7684","#a0701c","#5d7a2e","#7a4f8f","#a4532f","#3d6a9e"];
+
+  /* ---------------- state ---------------- */
+  var items = [];
+  var activeTab = "wishlist";
+  var selectedIds = new Set();
+  var editingId = null;
+  var editingImageDataUrl = null; // user-uploaded photo (data: URI)
+  var editingPriority = "want";
+  var editingStars = 3;
+  var confirmCallback = null;
+  var lastAutoFilledName = null; // tracks a programmatic name fill so a later, stronger guess may replace it
+  var checkoutIds = []; // item ids in the current checkout session, for live progress
+  var VIEW_KEY = "wantlist_view";
+  var viewMode = "grid";
+  try{ if(localStorage.getItem(VIEW_KEY) === 'table') viewMode = 'table'; }catch(e){}
+
+  /* ---------------- utils ---------------- */
+  function $(id){ return document.getElementById(id); }
+  function ic(name){ return '<svg class="i" aria-hidden="true"><use href="#i-'+name+'"/></svg>'; }
+  function uid(){ return Date.now().toString(36) + Math.random().toString(36).slice(2,8); }
+  function money(n){ n = Number(n)||0; return n.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2}); }
+  function escapeHtml(s){
+    return String(s==null?"":s).replace(/[&<>"']/g, function(c){
+      return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];
+    });
+  }
+  // HTML-escaping a URL is not enough on its own: escapeHtml stops HTML/attribute
+  // injection, but a scheme like javascript: or data: would still run when the
+  // link is clicked. Only http/https links are ever rendered as clickable.
+  function isSafeUrl(url){
+    if(!url) return false;
+    try{
+      var u = new URL(url);
+      return u.protocol === 'http:' || u.protocol === 'https:';
+    }catch(e){ return false; }
+  }
+  // Photos only ever come from this app's own upload-and-resize step (a
+  // canvas-generated data: URI). Anything else - including an external image
+  // URL smuggled in through an edited or shared backup file - is rejected so
+  // a card can't be made to silently load a remote image (a tracking pixel,
+  // in effect) or carry an unexpected scheme.
+  function isSafeImageSrc(src){
+    return typeof src === 'string' && /^data:image\/(png|jpe?g|gif|webp);base64,/i.test(src);
+  }
+  function categoryColor(cat){
+    if(!cat) return "#6b7684";
+    var h = 0;
+    for (var i=0;i<cat.length;i++){ h = (h*31 + cat.charCodeAt(i)) >>> 0; }
+    return CATEGORY_PALETTE[h % CATEGORY_PALETTE.length];
+  }
+  function localDateStr(d){
+    d = d || new Date();
+    return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+  }
+  function todayISO(){ return localDateStr(new Date()); }
+  function itemTotal(it){ return (it.unitCost||0)*(it.quantity||1); }
+
+  var KNOWN_RETAILERS = {
+    "amazon.com":"Amazon","walmart.com":"Walmart","target.com":"Target","ebay.com":"eBay",
+    "etsy.com":"Etsy","bestbuy.com":"Best Buy","homedepot.com":"Home Depot","lowes.com":"Lowe's",
+    "harborfreight.com":"Harbor Freight","basspro.com":"Bass Pro Shops","cabelas.com":"Cabela's",
+    "vistaprint.com":"Vistaprint","primaryarms.com":"Primary Arms","palmettostatearmory.com":"Palmetto State Armory",
+    "griotsgarage.com":"Griot's Garage","fiverr.com":"Fiverr","costco.com":"Costco","wayfair.com":"Wayfair",
+    "acehardware.com":"Ace Hardware"
+  };
+  function getRetailerName(url){
+    try{
+      var h = new URL(url).hostname.replace(/^www\./,'').toLowerCase();
+      if(KNOWN_RETAILERS[h]) return KNOWN_RETAILERS[h];
+      var root = h.split('.').slice(-2)[0];
+      if(!root) return null;
+      return root.charAt(0).toUpperCase()+root.slice(1);
+    }catch(e){ return null; }
+  }
+  // Best-effort product-name guess from a URL's own path — no network request.
+  // Works reasonably well on retailers that put a readable slug in the URL
+  // (most do); falls back to null (silently) when the URL is just an ID.
+  function guessNameFromUrl(url){
+    var u;
+    try{ u = new URL(url); }catch(e){ return null; }
+    var segs;
+    try{ segs = u.pathname.split('/').map(decodeURIComponent).filter(Boolean); }catch(e){ return null; }
+    var skip = /^(dp|gp|product|products|p|pd|itm|ip|item|shop|en|us|d-h|ref)$/i;
+    var isId = function(s){
+      var core = s.replace(/[-_]/g,'');
+      return /^[A-Z0-9]{8,14}$/.test(core) && /[0-9]/.test(core) && /[A-Z]/.test(core);
+    };
+    segs = segs.filter(function(s){
+      return !skip.test(s) && !/^\d+$/.test(s) && !isId(s) && s.indexOf('=') === -1 && !/^ref[-_]/i.test(s);
+    });
+    segs = segs.map(function(s){ return s.replace(/\.(html?|php|aspx?)$/i, ''); });
+    if(!segs.length) return null;
+    var candidate = segs[segs.length-1];
+    if(candidate.replace(/[^a-zA-Z]/g,'').length < 4){
+      candidate = segs.reduce(function(a,b){ return b.length > a.length ? b : a; });
+    }
+    var tokens = candidate.split(/[-_]+/).filter(Boolean);
+    while(tokens.length > 2){
+      var last = tokens[tokens.length-1];
+      if(/^\d{4,}$/.test(last) || /^[A-Z0-9]{8,12}$/.test(last)){ tokens.pop(); } else break;
+    }
+    var small = {a:1,an:1,the:1,for:1,with:1,of:1,in:1,on:1,and:1,to:1};
+    var words = tokens.map(function(w,i){
+      if(/^[A-Z0-9.]{2,}$/.test(w) && /[0-9]/.test(w)) return w;
+      var lw = w.toLowerCase();
+      if(i>0 && small[lw]) return lw;
+      return w.charAt(0).toUpperCase()+w.slice(1).toLowerCase();
+    });
+    var name = words.join(' ').trim();
+    if(name.length < 3) return null;
+    return name.slice(0,110);
+  }
+  function daysUntil(dateStr){
+    if(!dateStr) return null;
+    var target = new Date(dateStr + "T00:00:00");
+    var now = new Date(); now.setHours(0,0,0,0);
+    return Math.round((target - now) / 86400000);
+  }
+  function formatDateBadge(dateStr){
+    if(!dateStr) return null;
+    var d = daysUntil(dateStr);
+    var label = new Date(dateStr+"T00:00:00").toLocaleDateString('en-US',{month:'short', day:'numeric'});
+    if(d < 0) return { cls:'overdue', text: Math.abs(d)+'d overdue' };
+    if(d === 0) return { cls:'soon', text:'Due today' };
+    if(d <= 7) return { cls:'soon', text:'Due '+label };
+    return { cls:'normal', text:'By '+label };
+  }
+
+  /* ---------------- persistence ---------------- */
+  function safeLoad(){
+    try{
+      var raw = localStorage.getItem(STORAGE_KEY);
+      if(raw === null) return null;
+      var parsed = JSON.parse(raw);
+      return Array.isArray(parsed) ? parsed : [];
+    }catch(e){ return []; }
+  }
+  function save(){
+    try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(items)); }catch(e){
+      toast("Couldn't save. Your browser storage may be full.");
+    }
+  }
+  function demoItems(){
+    var mk = function(o){
+      return Object.assign({
+        id: uid(), category:"", priority:"want", stars:3, unitCost:0, quantity:1,
+        purchaseUrl:"", imageDataUrl:null, notes:"", needByDate:"",
+        dateAdded: new Date().toISOString(), purchased:false, datePurchased:null, isDemo:true
+      }, o);
+    };
+    var soon = new Date(); soon.setDate(soon.getDate()+4);
+    var past = new Date(); past.setDate(past.getDate()-3);
+    var nextWeek = new Date(); nextWeek.setDate(nextWeek.getDate()+6);
+    var later = new Date(); later.setDate(later.getDate()+32);
+    return [
+      mk({name:"Winter coat, size L", category:"Clothing", priority:"need", stars:5, unitCost:120, quantity:1, needByDate: localDateStr(soon), notes:"Old one finally gave out at the zipper."}),
+      mk({name:"Set of 4 all-season tires", category:"Auto", priority:"need", stars:5, unitCost:600, quantity:1, needByDate: localDateStr(past)}),
+      mk({name:"Birthday gift for Mom", category:"Gifts", priority:"need", stars:4, unitCost:45, quantity:1, needByDate: localDateStr(nextWeek)}),
+      mk({name:"Wireless earbuds", category:"Electronics", priority:"want", stars:3, unitCost:99, quantity:1}),
+      mk({name:"Instant Pot", category:"Kitchen", priority:"want", stars:3, unitCost:89, quantity:1}),
+      mk({name:"Robot vacuum", category:"Home", priority:"want", stars:2, unitCost:249, quantity:1}),
+      mk({name:"Concert tickets", category:"Entertainment", priority:"want", stars:4, unitCost:75, quantity:2, needByDate: localDateStr(later)})
+    ];
+  }
+  function init(){
+    var loaded = safeLoad();
+    if(loaded === null){
+      items = demoItems();
+      save();
+    } else {
+      items = loaded;
+    }
+  }
+
+  /* ---------------- toast ---------------- */
+  function toast(message, undoFn){
+    var host = $('toastHost');
+    host.innerHTML = "";
+    var el = document.createElement('div');
+    el.className = 'toast';
+    el.innerHTML = '<span>'+escapeHtml(message)+'</span>';
+    if(undoFn){
+      var btn = document.createElement('button');
+      btn.type = 'button';
+      btn.textContent = 'Undo';
+      btn.onclick = function(){ undoFn(); host.innerHTML=""; };
+      el.appendChild(btn);
+    }
+    host.appendChild(el);
+    clearTimeout(toast._t);
+    toast._t = setTimeout(function(){ if(host.firstChild===el) host.innerHTML=""; }, 5000);
+  }
+
+  function askConfirm(title, body, onOk, okLabel, tone){
+    $('confirmTitle').textContent = title;
+    $('confirmBody').textContent = body;
+    $('confirmOkBtn').textContent = okLabel || 'Yes, do it';
+    $('confirmOkBtn').className = 'btn ' + (tone === 'primary' ? 'primary' : 'danger');
+    confirmCallback = onOk;
+    $('confirmOverlay').hidden = false;
+    setTimeout(function(){ $('confirmCancelBtn').focus(); }, 0);
+  }
+
+  /* ---------------- derived data ---------------- */
+  function categories(){
+    var set = {};
+    items.forEach(function(it){ if(it.category) set[it.category] = true; });
+    return Object.keys(set).sort(function(a,b){ return a.localeCompare(b); });
+  }
+  function activeItems(){ return items.filter(function(i){ return !i.purchased; }); }
+  function purchasedItems(){
+    return items.filter(function(i){ return i.purchased; })
+      .sort(function(a,b){ return new Date(b.datePurchased) - new Date(a.datePurchased); });
+  }
+  function sumOf(list){ return list.reduce(function(s,i){ return s + itemTotal(i); }, 0); }
+  function plural(n, word){ return n + ' ' + word + (n===1?'':'s'); }
+
+  /* ---------------- render: stats ---------------- */
+  function renderStats(){
+    var active = activeItems();
+    var needs = active.filter(function(i){ return i.priority==='need'; });
+    var wants = active.filter(function(i){ return i.priority==='want'; });
+    var bought = purchasedItems();
+    var html = "";
+    html += stat('Needs', '$' + money(sumOf(needs)), plural(needs.length,'item'), 'var(--need)');
+    html += stat('Wants', '$' + money(sumOf(wants)), plural(wants.length,'item'), 'var(--want)');
+    html += stat('Wishlist total', '$' + money(sumOf(active)), plural(active.length,'item'), 'var(--accent)');
+    html += stat('Spent so far', '$' + money(sumOf(bought)), plural(bought.length,'purchase'), 'var(--good)');
+    $('statsRow').innerHTML = html;
+  }
+  function stat(label, value, note, color){
+    return '<div class="card tile"><div class="lbl"><i style="--c:'+color+'"></i>'+escapeHtml(label)+'</div>' +
+      '<div class="val money">'+value+'</div><div class="note">'+escapeHtml(note)+'</div></div>';
+  }
+
+  /* ---------------- render: filters ---------------- */
+  function renderCategoryFilter(){
+    var sel = $('categoryFilter');
+    var current = sel.value;
+    var cats = categories();
+    sel.innerHTML = '<option value="">All categories</option>' +
+      cats.map(function(c){ return '<option value="'+escapeHtml(c)+'">'+escapeHtml(c)+'</option>'; }).join('');
+    if(cats.indexOf(current) !== -1) sel.value = current;
+
+    var dl = $('categoryList');
+    dl.innerHTML = cats.map(function(c){ return '<option value="'+escapeHtml(c)+'">'; }).join('');
+  }
+  function filtersActive(){
+    return !!($('searchInput').value.trim() || $('categoryFilter').value || $('priorityFilter').value);
+  }
+
+  /* ---------------- render: wishlist ---------------- */
+  function getFilteredSorted(){
+    var q = $('searchInput').value.trim().toLowerCase();
+    var cat = $('categoryFilter').value;
+    var pri = $('priorityFilter').value;
+    var sort = $('sortSelect').value;
+
+    var list = activeItems().filter(function(it){
+      if(cat && it.category !== cat) return false;
+      if(pri && it.priority !== pri) return false;
+      if(q){
+        var hay = (it.name+" "+it.category+" "+it.notes).toLowerCase();
+        if(hay.indexOf(q) === -1) return false;
+      }
+      return true;
+    });
+
+    list.sort(function(a,b){
+      if(sort === 'needdate'){
+        if(!a.needByDate && !b.needByDate) return new Date(b.dateAdded)-new Date(a.dateAdded);
+        if(!a.needByDate) return 1;
+        if(!b.needByDate) return -1;
+        return new Date(a.needByDate) - new Date(b.needByDate);
+      }
+      if(sort === 'priority'){
+        if(a.priority !== b.priority) return a.priority === 'need' ? -1 : 1;
+        return b.stars - a.stars;
+      }
+      if(sort === 'pricehigh') return (b.unitCost*b.quantity) - (a.unitCost*a.quantity);
+      if(sort === 'pricelow') return (a.unitCost*a.quantity) - (b.unitCost*b.quantity);
+      return new Date(b.dateAdded) - new Date(a.dateAdded);
+    });
+    return list;
+  }
+
+  function renderGrid(){
+    var list = getFilteredSorted();
+    var total = activeItems().length;
+    var grid = $('wishlistGrid'), table = $('wishlistTable');
+    var none = list.length === 0;
+
+    $('wishlistEmpty').hidden = !none;
+    if(none){
+      var filtered = total > 0;
+      $('wishlistEmptyTitle').textContent = filtered ? 'No items match these filters' : 'Nothing on your wishlist';
+      $('wishlistEmptyText').textContent = filtered
+        ? 'Try a different search, category or priority. Your other items are still here.'
+        : 'Add something you\'re planning to buy. Paste a link, or fill it in by hand. Have a backup? Import it from the Data menu.';
+      $('wishlistEmptyActions').innerHTML = filtered
+        ? '<button type="button" class="btn" data-empty="clearfilters">Clear filters</button>'
+        : '<button type="button" class="btn primary" data-empty="add">'+ic('plus')+'Add item</button><button type="button" class="btn" data-empty="import">'+ic('upload')+'Import backup…</button>';
+    }
+
+    if(viewMode === 'table'){
+      grid.hidden = true; grid.innerHTML = "";
+      table.hidden = none;
+      table.innerHTML = none ? "" : tableHtml(list);
+      updateSelectAllState();
+    } else {
+      table.hidden = true; table.innerHTML = "";
+      grid.hidden = none;
+      grid.innerHTML = none ? "" : list.map(cardHtml).join('');
+    }
+
+    var meta = $('resultMeta');
+    if(!total){ meta.innerHTML = ''; }
+    else if(list.length === total){ meta.innerHTML = '<b>'+plural(total,'item')+'</b> · $'+money(sumOf(list)); }
+    else { meta.innerHTML = 'Showing <b>'+list.length+'</b> of '+total+' · $'+money(sumOf(list)); }
+  }
+
+  function thumbHtml(it){
+    var color = categoryColor(it.category);
+    var letter = escapeHtml((it.name||'?').charAt(0).toUpperCase());
+    var img = isSafeImageSrc(it.imageDataUrl) ? it.imageDataUrl : null;
+    return img
+      ? '<img src="'+escapeHtml(img)+'" alt="" data-fallback-letter="'+letter+'" data-fallback-color="'+color+'">'
+      : '<span class="letter" style="--cc:'+color+'">'+letter+'</span>';
+  }
+  function starsHtml(n){
+    var s = '';
+    for(var i=1;i<=5;i++){ s += '<span class="'+(i<=n?'':'off')+'">★</span>'; }
+    return '<span class="stars" role="img" aria-label="Rated '+n+' of 5">'+s+'</span>';
+  }
+  function qtyHtml(it, nm){
+    return '<div class="qty">' +
+      '<button type="button" data-qty="-1" data-id="'+it.id+'" aria-label="Decrease quantity of '+nm+'">–</button>' +
+      '<span class="n">'+it.quantity+'</span>' +
+      '<button type="button" data-qty="1" data-id="'+it.id+'" aria-label="Increase quantity of '+nm+'">+</button>' +
+    '</div>';
+  }
+  function buyHtml(it, nm, small){
+    var sz = (small ? ' sm' : '') + ' buy';
+    return isSafeUrl(it.purchaseUrl)
+      ? '<a class="btn'+sz+'" data-buy="'+it.id+'" href="'+escapeHtml(it.purchaseUrl)+'" target="_blank" rel="noopener noreferrer" aria-label="Buy '+nm+' now (opens in new tab)">Buy now'+ic('ext')+'</a>'
+      : '<button type="button" class="btn'+sz+'" data-markpurchased="'+it.id+'" aria-label="Mark '+nm+' as purchased">'+ic('check')+'Mark purchased</button>';
+  }
+  function editDelHtml(it, nm){
+    return '<button type="button" class="ib" data-edit="'+it.id+'" title="Edit" aria-label="Edit '+nm+'">'+ic('edit')+'</button>' +
+      '<button type="button" class="ib danger" data-del="'+it.id+'" title="Delete" aria-label="Delete '+nm+'">'+ic('trash')+'</button>';
+  }
+
+  function cardHtml(it){
+    var badge = formatDateBadge(it.needByDate);
+    var retailer = it.purchaseUrl ? getRetailerName(it.purchaseUrl) : null;
+    var nm = escapeHtml(it.name);
+    var sel = selectedIds.has(it.id);
+    return '' +
+    '<div class="wcard'+(sel?' sel':'')+'" data-id="'+it.id+'">' +
+      '<label class="selbox" title="Add to cart"><input type="checkbox" data-select="'+it.id+'" aria-label="Select '+nm+'" '+(sel?'checked':'')+'></label>' +
+      '<div class="thumb">'+thumbHtml(it)+'<span class="pill pflag '+it.priority+'">'+(it.priority==='need'?'Need':'Want')+'</span></div>' +
+      '<div class="body">' +
+        '<div class="name" title="'+nm+'">'+nm+'</div>' +
+        '<div class="meta-row">' +
+          '<span class="tags">' + (it.category ? '<span class="tag">'+escapeHtml(it.category)+'</span>' : '') +
+          (retailer ? '<span class="tag">'+escapeHtml(retailer)+'</span>' : '') + '</span>' +
+          starsHtml(it.stars) +
+        '</div>' +
+        (badge ? '<div><span class="pill '+badge.cls+'">'+badge.text+'</span></div>' : '') +
+        '<div class="meta-row">' + qtyHtml(it, nm) + '<span class="unit">$'+money(it.unitCost)+' ea</span></div>' +
+        '<div class="price-row"><span class="total money">$'+money(itemTotal(it))+'</span>' +
+          '<span class="rowact">' + editDelHtml(it, nm) + '</span>' +
+        '</div>' +
+        '<div class="card-actions">' + buyHtml(it, nm, false) + '</div>' +
+      '</div>' +
+    '</div>';
+  }
+
+  function tableHtml(list){
+    var rows = list.map(function(it){
+      var nm = escapeHtml(it.name);
+      var badge = formatDateBadge(it.needByDate);
+      var retailer = it.purchaseUrl ? getRetailerName(it.purchaseUrl) : null;
+      var sel = selectedIds.has(it.id);
+      var pri = '<span class="pill '+it.priority+'">'+(it.priority==='need'?'Need':'Want')+'</span>';
+      var badgeHtml = badge ? '<span class="pill '+badge.cls+'">'+badge.text+'</span>' : '';
+      return '<tr data-id="'+it.id+'"'+(sel?' class="sel"':'')+'>' +
+        '<td class="c"><input type="checkbox" data-select="'+it.id+'" aria-label="Select '+nm+'" '+(sel?'checked':'')+'></td>' +
+        '<td><div class="it"><span class="th-sm">'+thumbHtml(it)+'</span><div style="min-width:0">' +
+          '<div class="nm">'+nm+'</div>' +
+          '<div class="sub">' + (it.category ? '<span class="tag">'+escapeHtml(it.category)+'</span>' : '') +
+            (retailer ? '<span class="tag">'+escapeHtml(retailer)+'</span>' : '') +
+            '<span class="m-only" style="gap:6px;align-items:center;flex-wrap:wrap">'+pri+badgeHtml+'<span>'+it.quantity+' × $'+money(it.unitCost)+'</span></span>' +
+          '</div>' +
+          '<div class="sub m-only" style="margin-top:6px">' + buyHtml(it, nm, true) + editDelHtml(it, nm) + '</div>' +
+        '</div></div></td>' +
+        '<td class="d-only">'+pri+'</td>' +
+        '<td class="d-only">'+starsHtml(it.stars)+'</td>' +
+        '<td class="d-only">'+(badgeHtml || '<span class="unit">—</span>')+'</td>' +
+        '<td class="d-only">'+qtyHtml(it, nm)+'</td>' +
+        '<td class="r d-only money">$'+money(it.unitCost)+'</td>' +
+        '<td class="r money">$'+money(itemTotal(it))+'</td>' +
+        '<td class="d-only"><div class="rowact">'+buyHtml(it, nm, true)+editDelHtml(it, nm)+'</div></td>' +
+      '</tr>';
+    }).join('');
+    return '<table class="datatable" aria-label="Wishlist items">' +
+      '<thead><tr>' +
+        '<th class="c"><input type="checkbox" id="selectAllBox" data-selectall="1" aria-label="Select all shown items"></th>' +
+        '<th>Item</th><th class="d-only">Priority</th><th class="d-only">Rating</th><th class="d-only">Need by</th>' +
+        '<th class="d-only">Qty</th><th class="r d-only">Unit</th><th class="r">Total</th><th class="d-only"><span class="sr-only">Actions</span></th>' +
+      '</tr></thead><tbody>'+rows+'</tbody>' +
+      '<tfoot><tr><td></td><td>'+plural(list.length,'item')+'</td><td class="d-only" colspan="5"></td><td class="r money">$'+money(sumOf(list))+'</td><td class="d-only"></td></tr></tfoot>' +
+    '</table>';
+  }
+  function updateSelectAllState(){
+    var box = $('selectAllBox');
+    if(!box) return;
+    var shown = getFilteredSorted();
+    var n = shown.filter(function(i){ return selectedIds.has(i.id); }).length;
+    box.checked = shown.length > 0 && n === shown.length;
+    box.indeterminate = n > 0 && n < shown.length;
+  }
+
+  /* ---------------- render: purchased ---------------- */
+  function renderPurchased(){
+    var list = purchasedItems();
+    var wrap = $('purchasedList');
+    $('purchasedEmpty').hidden = list.length !== 0;
+    wrap.hidden = list.length === 0;
+    if(!list.length){ wrap.innerHTML = ''; return; }
+    var rows = list.map(function(it){
+      var when = it.datePurchased ? new Date(it.datePurchased).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}) : '';
+      var nm2 = escapeHtml(it.name);
+      var cat = escapeHtml(it.category||'Uncategorized');
+      return '<tr data-id="'+it.id+'">' +
+        '<td><div class="it"><span class="th-sm">'+thumbHtml(it)+'</span><div style="min-width:0"><div class="nm">'+nm2+'</div>' +
+          '<div class="sub m-only">'+cat+' · bought '+when+(it.quantity>1?' · ×'+it.quantity:'')+'</div></div></div></td>' +
+        '<td class="d-only">'+cat+'</td>' +
+        '<td class="d-only num">'+when+'</td>' +
+        '<td class="r d-only num">'+it.quantity+'</td>' +
+        '<td class="r money">$'+money(itemTotal(it))+'</td>' +
+        '<td><div class="rowact">' +
+          '<button type="button" class="ib" data-unpurchase="'+it.id+'" title="Move back to wishlist" aria-label="Move '+nm2+' back to wishlist">'+ic('undo')+'</button>' +
+          '<button type="button" class="ib danger" data-del="'+it.id+'" title="Delete" aria-label="Delete '+nm2+'">'+ic('trash')+'</button>' +
+        '</div></td>' +
+      '</tr>';
+    }).join('');
+    wrap.innerHTML = '<table class="datatable" aria-label="Purchased items">' +
+      '<thead><tr><th>Item</th><th class="d-only">Category</th><th class="d-only">Bought</th><th class="r d-only">Qty</th><th class="r">Total</th><th><span class="sr-only">Actions</span></th></tr></thead>' +
+      '<tbody>'+rows+'</tbody>' +
+      '<tfoot><tr><td>Total spent · '+plural(list.length,'item')+'</td><td class="d-only" colspan="3"></td><td class="r money">$'+money(sumOf(list))+'</td><td></td></tr></tfoot>' +
+    '</table>';
+  }
+
+  /* ---------------- render: cart bar ---------------- */
+  function renderCartBar(){
+    var selected = items.filter(function(i){ return selectedIds.has(i.id); });
+    var bar = $('cartBar');
+    document.body.classList.toggle('has-cart', selected.length > 0);
+    if(selected.length === 0){ bar.hidden = true; return; }
+    bar.hidden = false;
+    $('cartCount').textContent = selected.length;
+    $('cartTotal').textContent = money(sumOf(selected));
+  }
+
+  /* ---------------- render: demo banner + counts ---------------- */
+  function renderDemoBanner(){
+    $('demoBanner').hidden = activeTab === 'faq' || !items.some(function(i){ return i.isDemo; });
+  }
+  function renderCounts(){
+    var a = activeItems().length, p = items.length - a;
+    $('countWishlist').textContent = a ? String(a) : '';
+    $('countPurchased').textContent = p ? String(p) : '';
+  }
+
+  function renderAll(){
+    renderStats();
+    renderCategoryFilter();
+    renderDemoBanner();
+    renderCounts();
+    if(activeTab === 'wishlist'){ renderGrid(); }
+    else if(activeTab === 'purchased'){ renderPurchased(); }
+    renderCartBar();
+    renderBackupStatus();
+  }
+
+  /* ---------------- item CRUD ---------------- */
+  function openModal(id){
+    editingId = id || null;
+    editingImageDataUrl = null;
+    lastAutoFilledName = null;
+    var it = id ? items.find(function(i){ return i.id===id; }) : null;
+
+    $('modalTitle').textContent = it ? 'Edit item' : 'Add item';
+    $('fieldUrl').value = it ? it.purchaseUrl||'' : '';
+    $('fieldPaste').value = '';
+    $('urlHint').textContent = it && it.purchaseUrl ? (getRetailerName(it.purchaseUrl) ? 'Detected: '+getRetailerName(it.purchaseUrl) : '') : '';
+    $('fieldName').value = it ? it.name : '';
+    $('fieldCategory').value = it ? it.category||'' : '';
+    $('fieldNeedBy').value = it ? it.needByDate||'' : '';
+    $('fieldCost').value = it ? it.unitCost||'' : '';
+    $('fieldQty').value = it ? it.quantity||1 : 1;
+    $('fieldNotes').value = it ? it.notes||'' : '';
+
+    editingPriority = it ? it.priority : 'want';
+    editingStars = it ? it.stars : 3;
+    editingImageDataUrl = (it && isSafeImageSrc(it.imageDataUrl)) ? it.imageDataUrl : null;
+    updatePriorityToggle();
+    updateStarPicker();
+    updateImagePreview();
+
+    // Existing extra details should stay visible when editing, so nothing looks lost.
+    var hasExtra = !!(it && (it.category || it.needByDate || it.imageDataUrl || it.notes));
+    setMoreDetails(hasExtra);
+
+    $('deleteItemBtn').hidden = !it;
+    $('itemModalOverlay').hidden = false;
+    $('fieldUrl').focus();
+  }
+  function closeModal(){ $('itemModalOverlay').hidden = true; }
+
+  function setMoreDetails(open){
+    $('moreDetailsPanel').hidden = !open;
+    $('moreDetailsToggle').setAttribute('aria-expanded', open ? 'true' : 'false');
+  }
+
+  function updatePriorityToggle(){
+    var btns = document.querySelectorAll('#priorityToggle button');
+    btns.forEach(function(b){
+      var on = b.dataset.value === editingPriority;
+      b.classList.toggle('active', on);
+      b.setAttribute('aria-pressed', on ? 'true' : 'false');
+    });
+  }
+  function updateStarPicker(){
+    var btns = document.querySelectorAll('#starPicker button');
+    btns.forEach(function(b){
+      var v = Number(b.dataset.value);
+      b.classList.toggle('filled', v <= editingStars);
+      b.setAttribute('aria-pressed', v === editingStars ? 'true' : 'false');
+    });
+  }
+  function updateImagePreview(){
+    var prev = $('imagePreview');
+    var removeBtn = $('removeImageBtn');
+    if(editingImageDataUrl){
+      prev.innerHTML = '<img src="'+escapeHtml(editingImageDataUrl)+'" alt="">';
+      removeBtn.hidden = false;
+    } else {
+      prev.textContent = '—';
+      removeBtn.hidden = true;
+    }
+  }
+
+  function saveItem(){
+    var name = $('fieldName').value.trim();
+    if(!name){ toast("Give it a name first."); $('fieldName').focus(); return; }
+
+    var data = {
+      name: name,
+      purchaseUrl: $('fieldUrl').value.trim(),
+      category: $('fieldCategory').value.trim(),
+      needByDate: $('fieldNeedBy').value,
+      unitCost: Math.max(0, parseFloat($('fieldCost').value) || 0),
+      quantity: Math.max(1, parseInt($('fieldQty').value,10) || 1),
+      notes: $('fieldNotes').value.trim(),
+      priority: editingPriority,
+      stars: editingStars,
+      imageDataUrl: editingImageDataUrl
+    };
+
+    var isNew = !editingId;
+    if(editingId){
+      var it = items.find(function(i){ return i.id===editingId; });
+      Object.assign(it, data);
+      it.isDemo = false;
+    } else {
+      items.push(Object.assign({
+        id: uid(), dateAdded: new Date().toISOString(), purchased:false, datePurchased:null, isDemo:false
+      }, data));
+    }
+    save();
+    closeModal();
+    renderAll();
+    toast(isNew ? 'Added to your list.' : 'Changes saved.');
+  }
+
+  function deleteItem(id){
+    var idx = items.findIndex(function(i){ return i.id===id; });
+    if(idx === -1) return;
+    var removed = items[idx];
+    items.splice(idx,1);
+    selectedIds.delete(id);
+    save();
+    renderAll();
+    toast('Item deleted.', function(){
+      items.splice(idx,0,removed);
+      save();
+      renderAll();
+    });
+  }
+
+  function markPurchased(id){
+    var it = items.find(function(i){ return i.id===id; });
+    if(!it || it.purchased) return;
+    it.purchased = true;
+    it.datePurchased = new Date().toISOString();
+    selectedIds.delete(id);
+    save();
+    renderAll();
+    toast('Marked purchased.', function(){
+      it.purchased = false;
+      it.datePurchased = null;
+      save();
+      renderAll();
+    });
+  }
+
+  function unpurchase(id){
+    var it = items.find(function(i){ return i.id===id; });
+    if(!it) return;
+    it.purchased = false;
+    it.datePurchased = null;
+    save();
+    renderAll();
+    toast('Moved back to your wishlist.');
+  }
+
+  /* ---------------- checkout ---------------- */
+  function openCheckout(){
+    var selected = items.filter(function(i){ return selectedIds.has(i.id); });
+    checkoutIds = selected.map(function(i){ return i.id; });
+    $('checkoutList').innerHTML = selected.map(function(it){
+      var nm3 = escapeHtml(it.name);
+      var action = isSafeUrl(it.purchaseUrl)
+        ? '<a class="btn primary sm" data-checkout-buy="'+it.id+'" href="'+escapeHtml(it.purchaseUrl)+'" target="_blank" rel="noopener noreferrer" aria-label="Open '+nm3+' (opens in new tab)">Open'+ic('ext')+'</a>'
+        : '<button type="button" class="btn primary sm" data-checkout-buy="'+it.id+'" aria-label="Mark '+nm3+' as bought">Mark bought</button>';
+      return '<div class="checkout-row" data-row="'+it.id+'"><span class="name">'+nm3+'</span>' +
+        '<span class="price money">$'+money(itemTotal(it))+'</span>' + action +
+        '<span class="ok">'+ic('check')+'Bought</span></div>';
+    }).join('');
+    updateCheckoutProgress();
+    $('checkoutOverlay').hidden = false;
+  }
+  function updateCheckoutProgress(){
+    var total = checkoutIds.length;
+    var doneCount = 0, remaining = 0;
+    checkoutIds.forEach(function(id){
+      var it = items.find(function(i){ return i.id===id; });
+      if(!it) return;
+      if(it.purchased) doneCount++;
+      else remaining += itemTotal(it);
+    });
+    var pct = total ? Math.round((doneCount/total)*100) : 0;
+    var fill = $('checkoutProgressFill');
+    fill.style.width = pct + '%';
+    fill.setAttribute('aria-valuenow', String(pct));
+    var allDone = total > 0 && doneCount === total;
+    $('checkoutProgressText').textContent = allDone
+      ? 'All ' + total + ' marked. Nice.'
+      : doneCount + ' of ' + total + ' marked · $' + money(remaining) + ' left';
+    $('checkoutDoneBtn').textContent = allDone ? 'Done ✓' : 'Done';
+  }
+  function closeCheckout(){
+    var spent = 0, doneCount = 0;
+    checkoutIds.forEach(function(id){
+      var it = items.find(function(i){ return i.id===id; });
+      if(it && it.purchased){ doneCount++; spent += itemTotal(it); }
+    });
+    $('checkoutOverlay').hidden = true;
+    selectedIds.clear();
+    checkoutIds = [];
+    renderAll();
+    if(doneCount > 0){
+      toast('Marked ' + doneCount + ' item' + (doneCount===1?'':'s') + ' purchased. $' + money(spent) + ' spent.');
+    }
+  }
+
+  /* ---------------- image upload ---------------- */
+  function handleImageFile(file){
+    if(!file || !file.type.startsWith('image/')) return;
+    var reader = new FileReader();
+    reader.onload = function(e){
+      var img = new Image();
+      img.onload = function(){
+        var maxW = 480;
+        var scale = Math.min(1, maxW / img.width);
+        var canvas = document.createElement('canvas');
+        canvas.width = img.width * scale;
+        canvas.height = img.height * scale;
+        var ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+        editingImageDataUrl = canvas.toDataURL('image/jpeg', 0.82);
+        updateImagePreview();
+      };
+      img.src = e.target.result;
+    };
+    reader.readAsDataURL(file);
+  }
+
+  /* ---------------- paste parsing ---------------- */
+  function parsePasted(text){
+    var lines = text.split(/\n+/).map(function(s){ return s.trim(); }).filter(Boolean);
+    var priceMatch = text.match(/\$\s?([0-9]{1,6}(?:,[0-9]{3})*(?:\.[0-9]{2})?)/);
+    var price = priceMatch ? parseFloat(priceMatch[1].replace(/,/g,'')) : null;
+    var noise = /^(add to (cart|bag)|in stock|out of stock|free (shipping|returns)|qty|quantity|\$|\d+(\.\d+)?\s*out of\s*5)/i;
+    var nameLine = null;
+    for(var i=0;i<lines.length;i++){
+      var l = lines[i];
+      if(noise.test(l)) continue;
+      if(/^\$?\d/.test(l)) continue;
+      if(l.length < 3) continue;
+      nameLine = l.slice(0,140);
+      break;
+    }
+    return { name: nameLine, price: price };
+  }
+  function handlePaste(){
+    var text = $('fieldPaste').value;
+    if(!text.trim()) return;
+    var parsed = parsePasted(text);
+    var nameField = $('fieldName');
+    var costField = $('fieldCost');
+    // A pasted title is a stronger signal than a URL-slug guess, so it may
+    // replace one; it never overwrites something the user actually typed.
+    if(parsed.name && (!nameField.value.trim() || nameField.value === lastAutoFilledName)){
+      nameField.value = parsed.name;
+      lastAutoFilledName = parsed.name;
+    }
+    if(parsed.price != null && !costField.value) costField.value = parsed.price.toFixed(2);
+  }
+
+  function handleUrlInput(){
+    var url = $('fieldUrl').value.trim();
+    var hint = $('urlHint');
+    var nameField = $('fieldName');
+    if(!url){ hint.textContent = ''; return; }
+    var retailer = getRetailerName(url);
+    hint.textContent = retailer ? 'Detected: '+retailer : '';
+    if(!nameField.value.trim() || nameField.value === lastAutoFilledName){
+      var guess = guessNameFromUrl(url);
+      if(guess){
+        nameField.value = guess;
+        lastAutoFilledName = guess;
+      }
+    }
+  }
+
+  /* =====================================================================
+     BACKUP: export / import with a remembered save location
+     - Exports use the File System Access API (showSaveFilePicker) so you pick
+       the folder and file name. The file handle is kept in IndexedDB (handles
+       can't go in localStorage) and "Save backup now" overwrites that same file.
+     - Browsers only expose the file NAME, never the folder path.
+     - No API (Firefox, Safari, phones) or a sandboxed frame: normal dated
+       download to Downloads, and the menu says so.
+     ===================================================================== */
+  var LAST_BACKUP_KEY = "wantlist_last_backup";
+  var IDB_NAME = "mbwishlist", IDB_STORE = "handles";
+  var JSON_NAME = "mbwishlist-backup.json", CSV_NAME = "mbwishlist.csv";
+  var handles = { json:null, csv:null };
+  var fsBlocked = (function(){
+    try{ return window.self !== window.top; }catch(e){ return true; } // cross-origin frames can't open pickers
+  })();
+  function fsSave(){ return !fsBlocked && typeof window.showSaveFilePicker === 'function'; }
+  function fsOpen(){ return !fsBlocked && typeof window.showOpenFilePicker === 'function'; }
+
+  function idbDo(mode, fn){
+    return new Promise(function(resolve){
+      if(!window.indexedDB){ resolve(null); return; }
+      var req;
+      try{ req = indexedDB.open(IDB_NAME, 1); }catch(e){ resolve(null); return; }
+      req.onupgradeneeded = function(){ req.result.createObjectStore(IDB_STORE); };
+      req.onerror = function(){ resolve(null); };
+      req.onsuccess = function(){
+        var db = req.result, out = null;
+        try{
+          var tx = db.transaction(IDB_STORE, mode);
+          var r = fn(tx.objectStore(IDB_STORE));
+          if(r) r.onsuccess = function(){ out = r.result; };
+          tx.oncomplete = function(){ db.close(); resolve(out); };
+          tx.onerror = tx.onabort = function(){ db.close(); resolve(null); };
+        }catch(e){ db.close(); resolve(null); }
+      };
+    });
+  }
+  function idbGet(k){ return idbDo('readonly', function(s){ return s.get(k); }); }
+  function idbSet(k, v){ return idbDo('readwrite', function(s){ return s.put(v, k); }); }
+  function idbClear(){ return idbDo('readwrite', function(s){ return s.clear(); }); }
+
+  function backupJson(){
+    return JSON.stringify({ app:'mbwishlist', format:1, exportedAt:new Date().toISOString(), items:items }, null, 2);
+  }
+  function toCsv(){
+    var headers = ["Name","Category","Priority","Stars","Need By","Unit Cost","Quantity","Total","Purchase URL","Notes","Purchased","Date Purchased"];
+    var rows = items.map(function(it){
+      return [it.name, it.category, it.priority, it.stars, it.needByDate,
+        it.unitCost, it.quantity, itemTotal(it).toFixed(2),
+        it.purchaseUrl, it.notes, it.purchased ? 'Yes':'No', it.datePurchased||''];
+    });
+    var esc = function(v){
+      if(typeof v === 'number') return String(v);
+      v = String(v==null?'':v);
+      // Spreadsheet formula injection guard: a cell starting with = + - @ (or a
+      // tab/CR) would run as a formula in Excel/Sheets. Prefix it so it's text.
+      if(/^[=+\-@\t\r]/.test(v)) v = "'" + v;
+      return /[",\n\r]/.test(v) ? '"'+v.replace(/"/g,'""')+'"' : v;
+    };
+    // BOM so Excel reads the file as UTF-8 (accents, symbols, emoji intact).
+    return '﻿' + [headers].concat(rows).map(function(r){ return r.map(esc).join(','); }).join('\r\n');
+  }
+
+  function downloadFile(filename, data, mime){
+    var blob = new Blob([data], { type: mime });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url; a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    setTimeout(function(){ URL.revokeObjectURL(url); }, 1000);
+  }
+  function datedName(base, ext){ return base + '-' + todayISO() + '.' + ext; }
+
+  async function writeTo(handle, text){
+    var w = await handle.createWritable();
+    await w.write(text);
+    await w.close();
+  }
+  async function canWrite(handle){
+    try{
+      var o = { mode:'readwrite' };
+      if((await handle.queryPermission(o)) === 'granted') return true;
+      return (await handle.requestPermission(o)) === 'granted';
+    }catch(e){ return false; }
+  }
+  // Save picker that opens in the remembered backup folder when there is one.
+  async function pickSave(opts, near){
+    var o = Object.assign({}, opts, { startIn: near || 'documents' });
+    try{ return await window.showSaveFilePicker(o); }
+    catch(e){
+      if(e && e.name === 'AbortError') throw e;
+      if(e && e.name === 'SecurityError'){ fsBlocked = true; throw e; }
+      delete o.startIn; // a stale remembered handle can make startIn fail
+      return await window.showSaveFilePicker(o);
+    }
+  }
+  function markBackedUp(){
+    try{ localStorage.setItem(LAST_BACKUP_KEY, new Date().toISOString()); }catch(e){}
+    renderBackupStatus();
+  }
+  function downloadJsonBackup(){
+    downloadFile(datedName('mbwishlist-backup','json'), backupJson(), 'application/json');
+    markBackedUp();
+    toast('Backup downloaded to your Downloads folder.');
+  }
+
+  // Export All (JSON)… — always asks where (or downloads when it can't).
+  async function exportJsonAs(){
+    closeDataMenu();
+    if(!fsSave()){ downloadJsonBackup(); return false; }
+    var h;
+    try{
+      h = await pickSave({ suggestedName: JSON_NAME, types:[{ description:'JSON backup', accept:{ 'application/json':['.json'] } }] }, handles.json || handles.csv);
+    }catch(e){
+      if(e && e.name === 'AbortError') return false;
+      downloadJsonBackup(); return false;
+    }
+    try{
+      await writeTo(h, backupJson());
+    }catch(e){
+      toast("Couldn't write " + h.name + ". Try a different folder.");
+      return false;
+    }
+    handles.json = h;
+    idbSet('json', h);
+    markBackedUp();
+    toast('Backup saved to ' + h.name + '.');
+    return true;
+  }
+
+  // Save backup now — one click once a file has been chosen.
+  var saving = false;
+  async function saveBackupNow(){
+    closeDataMenu();
+    if(saving) return;
+    if(!fsSave()){ downloadJsonBackup(); return; }
+    if(!handles.json){ await exportJsonAs(); return; }
+    saving = true;
+    try{
+      if(!(await canWrite(handles.json))){
+        toast('No permission to write ' + handles.json.name + '. Choose where to save.');
+        await exportJsonAs(); return;
+      }
+      try{ await writeTo(handles.json, backupJson()); }
+      catch(e){
+        toast("Couldn't write " + handles.json.name + ". It may have been moved. Choose where to save.");
+        await exportJsonAs(); return;
+      }
+      markBackedUp();
+      var msg = 'Backed up to ' + handles.json.name;
+      if(handles.csv){
+        var csvOk = false;
+        if(await canWrite(handles.csv)){
+          try{ await writeTo(handles.csv, toCsv()); csvOk = true; }catch(e){}
+        }
+        msg += csvOk ? ' and ' + handles.csv.name : '. The CSV couldn\'t be updated';
+      }
+      toast(msg + '.');
+    } finally { saving = false; }
+  }
+
+  // Export All (CSV)… — pick location; Save backup now keeps it fresh after that.
+  async function exportCsvAs(){
+    closeDataMenu();
+    var fallback = function(){ downloadFile(datedName('mbwishlist','csv'), toCsv(), 'text/csv'); toast('CSV downloaded to your Downloads folder.'); };
+    if(!fsSave()){ fallback(); return; }
+    var h;
+    try{
+      h = await pickSave({ suggestedName: CSV_NAME, types:[{ description:'CSV spreadsheet', accept:{ 'text/csv':['.csv'] } }] }, handles.csv || handles.json);
+    }catch(e){
+      if(e && e.name === 'AbortError') return;
+      fallback(); return;
+    }
+    try{ await writeTo(h, toCsv()); }
+    catch(e){ toast("Couldn't write " + h.name + ". Try a different folder."); return; }
+    handles.csv = h;
+    idbSet('csv', h);
+    renderBackupStatus();
+    toast('Saved ' + h.name + '. Save backup now will keep it up to date.');
+  }
+
+  // Import Backup (JSON)… — opens in the backup folder when possible.
+  async function importBackup(){
+    closeDataMenu();
+    if(fsOpen()){
+      var opts = { multiple:false, types:[{ description:'JSON backup', accept:{ 'application/json':['.json'] } }] };
+      if(handles.json) opts.startIn = handles.json;
+      var picked = null;
+      try{ picked = await window.showOpenFilePicker(opts); }
+      catch(e){
+        if(e && e.name === 'AbortError') return;
+        try{ delete opts.startIn; picked = await window.showOpenFilePicker(opts); }
+        catch(e2){ if(e2 && e2.name === 'AbortError') return; picked = null; }
+      }
+      if(picked && picked[0]){
+        try{ importJsonFile(await picked[0].getFile()); return; }catch(e){ toast("Couldn't open that file."); return; }
+      }
+    }
+    $('importFileInput').click();
+  }
+
+  // An imported backup is untrusted input, whether it came from this device's
+  // own export, a shared file, or a hand-edited one: field types, lengths,
+  // and URL/image schemes are all re-checked here rather than trusted as-is.
+  function sanitizeImportedItem(p){
+    if(!p || typeof p !== 'object') return null;
+    var name = String(p.name||'').trim().slice(0,200);
+    if(!name) return null;
+    var validDate = function(s){ return typeof s === 'string' && /^\d{4}-\d{2}-\d{2}/.test(s) && !isNaN(new Date(s).getTime()); };
+    var purchased = !!p.purchased;
+    return {
+      id: uid(),
+      name: name,
+      category: String(p.category||'').trim().slice(0,60),
+      priority: p.priority === 'need' ? 'need' : 'want',
+      stars: Math.min(5, Math.max(1, parseInt(p.stars,10) || 3)),
+      unitCost: Math.max(0, parseFloat(p.unitCost) || 0),
+      quantity: Math.max(1, parseInt(p.quantity,10) || 1),
+      purchaseUrl: isSafeUrl(p.purchaseUrl) ? String(p.purchaseUrl).slice(0,2000) : '',
+      imageDataUrl: isSafeImageSrc(p.imageDataUrl) ? p.imageDataUrl : null,
+      notes: String(p.notes||'').trim().slice(0,2000),
+      needByDate: validDate(p.needByDate) ? p.needByDate.slice(0,10) : '',
+      dateAdded: validDate(p.dateAdded) ? p.dateAdded : new Date().toISOString(),
+      purchased: purchased,
+      datePurchased: purchased ? (validDate(p.datePurchased) ? p.datePurchased : new Date().toISOString()) : null,
+      isDemo: false
+    };
+  }
+  // Identifying fields for merge: the same item (name + link + when it was added)
+  // is skipped one-for-one, so importing a backup twice never doubles the list.
+  function itemSig(it){
+    return [String(it.name||'').trim().toLowerCase(), String(it.purchaseUrl||''), String(it.dateAdded||'').slice(0,19)].join('|');
+  }
+  function importJsonFile(file){
+    var reader = new FileReader();
+    reader.onload = function(e){
+      var clean;
+      try{
+        var parsed = JSON.parse(e.target.result);
+        var list = Array.isArray(parsed) ? parsed : (parsed && Array.isArray(parsed.items) ? parsed.items : null);
+        if(!list) throw new Error('bad format');
+        clean = list.map(sanitizeImportedItem).filter(Boolean);
+        if(!clean.length) throw new Error('nothing usable');
+      }catch(err){
+        toast("That file doesn't look like a backup for this list.");
+        return;
+      }
+      var have = {};
+      items.forEach(function(it){ var s = itemSig(it); have[s] = (have[s]||0) + 1; });
+      var fresh = [], skipped = 0;
+      clean.forEach(function(it){
+        var s = itemSig(it);
+        if(have[s] > 0){ have[s]--; skipped++; } else { fresh.push(it); }
+      });
+      if(!fresh.length){
+        toast('Nothing new. All ' + plural(clean.length,'item') + ' in that backup are already on your list.');
+        return;
+      }
+      askConfirm('Import backup?',
+        'This adds ' + plural(fresh.length,'item') + ' to your list' +
+        (skipped ? ' and skips ' + skipped + ' already on it' : '') +
+        '. Nothing you already have is removed.',
+        function(){
+          items = items.concat(fresh);
+          save();
+          renderAll();
+          toast('Imported ' + plural(fresh.length,'item') + '.');
+        }, 'Import', 'primary');
+    };
+    reader.readAsText(file);
+  }
+
+  /* ---------------- backup status ("backed up last" notifier) ---------------- */
+  function lastBackup(){
+    try{
+      var v = localStorage.getItem(LAST_BACKUP_KEY);
+      var d = v ? new Date(v) : null;
+      return d && !isNaN(d.getTime()) ? d : null;
+    }catch(e){ return null; }
+  }
+  function relTime(d){
+    var s = (Date.now() - d.getTime()) / 1000;
+    if(s < 60) return 'just now';
+    if(s < 3600) return Math.floor(s/60) + ' min ago';
+    var today = new Date(); today.setHours(0,0,0,0);
+    var day = new Date(d); day.setHours(0,0,0,0);
+    var days = Math.round((today - day) / 86400000);
+    if(days === 0) return Math.floor(s/3600) + ' h ago';
+    if(days === 1) return 'yesterday';
+    return days + ' days ago';
+  }
+  function renderBackupStatus(){
+    var d = lastBackup();
+    var hasOwn = items.some(function(i){ return !i.isDemo; });
+    var stale = d ? (Date.now() - d.getTime() > 7*86400000) : hasOwn;
+    var text = d ? 'Backed up ' + relTime(d) : 'Never backed up';
+    var chip = $('bkChip');
+    $('bkChipText').textContent = text;
+    chip.classList.toggle('warn', stale);
+    chip.title = (d ? 'Last backup: ' + d.toLocaleString() : 'No backup saved yet') + '. Click to save a backup now.';
+    $('menuToggle').classList.toggle('stale', stale);
+
+    var st = $('bkStatusLine');
+    st.innerHTML = '<span class="'+(stale?'st-warn':'')+'">'+escapeHtml(text)+'</span>' + (d ? ' · ' + escapeHtml(d.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'})) : '');
+
+    var fileLine = $('bkFileLine'), csvLine = $('bkCsvLine');
+    if(!fsSave()){
+      fileLine.innerHTML = 'This browser saves backups to your Downloads folder.';
+      $('saveNowSub').textContent = 'Downloads a dated JSON backup';
+      csvLine.hidden = true;
+    } else if(handles.json){
+      fileLine.innerHTML = '<b>' + escapeHtml(handles.json.name) + '</b>, in the folder you chose · <button type="button" class="linkbtn" id="changeLocBtn">Change location…</button>';
+      $('saveNowSub').textContent = 'Overwrites ' + handles.json.name + (handles.csv ? ' + ' + handles.csv.name : '');
+      csvLine.hidden = !handles.csv;
+      if(handles.csv) csvLine.innerHTML = 'CSV: <b>' + escapeHtml(handles.csv.name) + '</b>, refreshed on each save';
+    } else {
+      fileLine.innerHTML = 'No backup file chosen yet. Save backup now will ask where to put it.';
+      $('saveNowSub').textContent = 'Choose where to save it the first time';
+      csvLine.hidden = !handles.csv;
+      if(handles.csv) csvLine.innerHTML = 'CSV: <b>' + escapeHtml(handles.csv.name) + '</b>';
+    }
+  }
+  async function loadHandles(){
+    if(!fsSave()) return;
+    var j = await idbGet('json'), c = await idbGet('csv');
+    if(j && j.kind === 'file') handles.json = j;
+    if(c && c.kind === 'file') handles.csv = c;
+    renderBackupStatus();
+  }
+
+  /* ---------------- Data menu ---------------- */
+  function openDataMenu(){
+    $('settingsMenu').hidden = false;
+    $('menuToggle').setAttribute('aria-expanded','true');
+    renderBackupStatus();
+    setTimeout(function(){ $('saveNowBtn').focus(); }, 0);
+  }
+  function closeDataMenu(){
+    if($('settingsMenu').hidden) return;
+    $('settingsMenu').hidden = true;
+    $('menuToggle').setAttribute('aria-expanded','false');
+  }
+
+  /* ---------------- events ---------------- */
+  function wire(){
+    $('addItemBtn').onclick = function(){ openModal(null); };
+    $('cancelModalBtn').onclick = closeModal;
+    $('saveItemBtn').onclick = saveItem;
+    $('itemModalOverlay').addEventListener('click', function(e){
+      if(e.target === this) closeModal();
+    });
+    $('deleteItemBtn').onclick = function(){
+      var id = editingId;
+      askConfirm('Delete this item?', 'You can undo it from the toast that appears.', function(){
+        closeModal();
+        deleteItem(id);
+      }, 'Delete');
+    };
+
+    $('fieldPaste').addEventListener('input', handlePaste);
+    $('fieldUrl').addEventListener('input', handleUrlInput);
+    $('fieldUrl').addEventListener('blur', handleUrlInput);
+    $('fieldName').addEventListener('input', function(){
+      if(this.value !== lastAutoFilledName) lastAutoFilledName = null;
+    });
+    // Enter in a single-line field saves the item.
+    ['fieldUrl','fieldName','fieldCost','fieldQty','fieldCategory','fieldNeedBy'].forEach(function(id){
+      $(id).addEventListener('keydown', function(e){
+        if(e.key === 'Enter' && !e.isComposing){ e.preventDefault(); saveItem(); }
+      });
+    });
+
+    $('priorityToggle').addEventListener('click', function(e){
+      var btn = e.target.closest('button'); if(!btn) return;
+      editingPriority = btn.dataset.value;
+      updatePriorityToggle();
+    });
+    $('starPicker').addEventListener('click', function(e){
+      var btn = e.target.closest('button'); if(!btn) return;
+      editingStars = Number(btn.dataset.value);
+      updateStarPicker();
+    });
+
+    $('pickImageBtn').onclick = function(){ $('imageFileInput').click(); };
+    $('imageFileInput').addEventListener('change', function(e){
+      if(e.target.files[0]) handleImageFile(e.target.files[0]);
+      e.target.value = '';
+    });
+    $('removeImageBtn').onclick = function(){ editingImageDataUrl = null; updateImagePreview(); };
+
+    // section tabs (desktop) + bottom nav (phones)
+    document.querySelectorAll('nav.tabs [data-tab], #bnav [data-tab]').forEach(function(b){
+      b.addEventListener('click', function(){ switchTab(b.dataset.tab); closeSheet(); });
+    });
+
+    ['searchInput','categoryFilter','priorityFilter','sortSelect'].forEach(function(id){
+      $(id).addEventListener('input', renderGrid);
+      $(id).addEventListener('change', renderGrid);
+    });
+
+    document.querySelectorAll('.toolbar [data-view]').forEach(function(b){
+      b.addEventListener('click', function(){ setView(b.dataset.view); });
+    });
+
+    $('wishlistResults').addEventListener('click', gridClickHandler);
+    $('purchasedList').addEventListener('click', purchasedClickHandler);
+    $('wishlistEmptyActions').addEventListener('click', function(e){
+      var b = e.target.closest('[data-empty]'); if(!b) return;
+      var a = b.dataset.empty;
+      if(a === 'add') openModal(null);
+      else if(a === 'import') importBackup();
+      else if(a === 'clearfilters'){
+        $('searchInput').value = ''; $('categoryFilter').value = ''; $('priorityFilter').value = '';
+        renderGrid();
+      }
+    });
+
+    $('cartClearBtn').onclick = function(){ selectedIds.clear(); renderAll(); };
+    $('cartBuyBtn').onclick = openCheckout;
+    $('checkoutList').addEventListener('click', function(e){
+      var btn = e.target.closest('[data-checkout-buy]'); if(!btn) return;
+      var id = btn.dataset.checkoutBuy;
+      markPurchased(id);
+      var row = document.querySelector('#checkoutList [data-row="'+id+'"]');
+      if(row) row.classList.add('done');
+      updateCheckoutProgress();
+    });
+
+    $('moreDetailsToggle').onclick = function(){
+      setMoreDetails($('moreDetailsPanel').hidden);
+    };
+    $('checkoutDoneBtn').onclick = closeCheckout;
+    $('checkoutOverlay').addEventListener('click', function(e){ if(e.target===this) closeCheckout(); });
+
+    $('clearDemoBtn').onclick = function(){
+      items = items.filter(function(i){ return !i.isDemo; });
+      save();
+      renderAll();
+    };
+
+    // Data menu
+    $('menuToggle').onclick = function(e){
+      e.stopPropagation();
+      if($('settingsMenu').hidden) openDataMenu(); else closeDataMenu();
+    };
+    document.addEventListener('click', function(){ closeDataMenu(); });
+    $('settingsMenu').addEventListener('click', function(e){
+      e.stopPropagation();
+      if(e.target.closest('#changeLocBtn')) exportJsonAs();
+    });
+    $('bkChip').onclick = function(){ saveBackupNow(); };
+    $('saveNowBtn').onclick = function(){ saveBackupNow(); };
+    $('exportJsonBtn').onclick = function(){ exportJsonAs(); };
+    $('exportCsvBtn').onclick = function(){ exportCsvAs(); };
+    $('importBtn').onclick = function(){ importBackup(); };
+    $('importFileInput').addEventListener('change', function(e){
+      if(e.target.files[0]) importJsonFile(e.target.files[0]);
+      e.target.value = '';
+    });
+    $('resetAllBtn').onclick = function(){
+      closeDataMenu();
+      askConfirm('Clear wishlist items?', 'This removes every item on your list and puts the sample items back. This can\'t be undone, so save a backup first if you want one.', function(){
+        try{ localStorage.removeItem(STORAGE_KEY); }catch(e){}
+        items = demoItems();
+        save();
+        selectedIds.clear();
+        renderAll();
+        toast('Cleared. Sample items are back so you can start over.');
+      }, 'Clear items');
+    };
+    $('clearAllDataBtn').onclick = function(){
+      closeDataMenu();
+      askConfirm('Clear all data?', 'This wipes everything this site has saved in your browser: items, theme, backup history and the remembered backup file location. Backup files you saved are not touched. The page reloads right after. This can\'t be undone.', function(){
+        try{
+          Object.keys(localStorage).forEach(function(k){
+            if(k.indexOf('wantlist_') === 0) localStorage.removeItem(k);
+          });
+        }catch(e){}
+        var done = false;
+        var go = function(){ if(!done){ done = true; location.reload(); } };
+        idbClear().then(go);
+        setTimeout(go, 1500);
+      }, 'Clear everything');
+    };
+
+    $('confirmCancelBtn').onclick = function(){ $('confirmOverlay').hidden = true; confirmCallback = null; };
+    $('confirmOkBtn').onclick = function(){
+      $('confirmOverlay').hidden = true;
+      var cb = confirmCallback;
+      confirmCallback = null;
+      if(cb) cb();
+    };
+    $('confirmOverlay').addEventListener('click', function(e){
+      if(e.target === this){ this.hidden = true; confirmCallback = null; }
+    });
+
+    document.addEventListener('keydown', function(e){
+      if(e.key === 'Escape'){
+        if(!$('confirmOverlay').hidden){ $('confirmOverlay').hidden = true; confirmCallback = null; return; }
+        closeDataMenu();
+        closeSheet();
+        closeModal();
+        if(!$('checkoutOverlay').hidden) closeCheckout(); // only when checkout is open, so Esc never clears the cart
+        $('searchOverlay').hidden = true;
+        $('releaseNotesOverlay').hidden = true;
+        $('privacyOverlay').hidden = true;
+        $('termsOverlay').hidden = true;
+        if(!$('onboardingOverlay').hidden) dismissOnboarding();
+      }
+      if((e.key === 's' || e.key === 'S') && (e.metaKey || e.ctrlKey) && !e.shiftKey && !e.altKey){
+        e.preventDefault();
+        saveBackupNow();
+      }
+    });
+
+    // A photo that fails to decode falls back to the initial-letter tile
+    // instead of a broken image icon.
+    document.addEventListener('error', function(e){
+      var img = e.target;
+      if(!img || img.tagName !== 'IMG' || !img.dataset || !img.dataset.fallbackLetter) return;
+      var wrap = img.parentElement;
+      var tile = document.createElement('span');
+      tile.className = 'letter';
+      tile.textContent = img.dataset.fallbackLetter;
+      tile.style.setProperty('--cc', img.dataset.fallbackColor || '#6b7684');
+      wrap.innerHTML = '';
+      wrap.appendChild(tile);
+    }, true);
+  }
+
+  function gridClickHandler(e){
+    var t = e.target;
+    var all = t.closest('[data-selectall]');
+    if(all){ toggleSelectAll(all.checked); return; }
+    var sel = t.closest('[data-select]');
+    if(sel){ toggleSelect(sel.dataset.select, sel.checked); return; }
+    var qty = t.closest('[data-qty]');
+    if(qty){ changeQty(qty.dataset.id, Number(qty.dataset.qty)); return; }
+    var edit = t.closest('[data-edit]');
+    if(edit){ openModal(edit.dataset.edit); return; }
+    var del = t.closest('[data-del]');
+    if(del){ askConfirm('Delete this item?', 'You can undo it from the toast that appears.', function(){ deleteItem(del.dataset.del); }, 'Delete'); return; }
+    var buy = t.closest('[data-buy]');
+    if(buy){ markPurchased(buy.dataset.buy); return; }
+    var mark = t.closest('[data-markpurchased]');
+    if(mark){ markPurchased(mark.dataset.markpurchased); return; }
+  }
+  function purchasedClickHandler(e){
+    var t = e.target;
+    var un = t.closest('[data-unpurchase]');
+    if(un){ unpurchase(un.dataset.unpurchase); return; }
+    var del = t.closest('[data-del]');
+    if(del){ askConfirm('Delete this item?', 'This removes it from your purchase history for good.', function(){ deleteItem(del.dataset.del); }, 'Delete'); return; }
+  }
+
+  function toggleSelect(id, checked){
+    if(checked) selectedIds.add(id); else selectedIds.delete(id);
+    var holder = document.querySelector('#wishlistResults [data-id="'+id+'"]');
+    if(holder) holder.classList.toggle('sel', checked);
+    updateSelectAllState();
+    renderCartBar();
+  }
+  function toggleSelectAll(checked){
+    getFilteredSorted().forEach(function(it){
+      if(checked) selectedIds.add(it.id); else selectedIds.delete(it.id);
+    });
+    renderGrid();
+    renderCartBar();
+  }
+  function changeQty(id, delta){
+    var it = items.find(function(i){ return i.id===id; });
+    if(!it) return;
+    it.quantity = Math.max(1, (it.quantity||1) + delta);
+    save();
+    renderGrid();
+    renderStats();
+    renderCartBar();
+  }
+  function setView(mode){
+    viewMode = mode === 'table' ? 'table' : 'grid';
+    try{ localStorage.setItem(VIEW_KEY, viewMode); }catch(e){}
+    document.querySelectorAll('.toolbar [data-view]').forEach(function(b){
+      b.setAttribute('aria-pressed', b.dataset.view === viewMode ? 'true' : 'false');
+    });
+    renderGrid();
+  }
+
+  var PAGE_COPY = {
+    wishlist: ['Wishlist', 'Planned purchases, in one place.'],
+    purchased: ['Purchased', 'What you bought, and what it cost.'],
+    faq: ['FAQ', 'How this list works.']
+  };
+  function switchTab(tab){
+    if(!PAGE_COPY[tab]) tab = 'wishlist';
+    activeTab = tab;
+    document.querySelectorAll('nav.tabs [data-tab], #bnav [data-tab]').forEach(function(b){
+      if(b.dataset.tab === tab) b.setAttribute('aria-current','page'); else b.removeAttribute('aria-current');
+    });
+    $('pageTitle').textContent = PAGE_COPY[tab][0];
+    $('pageSub').textContent = PAGE_COPY[tab][1];
+    $('wishlistPane').hidden = tab !== 'wishlist';
+    $('purchasedPane').hidden = tab !== 'purchased';
+    $('faqSection').hidden = tab !== 'faq';
+    $('statsRow').hidden = tab === 'faq';
+    $('addItemBtn').hidden = tab === 'faq';
+    $('releaseNotesBtn').hidden = tab !== 'faq';
+    renderAll();
+  }
+
+  /* ---------------- theme ---------------- */
+  var THEME_KEY = "wantlist_theme";
+  function currentTheme(){
+    return document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
+  }
+  function updateThemeToggleIcon(){
+    var btn = $('themeToggleBtn');
+    if(!btn) return;
+    var isDark = currentTheme() === 'dark';
+    btn.setAttribute('aria-checked', isDark ? 'true' : 'false');
+    btn.title = isDark ? 'Dark mode on' : 'Dark mode off';
+    document.querySelectorAll('#obTheme [data-theme-pick]').forEach(function(b){
+      b.setAttribute('aria-pressed', b.dataset.themePick === currentTheme() ? 'true' : 'false');
+    });
+    var meta = document.querySelector('meta[name="theme-color"]');
+    if(meta) meta.setAttribute('content', isDark ? '#1e2126' : '#0e6878');
+  }
+  function setTheme(t){
+    document.documentElement.setAttribute('data-theme', t === 'dark' ? 'dark' : 'light');
+    try{ localStorage.setItem(THEME_KEY, t === 'dark' ? 'dark' : 'light'); }catch(e){}
+    updateThemeToggleIcon();
+  }
+  function initTheme(){
+    // The <head> bootstrap already applied the saved choice (light by default).
+    updateThemeToggleIcon();
+  }
+  function toggleTheme(){
+    setTheme(currentTheme() === 'dark' ? 'light' : 'dark');
+  }
+
+  /* ---------------- header scroll effects ---------------- */
+  function initScrollEffects(){
+    var header = $('siteHeader');
+    var progress = $('scrollProgress');
+    var backToTop = $('backToTopBtn');
+    function onScroll(){
+      var scrollTop = window.scrollY || document.documentElement.scrollTop;
+      var docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      var pct = docHeight > 0 ? Math.min(100, (scrollTop/docHeight)*100) : 0;
+      if(progress) progress.style.width = pct + '%';
+      if(header) header.classList.toggle('scrolled', scrollTop > 4);
+      if(backToTop) backToTop.classList.toggle('visible', scrollTop > 400);
+    }
+    window.addEventListener('scroll', onScroll, { passive:true });
+    window.addEventListener('resize', onScroll);
+    onScroll();
+  }
+  function initBackToTop(){
+    var btn = $('backToTopBtn');
+    if(!btn) return;
+    btn.addEventListener('click', function(){ window.scrollTo({ top:0 }); });
+  }
+
+  /* ---------------- mobile bottom nav + "More" sheet ---------------- */
+  function closeSheet(){
+    var s = $('bnSheet');
+    if(s && !s.hidden){ s.hidden = true; $('bnMoreBtn').setAttribute('aria-expanded','false'); }
+  }
+  function initBottomNav(){
+    var btn = $('bnMoreBtn'), sheet = $('bnSheet');
+    btn.addEventListener('click', function(e){
+      e.stopPropagation();
+      var open = sheet.hidden;
+      sheet.hidden = !open;
+      btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+    sheet.addEventListener('click', function(e){
+      e.stopPropagation();
+      var b = e.target.closest('[data-sheet]'); if(!b) return;
+      closeSheet();
+      var a = b.dataset.sheet;
+      if(a === 'search') $('searchBtn').click();
+      else if(a === 'release') $('releaseNotesOverlay').hidden = false;
+      else if(a === 'storage') $('cookieBanner').hidden = false;
+      else if(a === 'privacy') $('privacyOverlay').hidden = false;
+      else if(a === 'terms') $('termsOverlay').hidden = false;
+    });
+    document.addEventListener('click', closeSheet);
+  }
+
+  /* ---------------- FAQ accordion ---------------- */
+  function initFaq(){
+    var faq = $('faqList');
+    if(!faq) return;
+    faq.addEventListener('click', function(e){
+      var q = e.target.closest('.faq-q');
+      if(!q) return;
+      var item = q.closest('.faq-item');
+      var wasOpen = item.classList.contains('open');
+      item.classList.toggle('open', !wasOpen);
+      q.setAttribute('aria-expanded', String(!wasOpen));
+    });
+  }
+
+  /* ---------------- cookie / privacy banner ---------------- */
+  var COOKIE_KEY = "wantlist_privacy_ack";
+  function initCookieBanner(){
+    var banner = $('cookieBanner');
+    if(!banner) return;
+    var acked = null;
+    try{ acked = localStorage.getItem(COOKIE_KEY); }catch(e){}
+    if(!acked){ banner.hidden = false; }
+    $('cookieAcceptBtn').onclick = function(){
+      try{ localStorage.setItem(COOKIE_KEY, '1'); }catch(e){}
+      banner.hidden = true;
+    };
+    $('cookieBannerReopenBtn').onclick = function(){
+      banner.hidden = false;
+    };
+  }
+
+  /* ---------------- privacy policy / terms of use ---------------- */
+  function initLegalModals(){
+    function wireOverlay(overlayId, openBtnIds, closeBtnId){
+      var overlay = $(overlayId);
+      if(!overlay) return;
+      function open(){ overlay.hidden = false; }
+      function close(){ overlay.hidden = true; }
+      openBtnIds.forEach(function(id){
+        var b = $(id);
+        if(b) b.onclick = open;
+      });
+      var closeBtn = $(closeBtnId);
+      if(closeBtn) closeBtn.onclick = close;
+      overlay.addEventListener('click', function(e){ if(e.target === this) close(); });
+    }
+    wireOverlay('privacyOverlay', ['privacyFooterBtn'], 'privacyCloseBtn');
+    wireOverlay('termsOverlay', ['termsFooterBtn'], 'termsCloseBtn');
+  }
+
+  /* ---------------- release notes ---------------- */
+  function initReleaseNotes(){
+    var overlay = $('releaseNotesOverlay');
+    if(!overlay) return;
+    function open(){ overlay.hidden = false; }
+    function close(){ overlay.hidden = true; }
+    var btn = $('releaseNotesBtn');
+    var footerBtn = $('releaseNotesFooterBtn');
+    if(btn) btn.onclick = open;
+    if(footerBtn) footerBtn.onclick = open;
+    $('releaseNotesCloseBtn').onclick = close;
+    overlay.addEventListener('click', function(e){ if(e.target === this) close(); });
+  }
+
+  /* ---------------- full site search ---------------- */
+  function initSiteSearch(){
+    var toggleBtn = $('searchBtn');
+    var overlay = $('searchOverlay');
+    var input = $('siteSearchInput');
+    var results = $('siteSearchResults');
+    if(!overlay) return;
+
+    function open(){
+      overlay.hidden = false;
+      input.value = '';
+      runSiteSearch('');
+      setTimeout(function(){ input.focus(); }, 30);
+    }
+    function close(){ overlay.hidden = true; }
+    toggleBtn.onclick = open;
+    $('searchCloseBtn').onclick = close;
+    overlay.addEventListener('click', function(e){ if(e.target === this) close(); });
+    input.addEventListener('input', function(){ runSiteSearch(input.value.trim()); });
+
+    function runSiteSearch(q){
+      if(!q){ results.innerHTML = '<p class="hint">Type to search your wishlist items and the FAQ.</p>'; return; }
+      var ql = q.toLowerCase();
+      var itemHits = items.filter(function(it){
+        return !it.purchased && ((it.name||'')+' '+(it.category||'')+' '+(it.notes||'')).toLowerCase().indexOf(ql) !== -1;
+      }).slice(0,8);
+      var faqHits = Array.prototype.slice.call(document.querySelectorAll('.faq-item')).filter(function(el){
+        return el.textContent.toLowerCase().indexOf(ql) !== -1;
+      }).slice(0,5);
+
+      var html = '';
+      if(itemHits.length){
+        html += '<div class="search-group-label">Wishlist items</div>';
+        html += itemHits.map(function(it){
+          return '<button type="button" class="search-result" data-search-item="'+it.id+'">'+ic('cart')+'<span>'+escapeHtml(it.name)+'</span>'+
+            (it.category ? ' <span class="tag">'+escapeHtml(it.category)+'</span>' : '') + '</button>';
+        }).join('');
+      }
+      if(faqHits.length){
+        html += '<div class="search-group-label">FAQ</div>';
+        html += faqHits.map(function(el){
+          var q2 = el.querySelector('.faq-q');
+          return '<button type="button" class="search-result" data-search-faq="'+el.id+'">'+ic('help')+'<span>'+escapeHtml(q2 ? q2.textContent.trim() : '')+'</span></button>';
+        }).join('');
+      }
+      if(!itemHits.length && !faqHits.length){ html = '<p class="hint">No matches for "'+escapeHtml(q)+'".</p>'; }
+      results.innerHTML = html;
+    }
+
+    results.addEventListener('click', function(e){
+      var itemBtn = e.target.closest('[data-search-item]');
+      if(itemBtn){
+        close();
+        switchTab('wishlist');
+        openModal(itemBtn.dataset.searchItem);
+        return;
+      }
+      var faqBtn = e.target.closest('[data-search-faq]');
+      if(faqBtn){
+        close();
+        switchTab('faq');
+        var el = $(faqBtn.dataset.searchFaq);
+        if(el){
+          el.classList.add('open');
+          var qEl = el.querySelector('.faq-q');
+          if(qEl){ qEl.setAttribute('aria-expanded','true'); qEl.focus(); }
+          el.scrollIntoView({ block:'center' });
+        }
+      }
+    });
+
+    document.addEventListener('keydown', function(e){
+      if((e.key === 'k' || e.key === 'K') && (e.metaKey || e.ctrlKey)){
+        e.preventDefault();
+        open();
+      }
+    });
+  }
+
+  /* ---------------- onboarding (first-run screen) ---------------- */
+  var ONBOARDED_KEY = "wantlist_onboarded";
+  function dismissOnboarding(){
+    $('onboardingOverlay').hidden = true;
+    try{
+      localStorage.setItem(ONBOARDED_KEY, '1');
+      // The welcome screen already says where data lives, so the separate
+      // storage notice doesn't need to pop up right after it.
+      localStorage.setItem(COOKIE_KEY, '1');
+    }catch(e){}
+    $('cookieBanner').hidden = true;
+  }
+  function initOnboarding(){
+    var overlay = $('onboardingOverlay');
+    if(!overlay) return;
+    var seen = null;
+    try{ seen = localStorage.getItem(ONBOARDED_KEY); }catch(e){}
+    if(!seen){ overlay.hidden = false; $('cookieBanner').hidden = true; }
+    $('onboardingDismissBtn').onclick = dismissOnboarding;
+    overlay.addEventListener('click', function(e){ if(e.target === this) dismissOnboarding(); });
+    $('obTheme').addEventListener('click', function(e){
+      var b = e.target.closest('[data-theme-pick]'); if(!b) return;
+      setTheme(b.dataset.themePick);
+    });
+    $('obImportBtn').onclick = function(){ dismissOnboarding(); importBackup(); };
+  }
+
+  /* ---------------- boot ---------------- */
+  initTheme();
+  $('themeToggleBtn').onclick = toggleTheme;
+  initScrollEffects();
+  initBackToTop();
+  initBottomNav();
+  initFaq();
+  initCookieBanner();
+  initLegalModals();
+  initReleaseNotes();
+  initOnboarding();
+
+  init();
+  wire();
+  initSiteSearch();
+  setView(viewMode);
+  if(/Mac|iPhone|iPad/.test(navigator.platform || navigator.userAgent)){
+    document.querySelectorAll('#searchBtn kbd').forEach(function(k){ k.textContent = '⌘K'; });
+    $('saveNowKbd').textContent = '⌘S';
+  }
+  switchTab('wishlist');
+  loadHandles();
+  setInterval(renderBackupStatus, 60000);
+})();
+</script>
+</body>
+</html>
