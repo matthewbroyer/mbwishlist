@@ -18,8 +18,8 @@
      hosting/server level instead. -->
 <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; img-src 'self' data:; script-src 'unsafe-inline'; base-uri 'none'; form-action 'none'; connect-src 'none';">
 <title>mbwishlist.online</title>
-<meta name="theme-color" content="#0e6878">
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='13' fill='%230E6878'/%3E%3Cpath d='M17 25H47L44.5 51H19.5Z' fill='none' stroke='%23fff' stroke-width='6' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M25 25V21a7 7 0 0 1 14 0V25' fill='none' stroke='%23fff' stroke-width='6' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M32 45.5c-4.6-3-7.2-5.4-7.2-8.1a3.7 3.7 0 0 1 7.2-1.2a3.7 3.7 0 0 1 7.2 1.2c0 2.7-2.6 5.1-7.2 8.1z' fill='%23F2B640'/%3E%3C/svg%3E">
+<meta name="theme-color" content="#d97706">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='13' fill='%23D97706'/%3E%3Cg transform='translate(0,-0.02416552)'%3E%3Cpath d='m 17,24.524164 h 30 l -2.5,26 h -25 z' fill='none' stroke='%23fff' stroke-width='6' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='m 25,24.524164 v -4 a 7,7 0 0 1 14,0 v 4' fill='none' stroke='%23fff' stroke-width='6' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='m 32,43.341388 c -4.6,-3 -7.2,-5.4 -7.2,-8.1 a 3.7,3.7 0 0 1 7.2,-1.2 3.7,3.7 0 0 1 7.2,1.2 c 0,2.7 -2.6,5.1 -7.2,8.1 z' fill='%23f2b640'/%3E%3C/g%3E%3C/svg%3E">
 <script>
 /* Always load light; only go dark if dark was picked last time (ecosystem rule).
    Runs before first paint so a dark-OS first visit never flashes dark. */
@@ -39,9 +39,9 @@
   --r:6px; --r-sm:4px; --ctl:38px; --ctl-sm:32px; --ease:120ms ease;
   --bg:#f3f4f6; --surface:#ffffff; --surface-2:#f6f7f9; --surface-3:#eceef2; --ink:#1b1f24; --ink-2:#48505c; --muted:#5f6773;
   --grid:rgba(20,24,31,.07); --axis:rgba(20,24,31,.24); --border:#dfe2e7; --border-strong:#c6cbd3;
-  --accent:#0e6878; --accent-hover:#0a5260; --accent-ink:#ffffff; --accent-soft:rgba(14,104,120,.09); --accent-line:rgba(14,104,120,.38);
-  --accent-grad:var(--accent); --accent-2:#2f8a9a;
-  --s1:#0e6878; --s2:#b07a1f; --s3:#5aa3b0; --s4:#6b7684; --s5:#e87ba4; --s6:#008300; --s7:#4a3aa7; --s8:#e34948;
+  --accent:#d97706; --accent-hover:#b45309; --accent-ink:#ffffff; --accent-soft:rgba(217,119,6,.09); --accent-line:rgba(217,119,6,.38);
+  --accent-grad:var(--accent); --accent-2:#f59e0b;
+  --s1:#d97706; --s2:#3b6ea8; --s3:#f0b35e; --s4:#6b7684; --s5:#e87ba4; --s6:#008300; --s7:#4a3aa7; --s8:#e34948;
   --seq-track:#e6e9ee; --seq-fill:var(--accent); --done-fill:var(--good);
   --good:#16a34a; --good-ink:#0b7a35; --warn:#e5a100; --warn-ink:#8a5a00; --serious:#ec835a; --crit:#c9302c;
   --shadow:0 1px 2px rgba(20,24,31,.06);
@@ -49,37 +49,37 @@
   --mesh1:transparent; --mesh2:transparent; --glowp:0%;
   --area-top:.14; --area-bot:0; --bar-bot:1; --hover-band:rgba(20,24,31,.045);
   /* app-specific: need/want priority, rating stars, toast link */
-  --need:#a24d22; --need-soft:#fbeee6; --want:#4f5f7a; --want-soft:#eef1f6; --star:#b98b1d; --toast-link:#7fd0dc;
+  --need:#a24d22; --need-soft:#fbeee6; --want:#4f5f7a; --want-soft:#eef1f6; --star:#b98b1d; --toast-link:#fbbf24;
 }
 @media (prefers-color-scheme:dark){
   :root:where(:not([data-theme="light"])){
     color-scheme:dark;
     --bg:#16181c; --surface:#1e2126; --surface-2:#25292f; --surface-3:#2d3238; --ink:#e9ecf0; --ink-2:#b4bbc5; --muted:#8e97a3;
     --grid:rgba(255,255,255,.07); --axis:rgba(255,255,255,.2); --border:#30353c; --border-strong:#434a53;
-    --accent:#4fb6c6; --accent-hover:#74c8d5; --accent-ink:#04262c; --accent-soft:rgba(79,182,198,.13); --accent-line:rgba(79,182,198,.45);
-    --accent-grad:var(--accent); --accent-2:#8dd3de;
-    --s1:#4fb6c6; --s2:#d9a24a; --s3:#a3dbe4; --s4:#8a94a1; --s5:#d55181; --s6:#008300; --s7:#9085e9; --s8:#e66767;
+    --accent:#f59e0b; --accent-hover:#fbbf24; --accent-ink:#1a1000; --accent-soft:rgba(245,158,11,.13); --accent-line:rgba(245,158,11,.45);
+    --accent-grad:var(--accent); --accent-2:#fbbf24;
+    --s1:#f59e0b; --s2:#6ea0d8; --s3:#fcd98a; --s4:#8a94a1; --s5:#d55181; --s6:#008300; --s7:#9085e9; --s8:#e66767;
     --seq-track:#2f343b; --seq-fill:var(--accent); --done-fill:var(--good);
     --good:#22c55e; --good-ink:#4ade80; --warn:#f0b429; --warn-ink:#f5c95c; --crit:#ff6b6b;
     --shadow:0 1px 2px rgba(0,0,0,.3);
     --shadow-pop:0 10px 28px -6px rgba(0,0,0,.6),0 0 0 1px rgba(255,255,255,.03);
     --area-top:.2; --area-bot:0; --bar-bot:1; --hover-band:rgba(255,255,255,.05);
-    --need:#e08a5c; --need-soft:#3a2a20; --want:#a3b1c6; --want-soft:#27303c; --star:#e0b559; --toast-link:#0e6878;
+    --need:#e08a5c; --need-soft:#3a2a20; --want:#a3b1c6; --want-soft:#27303c; --star:#e0b559; --toast-link:#b45309;
   }
 }
 :root[data-theme="dark"]{
   color-scheme:dark;
   --bg:#16181c; --surface:#1e2126; --surface-2:#25292f; --surface-3:#2d3238; --ink:#e9ecf0; --ink-2:#b4bbc5; --muted:#8e97a3;
   --grid:rgba(255,255,255,.07); --axis:rgba(255,255,255,.2); --border:#30353c; --border-strong:#434a53;
-  --accent:#4fb6c6; --accent-hover:#74c8d5; --accent-ink:#04262c; --accent-soft:rgba(79,182,198,.13); --accent-line:rgba(79,182,198,.45);
-  --accent-grad:var(--accent); --accent-2:#8dd3de;
-  --s1:#4fb6c6; --s2:#d9a24a; --s3:#a3dbe4; --s4:#8a94a1; --s5:#d55181; --s6:#008300; --s7:#9085e9; --s8:#e66767;
+  --accent:#f59e0b; --accent-hover:#fbbf24; --accent-ink:#1a1000; --accent-soft:rgba(245,158,11,.13); --accent-line:rgba(245,158,11,.45);
+  --accent-grad:var(--accent); --accent-2:#fbbf24;
+  --s1:#f59e0b; --s2:#6ea0d8; --s3:#fcd98a; --s4:#8a94a1; --s5:#d55181; --s6:#008300; --s7:#9085e9; --s8:#e66767;
   --seq-track:#2f343b; --seq-fill:var(--accent); --done-fill:var(--good);
   --good:#22c55e; --good-ink:#4ade80; --warn:#f0b429; --warn-ink:#f5c95c; --crit:#ff6b6b;
   --shadow:0 1px 2px rgba(0,0,0,.3);
   --shadow-pop:0 10px 28px -6px rgba(0,0,0,.6),0 0 0 1px rgba(255,255,255,.03);
   --area-top:.2; --area-bot:0; --bar-bot:1; --hover-band:rgba(255,255,255,.05);
-  --need:#e08a5c; --need-soft:#3a2a20; --want:#a3b1c6; --want-soft:#27303c; --star:#e0b559; --toast-link:#0e6878;
+  --need:#e08a5c; --need-soft:#3a2a20; --want:#a3b1c6; --want-soft:#27303c; --star:#e0b559; --toast-link:#b45309;
 }
 
 /* =====================================================================
@@ -687,7 +687,7 @@ nav.tabs button{min-height:44px}
 </head>
 <body>
 <svg xmlns="http://www.w3.org/2000/svg" style="display:none" aria-hidden="true">
-  <symbol id="i-logo" viewBox="0 0 64 64"><rect width="64" height="64" rx="13" fill="#0E6878"/><path d="M17 25H47L44.5 51H19.5Z" fill="none" stroke="#fff" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/><path d="M25 25V21a7 7 0 0 1 14 0V25" fill="none" stroke="#fff" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/><path d="M32 45.5c-4.6-3-7.2-5.4-7.2-8.1a3.7 3.7 0 0 1 7.2-1.2a3.7 3.7 0 0 1 7.2 1.2c0 2.7-2.6 5.1-7.2 8.1z" fill="#F2B640"/></symbol>
+  <symbol id="i-logo" viewBox="0 0 64 64"><rect width="64" height="64" rx="13" fill="#D97706"/><g transform="translate(0,-0.02416552)"><path d="m 17,24.524164 h 30 l -2.5,26 h -25 z" fill="none" stroke="#fff" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/><path d="m 25,24.524164 v -4 a 7,7 0 0 1 14,0 v 4" fill="none" stroke="#fff" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/><path d="m 32,43.341388 c -4.6,-3 -7.2,-5.4 -7.2,-8.1 a 3.7,3.7 0 0 1 7.2,-1.2 3.7,3.7 0 0 1 7.2,1.2 c 0,2.7 -2.6,5.1 -7.2,8.1 z" fill="#f2b640"/></g></symbol>
   <symbol id="i-cart" viewBox="0 0 24 24"><path d="M3 3.8h2.3l2.4 11.4a1.4 1.4 0 0 0 1.4 1.1h8.9a1.4 1.4 0 0 0 1.4-1l2-7.5H6.4"/><circle cx="9.8" cy="20" r="1.5" fill="currentColor" stroke="none"/><circle cx="17.7" cy="20" r="1.5" fill="currentColor" stroke="none"/></symbol>
   <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.35-4.35"/></symbol>
   <symbol id="i-data" viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v14c0 1.66 3.58 3 8 3s8-1.34 8-3V5"/><path d="M4 12c0 1.66 3.58 3 8 3s8-1.34 8-3"/></symbol>
@@ -2638,7 +2638,7 @@ nav.tabs button{min-height:44px}
       b.setAttribute('aria-pressed', b.dataset.themePick === currentTheme() ? 'true' : 'false');
     });
     var meta = document.querySelector('meta[name="theme-color"]');
-    if(meta) meta.setAttribute('content', isDark ? '#1e2126' : '#0e6878');
+    if(meta) meta.setAttribute('content', isDark ? '#1e2126' : '#d97706');
   }
   function setTheme(t){
     document.documentElement.setAttribute('data-theme', t === 'dark' ? 'dark' : 'light');
