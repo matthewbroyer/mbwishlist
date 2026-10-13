@@ -8,6 +8,7 @@ Newest first. One entry per release, in plain words a user would understand.
 - The first section is now called **My list**, and browser tabs read "Wishlist | My list", "Wishlist | Purchased" and so on.
 - Share your progress from the Purchased tab as a square image made on your device: how many planned things you bought, how many you decided against, and how many are still on your list. Item names never go on it; dollar amounts only if you turn them on.
 - Install card at the top of the FAQ ("Install Wishlist" in Chrome and Edge, Add to Home Screen steps on iPhone). The installed app is now named "Wishlist".
+- Items with a store link can be moved to Purchased again. Buy now only opens the store page (since v1.7), which left linked items with no direct way to mark them bought. Now there's a check mark next to edit and delete, a Mark purchased button in the edit window, and a "Bought it? Mark purchased" prompt right after Buy now.
 - Buttons, links and the selected section use a deeper amber so text is easier to read.
 - The search box and filters sit in one row on wider screens instead of stacking.
 - Dialogs move keyboard focus inside when they open, keep Tab inside, and hand focus back when they close.

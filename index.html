@@ -1024,6 +1024,10 @@ dialog.mb-share::backdrop{background:var(--scrim)}
         <button class="faq-q" aria-expanded="false"><span>What does "Not buying" do?</span><svg class="i chev" aria-hidden="true"><use href="#i-chev"/></svg></button>
         <div class="faq-answer"><p>It takes an item off your wishlist without deleting it, and lists it under "Decided against" on the Purchased tab with what it would have cost. Items untouched for 90 days are flagged for a quick review so the list doesn't fill up with things you no longer want.</p></div>
       </div>
+      <div class="faq-item" id="faq-14">
+        <button class="faq-q" aria-expanded="false"><span>How do I move something to Purchased?</span><svg class="i chev" aria-hidden="true"><use href="#i-chev"/></svg></button>
+        <div class="faq-answer"><p>Use the check mark next to an item's edit and delete buttons, or Mark purchased in its edit window. Items without a link show a Mark purchased button instead of Buy now. Buy now only opens the store page, then asks if you bought it. To do several at once, tick them and use Buy selected.</p></div>
+      </div>
       <div class="faq-item" id="faq-12">
         <button class="faq-q" aria-expanded="false"><span>Can I install it like an app?</span><svg class="i chev" aria-hidden="true"><use href="#i-chev"/></svg></button>
         <div class="faq-answer"><p>Yes. In Chrome or Edge, use the Install button at the top of this page when your browser offers it, or the install icon in the address bar. On iPhone or iPad, tap Share, then Add to Home Screen. Installed, it opens in its own window and works offline after the first visit. On iPhone and iPad the Home Screen version keeps its own storage, so use a backup to move your list into it.</p></div>
@@ -1181,6 +1185,7 @@ dialog.mb-share::backdrop{background:var(--scrim)}
     <div class="modal-actions">
       <button type="button" class="btn danger" id="deleteItemBtn" hidden><svg class="i" aria-hidden="true"><use href="#i-trash"/></svg>Delete</button>
       <button type="button" class="btn ghost" id="dropItemBtn" hidden title="Keep a record that you decided against it">Not buying</button>
+      <button type="button" class="btn ghost" id="markItemBtn" hidden><svg class="i" aria-hidden="true"><use href="#i-check"/></svg>Mark purchased</button>
       <div class="right">
         <button type="button" class="btn" id="cancelModalBtn">Cancel</button>
         <button type="button" class="btn primary" id="saveItemBtn">Save item</button>
@@ -1348,6 +1353,7 @@ dialog.mb-share::backdrop{background:var(--scrim)}
           <li>New layout shared with the other mb apps: sections in a left sidebar (a bottom bar on phones), and the logo always takes you back to your list</li>
           <li>Share your progress from the Purchased tab as an image made on your device. Amounts stay hidden unless you turn them on</li>
           <li>Install card in the FAQ, and the installed app is now called "Wishlist"</li>
+          <li>Items with a store link can be marked purchased again: a check mark next to edit and delete, a button in the edit window, and a "Bought it?" prompt after Buy now</li>
           <li>Darker amber for buttons and links so text is easier to read</li>
           <li>Dialogs now move keyboard focus inside and give it back when they close</li>
         </ul>
@@ -2068,7 +2074,7 @@ dialog.mb-share::backdrop{background:var(--scrim)}
     return hydrateImages();
   }
 
-  function toast(message, undoFn){
+  function toast(message, undoFn, actionLabel){
     var host = $('toastHost');
     host.innerHTML = "";
     var el = document.createElement('div');
@@ -2077,8 +2083,8 @@ dialog.mb-share::backdrop{background:var(--scrim)}
     if(undoFn){
       var btn = document.createElement('button');
       btn.type = 'button';
-      btn.textContent = 'Undo';
-      btn.onclick = function(){ undoFn(); host.innerHTML=""; };
+      btn.textContent = actionLabel || 'Undo';
+      btn.onclick = function(){ host.innerHTML=""; undoFn(); };   // clear first, so an action that shows its own toast (Mark purchased → Undo) keeps it
       el.appendChild(btn);
     }
     host.appendChild(el);
@@ -2249,7 +2255,9 @@ dialog.mb-share::backdrop{background:var(--scrim)}
       : '<button type="button" class="btn'+sz+'" data-markpurchased="'+it.id+'" aria-label="Mark '+nm+' as purchased">'+ic('check')+'Mark purchased</button>';
   }
   function editDelHtml(it, nm){
-    return '<button type="button" class="ib" data-edit="'+it.id+'" title="Edit" aria-label="Edit '+nm+'">'+ic('edit')+'</button>' +
+    var mark = isSafeUrl(it.purchaseUrl)   // "Buy now" only opens the link, so give linked items their own way to mark purchased
+      ? '<button type="button" class="ib" data-markpurchased="'+it.id+'" title="Mark purchased" aria-label="Mark '+nm+' as purchased">'+ic('check')+'</button>' : '';
+    return mark + '<button type="button" class="ib" data-edit="'+it.id+'" title="Edit" aria-label="Edit '+nm+'">'+ic('edit')+'</button>' +
       '<button type="button" class="ib danger" data-del="'+it.id+'" title="Delete" aria-label="Delete '+nm+'">'+ic('trash')+'</button>';
   }
   function statusLabel(it){
@@ -2536,6 +2544,7 @@ dialog.mb-share::backdrop{background:var(--scrim)}
 
     $('deleteItemBtn').hidden = !it;
     $('dropItemBtn').hidden = !it || it.purchased || it.dropped;
+    $('markItemBtn').hidden = !it || it.purchased || it.dropped;
     var pi = it ? priceInfo(it) : null;
     $('priceHistHint').textContent = pi
       ? plural(pi.count,'price')+' recorded · low $'+money(pi.low.p)+' on '+new Date(pi.low.d+'T00:00:00').toLocaleDateString('en-US',{month:'short',day:'numeric'})
@@ -3556,6 +3565,7 @@ dialog.mb-share::backdrop{background:var(--scrim)}
       }, 'Not buying', 'primary');
     };
     $('dropItemBtn').onclick = function(){ var id = editingId; closeModal(); dropItem(id); };
+    $('markItemBtn').onclick = function(){ var id = editingId; closeModal(); markPurchased(id); };
     $('pauseSkipBtn').onclick = function(){ closePause(0); };
     document.querySelectorAll('#pauseOverlay [data-pause]').forEach(function(b){
       b.onclick = function(){ closePause(Number(b.dataset.pause)); };
@@ -3715,6 +3725,8 @@ dialog.mb-share::backdrop{background:var(--scrim)}
           bi.coolUntil = null; bumpRevision(); save(); renderAll();
           window.open(href, '_blank', 'noopener,noreferrer');
         }, 'Open link', 'primary');
+      } else if(bi){
+        toast('Opened ' + bi.name + '. Bought it?', function(){ markPurchased(bi.id); }, 'Mark purchased');
       }
       return;
     }
