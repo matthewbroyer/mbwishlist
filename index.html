@@ -1,12 +1,37 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="light">
+<html lang="en" data-theme="light" data-app-short="Wishlist" data-app-domain="mbwishlist.online">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; img-src 'self' data:; script-src 'unsafe-inline'; base-uri 'none'; form-action 'none'; connect-src 'none';">
-<title>mbwishlist.online</title>
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; img-src 'self' data: blob:; script-src 'unsafe-inline'; base-uri 'none'; form-action 'none'; connect-src 'none'; manifest-src 'self'; worker-src 'self';">
+<title>Wishlist | My list</title>
+<meta name="description" content="Free wishlist and shopping planner. Track needs and wants, target prices and need-by dates. No account, and your list stays in your browser.">
+<link rel="canonical" href="https://mbwishlist.online/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="mbwishlist.online">
+<meta property="og:title" content="mbwishlist.online: free wishlist and shopping planner">
+<meta property="og:description" content="Plan what you buy. Track needs and wants, target prices and need-by dates, then check out across stores. No account, and your list stays in your browser.">
+<meta property="og:url" content="https://mbwishlist.online/">
+<meta property="og:image" content="https://mbwishlist.online/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="mbwishlist.online: a wishlist and shopping planner that keeps your list in your browser">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="mbwishlist.online: free wishlist and shopping planner">
+<meta name="twitter:description" content="Track needs and wants, target prices and need-by dates. No account, and your list stays in your browser.">
+<meta name="twitter:image" content="https://mbwishlist.online/og-image.png">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
 <meta name="theme-color" content="#d97706">
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='13' fill='%23D97706'/%3E%3Cg transform='translate(0,-0.02416552)'%3E%3Cpath d='m 17,24.524164 h 30 l -2.5,26 h -25 z' fill='none' stroke='%23fff' stroke-width='6' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='m 25,24.524164 v -4 a 7,7 0 0 1 14,0 v 4' fill='none' stroke='%23fff' stroke-width='6' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='m 32,43.341388 c -4.6,-3 -7.2,-5.4 -7.2,-8.1 a 3.7,3.7 0 0 1 7.2,-1.2 3.7,3.7 0 0 1 7.2,1.2 c 0,2.7 -2.6,5.1 -7.2,8.1 z' fill='%23f2b640'/%3E%3C/g%3E%3C/svg%3E">
+<meta name="application-name" content="Wishlist">
+<meta name="apple-mobile-web-app-title" content="Wishlist">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebApplication","name":"mbwishlist.online","alternateName":"Wishlist","url":"https://mbwishlist.online/","description":"Free wishlist and shopping planner. Track needs and wants, target prices and need-by dates. No account, and your list stays in your browser.","applicationCategory":"ShoppingApplication","operatingSystem":"Any (runs in a web browser)","browserRequirements":"Requires JavaScript","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Person","name":"Matthew Broyer","url":"https://matthewbroyer.com/"}}
+</script>
 <script>
 (function(){
   var t = null;
@@ -15,15 +40,21 @@
 })();
 </script>
 <style>
-/* ---- theme: "Utility" (Wishlist Petrol) ---- */
+/* ---- theme: MB Suite "Utility" v1 tokens + Wishlist accent (Amber) ----
+   --brand #D97706 is the app color (logo, icons, theme-color, art, share card, OG).
+   --accent is the UI color for text/buttons. In light mode it's one step deeper (#B45309)
+   because white on #D97706 is only 3.2:1; #B45309 is 5.0:1 (WCAG AA). */
 :root{
   color-scheme:light;
   --font:"Segoe UI Variable Text","Segoe UI",system-ui,-apple-system,BlinkMacSystemFont,Roboto,"Helvetica Neue",Arial,sans-serif;
   --mono:ui-monospace,"Cascadia Mono",Consolas,"SF Mono",Menlo,monospace;
-  --r:6px; --r-sm:4px; --ctl:38px; --ctl-sm:32px; --ease:120ms ease;
+  --r:6px; --r-sm:4px; --r-lg:8px; --ctl:38px; --ctl-sm:32px; --ease:120ms ease;
+  --fs-xs:11.5px; --fs-sm:12.5px; --fs:14px; --fs-h2:22px; --sp-4:16px;
+  --page-max:1280px; --gutter:16px; --scrim:rgba(10,12,16,.45);
   --bg:#f3f4f6; --surface:#ffffff; --surface-2:#f6f7f9; --surface-3:#eceef2; --ink:#1b1f24; --ink-2:#48505c; --muted:#5f6773;
   --grid:rgba(20,24,31,.07); --axis:rgba(20,24,31,.24); --border:#dfe2e7; --border-strong:#c6cbd3;
-  --accent:#d97706; --accent-hover:#b45309; --accent-ink:#ffffff; --accent-soft:rgba(217,119,6,.09); --accent-line:rgba(217,119,6,.38);
+  --brand:#D97706;
+  --accent:#b45309; --accent-hover:#92400e; --accent-ink:#ffffff; --accent-soft:rgba(180,83,9,.09); --accent-line:rgba(180,83,9,.38);
   --accent-grad:var(--accent); --accent-2:#f59e0b;
   --s1:#d97706; --s2:#3b6ea8; --s3:#f0b35e; --s4:#6b7684; --s5:#e87ba4; --s6:#008300; --s7:#4a3aa7; --s8:#e34948;
   --seq-track:#e6e9ee; --seq-fill:var(--accent); --done-fill:var(--good);
@@ -45,7 +76,7 @@
     --seq-track:#2f343b; --seq-fill:var(--accent); --done-fill:var(--good);
     --good:#22c55e; --good-ink:#4ade80; --warn:#f0b429; --warn-ink:#f5c95c; --crit:#ff6b6b;
     --shadow:0 1px 2px rgba(0,0,0,.3);
-    --shadow-pop:0 10px 28px -6px rgba(0,0,0,.6),0 0 0 1px rgba(255,255,255,.03);
+    --shadow-pop:0 10px 28px -6px rgba(0,0,0,.6),0 0 0 1px rgba(255,255,255,.03); --scrim:rgba(0,0,0,.6);
     --area-top:.2; --area-bot:0; --bar-bot:1; --hover-band:rgba(255,255,255,.05);
     --need:#e08a5c; --need-soft:#3a2a20; --want:#a3b1c6; --want-soft:#27303c; --star:#e0b559; --toast-link:#b45309;
   }
@@ -60,7 +91,7 @@
   --seq-track:#2f343b; --seq-fill:var(--accent); --done-fill:var(--good);
   --good:#22c55e; --good-ink:#4ade80; --warn:#f0b429; --warn-ink:#f5c95c; --crit:#ff6b6b;
   --shadow:0 1px 2px rgba(0,0,0,.3);
-  --shadow-pop:0 10px 28px -6px rgba(0,0,0,.6),0 0 0 1px rgba(255,255,255,.03);
+  --shadow-pop:0 10px 28px -6px rgba(0,0,0,.6),0 0 0 1px rgba(255,255,255,.03); --scrim:rgba(0,0,0,.6);
   --area-top:.2; --area-bot:0; --bar-bot:1; --hover-band:rgba(255,255,255,.05);
   --need:#e08a5c; --need-soft:#3a2a20; --want:#a3b1c6; --want-soft:#27303c; --star:#e0b559; --toast-link:#b45309;
 }
@@ -74,35 +105,21 @@ a{color:var(--accent)}
 button,input,select,textarea{font:inherit;color:inherit}
 button{cursor:pointer}
 [hidden]{display:none!important}
-.wrap{max-width:1180px;margin-inline:auto;padding-inline:20px}
+.wrap{max-width:var(--page-max);margin-inline:auto;padding-inline:var(--gutter)}
 .money,.num{font-variant-numeric:tabular-nums}
 svg.i{width:16px;height:16px;flex-shrink:0;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;vertical-align:middle}
 .sr-only{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 :focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 .skip{position:fixed;top:-60px;left:10px;z-index:100;background:var(--accent);color:var(--accent-ink);padding:10px 14px;font-weight:600;text-decoration:none;transition:top var(--ease);border-radius:var(--r-sm)}
 .skip:focus{top:10px}
-.scroll-progress{position:fixed;top:0;left:0;height:2px;width:0;background:var(--accent);z-index:61;pointer-events:none}
 kbd{font-family:var(--font);font-size:11px;font-weight:600;line-height:1;padding:3px 5px;border:1px solid var(--border-strong);border-bottom-width:2px;background:var(--surface-2);color:var(--ink-2);border-radius:3px}
 .linkbtn{background:none;border:0;padding:0;color:var(--accent);font-weight:600;text-decoration:underline;text-underline-offset:2px;font-size:inherit}
 .linkbtn:hover{color:var(--accent-hover)}
 
-.top{position:sticky;top:0;z-index:50;background:var(--surface);border-bottom:1px solid var(--border);box-shadow:var(--shadow)}
-.top .wrap{display:flex;align-items:stretch;gap:12px 16px;min-height:48px;padding-top:8px;padding-bottom:0;row-gap:4px}
-.brand{display:flex;align-items:center;align-self:center;color:var(--ink);text-decoration:none;flex-shrink:0;gap:9px}
-.brand .logo{display:grid;place-items:center;color:#fff;flex-shrink:0;width:28px;height:28px;border-radius:var(--r);background:none!important;box-shadow:none!important}
-.brand .logo svg{width:16px;height:16px}
-.brand .logo .logo-mark{width:100%;height:100%;display:block}
-.brand .bt{display:flex;flex-direction:column;line-height:1.15}
-.brand .bt b{color:var(--ink);font-size:14.5px;font-weight:650}
-.brand span{font-size:11px;color:var(--muted);letter-spacing:.01em}
-nav.tabs{display:flex;align-items:stretch;margin-left:6px;gap:0}
-nav.tabs button{display:inline-flex;align-items:center;gap:7px;border:0;font-size:13.5px;white-space:nowrap;position:relative;border-radius:0;padding:0 12px;min-height:40px;color:var(--ink-2);font-weight:500;background:none}
-nav.tabs button:hover{background:var(--surface-2);color:var(--ink)}
-nav.tabs button[aria-current="page"]{background:none;color:var(--accent);font-weight:600;box-shadow:inset 0 -2px 0 var(--accent)}
-nav.tabs button svg{opacity:.75}
+/* header + tab row moved to the MB Suite v3 sidebar / page bar (see the mb-suite-sidebar block below) */
 .count{display:inline-block;min-width:18px;padding:0 5px;border-radius:3px;background:var(--surface-3);color:var(--ink-2);font-size:11px;font-weight:600;line-height:17px;text-align:center;font-variant-numeric:tabular-nums}
 .count:empty{display:none}
-nav.tabs button[aria-current="page"] .count{background:var(--accent-soft);color:var(--accent)}
+.side-nav [aria-current="page"] .count{background:color-mix(in srgb,var(--accent) 14%,var(--surface));color:var(--accent)}
 .actions{display:flex;align-items:center;margin-left:auto;align-self:center;gap:6px}
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;white-space:nowrap;text-decoration:none;line-height:1.2;cursor:pointer;border-radius:var(--r-sm);min-height:var(--ctl);padding:0 14px;font-weight:550;font-size:13.5px;background:var(--surface);border:1px solid var(--border-strong);color:var(--ink);box-shadow:none;transition:background-color var(--ease),border-color var(--ease),color var(--ease)}
 .btn:hover{background:var(--surface-2);border-color:color-mix(in srgb,var(--ink) 30%,var(--border-strong))}
@@ -356,31 +373,55 @@ body.has-cart .totop{bottom:calc(92px + env(safe-area-inset-bottom,0px))}
 .onboarding-list{margin:6px 0 16px;padding-left:18px;display:flex;flex-direction:column;gap:6px;font-size:13.5px;color:var(--ink-2);line-height:1.5}
 .onboarding-list li::marker{color:var(--accent)}
 
-.site-footer{display:flex;flex-wrap:wrap;gap:8px 16px;justify-content:space-between;align-items:center;border-top:1px solid var(--border);margin-top:8px;padding-top:14px;padding-bottom:24px;color:var(--muted);font-size:12.5px}
+.site-footer{display:flex;flex-wrap:wrap;gap:8px 16px;justify-content:space-between;align-items:center;max-width:var(--page-max);margin:8px auto 0;border-top:1px solid var(--border);padding:14px var(--gutter) 24px;color:var(--muted);font-size:12.5px}
 .site-footer .footer-links{display:flex;flex-wrap:wrap;gap:4px 14px}
 .site-footer button{background:none;border:0;padding:0;color:var(--muted);text-decoration:underline;text-underline-offset:2px;font-size:inherit}
 .site-footer button:hover{color:var(--ink)}
 
 .bnav,.bn-sheet{display:none}
 
+/* ---- v1.8 ---- */
+.pill.cool{background:color-mix(in srgb,var(--s2) 12%,var(--surface));color:var(--s2);border-color:color-mix(in srgb,var(--s2) 40%,transparent)}
+.pill.review{background:var(--surface-2);color:var(--ink-2);border-style:dashed}
+.price-trend{font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums}
+.price-trend .down{color:var(--good-ink);font-weight:600}
+.price-trend .up{color:var(--crit);font-weight:600}
+.plan-note{font-size:12px;color:var(--ink-2)}
+.cart-btns{display:flex;gap:6px;align-items:center}
+.cmp-wrap{overflow-x:auto;max-height:62vh;margin-top:6px}
+.cmp{border-collapse:collapse;font-size:13px;width:100%;min-width:420px}
+.cmp th,.cmp td{border-top:1px solid var(--border);padding:7px 8px;text-align:left;vertical-align:top}
+.cmp thead th{border-top:0;font-weight:650;color:var(--ink);min-width:130px}
+.cmp tbody th{color:var(--ink-2);font-weight:600;white-space:nowrap;font-size:12px;width:1%}
+.cmp td.best{background:color-mix(in srgb,var(--good) 10%,var(--surface));font-weight:650;color:var(--good-ink)}
+.cmp .th-sm{width:56px;height:56px;margin-bottom:6px}
+.pause-list{margin:4px 0 14px;padding-left:18px;font-size:13.5px;color:var(--ink-2);line-height:1.6}
+.pause-opts{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.review-card{border:1px solid var(--border);border-radius:var(--r);padding:12px;display:flex;gap:12px;align-items:center}
+.review-card .th-sm{width:56px;height:56px}
+.review-card .nm{font-weight:650}
+.review-btns{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.review-btns .btn{flex:1}
+.map-grid{display:grid;grid-template-columns:auto 1fr;gap:8px 12px;align-items:center;font-size:13px;margin:6px 0 10px}
+.map-grid label{font-weight:600;color:var(--ink-2)}
+.map-sample{font-size:12px;color:var(--muted);background:var(--surface-2);border:1px solid var(--border);border-radius:var(--r-sm);padding:8px 10px;max-height:120px;overflow:auto;white-space:pre-wrap;overflow-wrap:anywhere}
+.dropped-h{font-size:14px;font-weight:650;margin:22px 0 8px}
+
 @media(max-width:860px){
-  nav.tabs{display:none}
   .stats{grid-template-columns:repeat(2,minmax(0,1fr))}
-  .bnav{display:grid;grid-template-columns:repeat(4,1fr);position:fixed;left:0;right:0;bottom:0;z-index:55;padding-bottom:env(safe-area-inset-bottom,0px);background:var(--surface);border-top:1px solid var(--border-strong);padding-top:0;gap:2px}
-  .bnav button{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;background:none;border:0;color:var(--ink-2);font-weight:550;min-height:54px;font-size:10.5px;letter-spacing:-.02em;position:relative;border-radius:0}
-  .bnav button svg.i{width:20px;height:20px}
-  .bnav button[aria-current="page"]{background:none;color:var(--accent);box-shadow:inset 0 2px 0 var(--accent)}
-  .bn-sheet{display:flex;flex-direction:column;gap:4px;position:fixed;left:8px;right:8px;z-index:56;background:var(--surface);border:1px solid var(--border-strong);padding:6px;border-radius:var(--r);box-shadow:var(--shadow-pop);bottom:calc(66px + env(safe-area-inset-bottom))}
+  #searchBtn kbd{display:none}
+}
+/* phones (<768, the MB Suite v3 phone breakpoint): bottom bar + its More sheet */
+@media(max-width:767px){
+  .bn-sheet{display:flex;flex-direction:column;gap:4px;position:fixed;left:8px;right:8px;z-index:56;background:var(--surface);border:1px solid var(--border-strong);padding:6px;border-radius:var(--r);box-shadow:var(--shadow-pop);bottom:calc(64px + env(safe-area-inset-bottom))}
   .bn-item{display:flex;align-items:center;gap:10px;min-height:48px;padding:0 12px;border:0;text-align:left;color:var(--ink);font-size:14px;border-radius:var(--r-sm);background:var(--surface)}
+  .bn-item:hover{background:var(--surface-2)}
   .bn-item svg.i{color:var(--ink-2)}
-  .bn-item[aria-current="page"]{box-shadow:inset 3px 0 0 var(--accent)}
-  .site-footer{padding-bottom:calc(84px + env(safe-area-inset-bottom,0px))}
+  .site-footer{padding-bottom:24px}
   .cartbar{bottom:calc(64px + env(safe-area-inset-bottom,0px))}
   .toast,.totop,.notice{bottom:calc(68px + env(safe-area-inset-bottom,0px))}
   body.has-cart .toast,body.has-cart .totop{bottom:calc(140px + env(safe-area-inset-bottom,0px))}
   body.has-cart main.wrap{padding-bottom:130px}
-  .top .wrap{padding-bottom:8px}
-  #searchBtn kbd{display:none}
 }
 @media(max-width:700px){
   .toolbar{display:grid;grid-template-columns:repeat(3,minmax(0,1fr))}
@@ -407,7 +448,10 @@ body.has-cart .totop{bottom:calc(92px + env(safe-area-inset-bottom,0px))}
   .wgrid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
   .wcard .body{padding:8px 10px 10px}
   .wcard .price-row .total{font-size:15px}
-  .cartbar{flex-wrap:nowrap;gap:8px;padding:8px 8px 8px 12px}
+  .cartbar{flex-wrap:wrap;gap:8px;padding:8px 8px 8px 12px}
+  .cartbar .cart-btns{width:100%}
+  .cartbar .cart-btns .btn{flex:1}
+  .pause-opts{grid-template-columns:1fr}
   .cart-sum{flex-direction:column;align-items:flex-start;gap:0}
   .cartbar .cart-info{font-size:12px}
   .cartbar .cart-info svg.i{display:none}
@@ -419,18 +463,324 @@ body.has-cart .totop{bottom:calc(92px + env(safe-area-inset-bottom,0px))}
   .card.tile{padding:10px 12px}
   .tile .val{font-size:19px}
 }
-@media(max-width:430px){.brand .bt{display:none}.top .wrap{flex-wrap:nowrap}}
 @media(max-width:380px){.wgrid{grid-template-columns:1fr}}
 @media print{
-  .top,.bnav,.bn-sheet,.cartbar,.totop,.notice,.toolbar,.scroll-progress,#toastHost,.site-footer,.ph-actions,.banner{display:none!important}
+  .mb-side,.page-bar,.bnav,.bn-sheet,.cartbar,.totop,.notice,.toolbar,#toastHost,.site-footer,.ph-actions,.banner{display:none!important}
   body{background:#fff}
 }
 @media(pointer:coarse),(max-width:700px){
   :root{--ctl:44px;--ctl-sm:44px}
 }
 </style>
+<style id="mb-suite-cutouts">
+/* =====================================================================
+   MB SUITE v2 · PAPER CUTOUTS surface layer
+   Additive and accent-driven. Load LAST in <head>: after mb-suite-core.css,
+   mb-suite-appbar.css and the app's adapter. Never edit core to get this look.
+   Changes SURFACE only: gradients, page wash, cutout art. Geometry (6/4/8px),
+   layout, density, type, components, motion and behavior stay MB Suite v1.
+   Per-app tweaks go in adapters/<app>-cutouts.css, not here.
+   ===================================================================== */
+
+/* ---- art + gradient tokens (all derived from --accent; no per-app hex) ---- */
+:root{
+  --cut-deep:var(--accent);
+  --cut-mid:color-mix(in srgb,var(--accent) 52%,#fff);
+  --cut-soft:color-mix(in srgb,var(--accent) 24%,#fff);
+  --cut-near:color-mix(in srgb,var(--accent) 62%,#0aa6b8);      /* neighbor hue; upgraded below where supported */
+  --cut-butter:#FFD98A;
+  --cut-blush:#F7B8A8;
+  --wash-top:color-mix(in srgb,var(--accent) 7%,#fff);
+  --wash-mid:color-mix(in srgb,var(--accent) 4%,var(--bg));
+  --g-line:linear-gradient(90deg,var(--accent),var(--cut-mid) 55%,var(--cut-butter));
+  --g-underline:linear-gradient(90deg,var(--accent),var(--cut-mid));
+  --g-pri:linear-gradient(135deg,var(--accent),var(--accent-hover));
+  --g-bar:linear-gradient(90deg,var(--accent),var(--cut-mid));
+  --g-tile:linear-gradient(135deg,color-mix(in srgb,var(--accent) 11%,var(--surface)),var(--surface) 65%);
+}
+@supports (color:oklch(from red l c h)){
+  :root{--cut-near:oklch(from var(--accent) calc(l + .04) c calc(h + 34))}
+}
+:root[data-theme="dark"],:root.dark{
+  --cut-mid:color-mix(in srgb,var(--accent) 60%,var(--surface));
+  --cut-soft:color-mix(in srgb,var(--accent) 30%,var(--surface));
+  --cut-near:color-mix(in srgb,var(--accent) 62%,#0aa6b8);
+  --cut-butter:#D9B363;
+  --cut-blush:#C98C80;
+  --wash-top:color-mix(in srgb,var(--accent) 16%,var(--bg));
+  --wash-mid:color-mix(in srgb,var(--accent) 7%,var(--bg));
+}
+@supports (color:oklch(from red l c h)){
+  :root[data-theme="dark"],:root.dark{--cut-near:oklch(from var(--accent) calc(l - .06) c calc(h + 34))}
+}
+
+/* ---- page wash: accent-derived, fades into the neutral page by ~680px ---- */
+html{min-height:100%;background:linear-gradient(180deg,var(--wash-top) 0,var(--wash-mid) 420px,var(--bg) 680px) 0 0/100% 680px no-repeat,var(--bg)}  /* v3 fix: fixed 680px size + min-height so short pages don't show a seam */
+body{background:none}
+
+/* ---- app bar: gradient accent line + gradient underline on the current tab ---- */
+.top,.app-bar{box-shadow:var(--shadow)!important}
+.top::before,.app-bar::before{content:"";position:absolute;left:0;right:0;top:0;height:3px;background:var(--g-line);pointer-events:none;z-index:1}
+.tabs button[aria-current="page"],nav.tabs button[aria-current="page"],
+:root[data-theme="dark"] nav.tabs button[aria-current="page"]{box-shadow:none!important;background:var(--g-underline) bottom/100% 2px no-repeat!important}
+.bnav button[aria-current="page"]{box-shadow:none!important;background:var(--g-underline) top/100% 2px no-repeat!important}
+
+/* ---- gradient is allowed ONLY here (everything else stays flat v1) ----
+   primary buttons, progress/bar fills, the hero stat tile, the banner, the page wash, the accent line.
+   Map the app's own selectors in adapters/<app>-cutouts.css; these are the common ones. */
+:is(.btn.primary,.btn.pri,.btn-primary,button.primary,.primary-btn){background:var(--g-pri)!important;border-color:transparent!important;color:var(--accent-ink)!important}
+.cu-hero{background:var(--g-tile)}
+.cu-bar{background:var(--g-bar)!important}                 /* use on the fill element of a progress/bar */
+
+/* ---- banner ---- */
+.cu-banner{position:relative;overflow:hidden;min-height:128px;margin:0 0 var(--sp-4);padding:22px 24px;border-radius:var(--r-lg);
+  border:1px solid color-mix(in srgb,var(--accent) 16%,transparent);box-shadow:var(--shadow);
+  background:linear-gradient(105deg,color-mix(in srgb,var(--accent) 3%,var(--surface)) 0%,color-mix(in srgb,var(--accent) 9%,var(--surface)) 60%,
+    color-mix(in srgb,var(--cut-butter) 22%,color-mix(in srgb,var(--accent) 5%,var(--surface))) 100%)}
+.cu-banner.slim{min-height:72px;padding:16px 24px}
+.cu-banner .cu-txt{position:relative;z-index:1}
+.cu-banner.slim .cu-art:not(.at-bottom):not(.at-top){max-width:58%}
+.cu-banner .cu-t{margin:0;font-size:var(--fs-h2);font-weight:650;letter-spacing:-.015em;color:var(--ink)}
+.cu-banner .cu-s{margin:4px 0 0;font-size:13.5px;color:var(--ink-2)}
+
+/* ---- art: roles (never hardcode hexes; recolor by role class or palette class) ---- */
+.cu-art{position:absolute;right:0;top:0;height:100%;width:auto;max-width:75%;pointer-events:none}
+.cu-art .d{fill:var(--cu-d,var(--cut-deep))}
+.cu-art .m{fill:var(--cu-m,var(--cut-mid))}
+.cu-art .s{fill:var(--cu-s,var(--cut-soft))}
+.cu-art .n{fill:var(--cu-n,var(--cut-near))}
+.cu-art .b{fill:var(--cu-b,var(--cut-butter))}
+.cu-art .r{fill:var(--cu-r,var(--cut-blush))}
+.cu-art .sd{fill:none;stroke:var(--cu-d,var(--cut-deep));stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+.cu-art .sm{fill:none;stroke:var(--cu-m,var(--cut-mid));stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+
+/* ---- palettes: put on the svg or any ancestor ---- */
+.cu-p-mono{--cu-n:color-mix(in srgb,var(--accent) 78%,#000);--cu-b:color-mix(in srgb,var(--accent) 14%,var(--surface));--cu-r:color-mix(in srgb,var(--accent) 38%,var(--surface))}
+.cu-p-soft{--cu-d:var(--cut-mid);--cu-m:var(--cut-soft);--cu-s:color-mix(in srgb,var(--accent) 12%,var(--surface));
+  --cu-n:color-mix(in srgb,var(--cut-near) 45%,var(--surface));--cu-b:color-mix(in srgb,var(--cut-butter) 70%,var(--surface));--cu-r:color-mix(in srgb,var(--cut-blush) 70%,var(--surface))}
+.cu-p-bold{--cu-d:var(--accent-hover);--cu-m:var(--accent);--cu-s:var(--cut-mid)}
+
+/* ---- placement / size / modifiers (all optional; size with --cu-w or height) ---- */
+.cu-art.at-right{right:0;left:auto;top:0}
+.cu-art.at-left{left:0;right:auto;top:0}
+.cu-art.at-top{left:0;right:0;top:0;width:100%;height:auto;max-width:none}
+.cu-art.at-bottom{left:0;right:0;top:auto;bottom:0;width:100%;height:auto;max-width:none}
+.cu-art.at-corner{top:0;right:0;height:auto;width:var(--cu-w,220px);max-width:none}
+.cu-art.at-corner-bl{top:auto;right:auto;bottom:0;left:0;height:auto;width:var(--cu-w,220px);max-width:none}
+.cu-art.inline{position:relative;display:block;right:auto;top:auto;margin:0 auto;width:var(--cu-w,100%);max-width:100%;height:auto}
+.cu-art.mirror{transform:scaleX(-1)}
+.cu-art.flip{transform:scaleY(-1)}
+.cu-art.fade{opacity:.35}
+.cu-art.xs{--cu-w:64px}.cu-art.sm{--cu-w:120px}.cu-art.md{--cu-w:220px}.cu-art.lg{--cu-w:340px}
+:root[data-theme="dark"] .cu-art,:root.dark .cu-art{opacity:.85}
+:root[data-theme="dark"] .cu-art.fade,:root.dark .cu-art.fade{opacity:.3}
+
+/* ---- phones + print ---- */
+@media(max-width:600px){
+  .cu-banner{padding:18px 16px;min-height:104px}
+  .cu-banner .cu-art:not(.at-bottom):not(.at-top){max-width:46%}
+}
+@media print{html{background:#fff}.cu-banner,.cu-art{display:none}}
+</style>
+<style id="mb-suite-sidebar">
+/* =====================================================================
+   MB SUITE v3 · LEFT SIDEBAR NAVIGATION  (replaces mb-suite-appbar.css)
+   Load order: mb-suite-core.css → app adapter → mb-suite-cutouts.css (v2) → this file → <app>-v3.css
+   Needs v1 tokens (--surface, --border, --accent, --r-sm, --page-max, --gutter …) and, if present,
+   v2's --g-line / --cut-mid for the gradient accents (falls back to flat accent without v2).
+
+   Markup (see v3-updates/demo/index.html for a working page):
+   <body class="mb-shell">
+     <aside class="mb-side" aria-label="App">
+       <a class="brand" href="./" aria-label="mbname.online: go to Home"> .logo + .bt(b + span) </a>
+       <nav class="side-nav" aria-label="Sections"> <button aria-current="page"><svg class="uic"/><span>Home</span></button> … </nav>
+       <nav class="side-nav side-end" aria-label="More"> Settings / Help items (optional) </nav>
+     </aside>
+     <div class="mb-main">
+       <header class="page-bar">
+         <a class="brand phone-brand" href="./" …>  (same brand block; shown on phones only)
+         <h1 class="page-title">Home</h1>
+         <div class="actions"> search · status chip · Data · theme switch · primary action </div>
+       </header>
+       <main class="wrap"> … </main>
+     </div>
+     <nav class="bnav" aria-label="Sections"> phone bottom bar (max 5 items, rest in a More sheet) </nav>
+   </body>
+
+   Breakpoints (identical in every app):
+     ≥1024px  sidebar 240px with labels
+     768–1023 rail 76px: icon over a short label, logo only
+     <768     no sidebar; page-bar becomes the top bar with the brand; docked bottom bar
+   ===================================================================== */
+:root{
+  --side-w:240px; --rail-w:76px; --bar-h:56px;
+  --g-rail:linear-gradient(180deg,var(--accent),var(--cut-mid,var(--accent)));
+}
+
+/* family accent line across the whole window (sidebar included) */
+.mb-shell::before{content:"";position:fixed;left:0;right:0;top:0;height:3px;background:var(--g-line,var(--accent));z-index:60;pointer-events:none}
+
+/* ---- sidebar ---- */
+.mb-side{position:fixed;top:0;bottom:0;left:0;width:var(--side-w);z-index:40;display:flex;flex-direction:column;gap:2px;
+  padding:15px 0 12px;background:var(--surface);border-right:1px solid var(--border);overflow-y:auto;overscroll-behavior:contain;scrollbar-width:thin}
+.mb-side .brand{margin:0 8px 12px;padding:6px 8px}
+.side-nav{display:flex;flex-direction:column;gap:2px;padding:0 8px}
+.side-nav.side-end{margin-top:auto;padding-top:8px;border-top:1px solid var(--border)}
+.side-label{margin:14px 20px 4px;font-size:var(--fs-xs,11.5px);font-weight:650;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.side-nav button,.side-nav a{position:relative;display:flex;align-items:center;gap:10px;width:100%;min-height:40px;padding:0 12px;border:0;border-radius:var(--r-sm);
+  background:none;font:500 14px var(--font);color:var(--ink-2);text-align:left;text-decoration:none;cursor:pointer;
+  transition:background-color var(--ease),color var(--ease)}
+.side-nav .uic,.side-nav svg{flex:none;width:18px;height:18px;opacity:.75}
+.side-nav button:hover,.side-nav a:hover{background:var(--surface-2);color:var(--ink)}
+.side-nav [aria-current="page"],.side-nav [aria-current="page"]:hover{color:var(--accent);font-weight:600;
+  background:var(--g-rail) left center/3px 60% no-repeat,var(--accent-soft)}
+.side-nav [aria-current="page"] svg{opacity:1}
+.side-nav button:focus-visible,.side-nav a:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
+.side-nav .count{margin-left:auto;font-size:12px;font-weight:600;color:var(--muted);font-variant-numeric:tabular-nums}
+.side-nav .dot{position:absolute;left:24px;top:8px;width:8px;height:8px;border-radius:2px;background:var(--warn)}
+
+/* ---- the brand block: ALWAYS a link to the home / start view ---- */
+a.brand{display:flex;align-items:center;gap:9px;min-width:0;border-radius:var(--r-sm);color:inherit;text-decoration:none;transition:background-color var(--ease)}
+a.brand:hover{background:var(--surface-2)}
+a.brand:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.brand .logo,.brand .logo svg{display:block;flex:none;width:28px;height:28px;border-radius:var(--r)}
+.brand .bt{display:flex;flex-direction:column;min-width:0;line-height:1.15}
+.brand b{font-size:14.5px;font-weight:650;letter-spacing:-.005em;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.brand .bt span{font-size:11px;color:var(--muted);letter-spacing:.01em;white-space:nowrap}
+
+/* ---- main column + page bar ---- */
+.mb-main{margin-left:var(--side-w);min-width:0}
+.page-bar{position:sticky;top:0;z-index:30;display:flex;align-items:center;gap:12px;min-height:var(--bar-h);
+  padding:3px max(var(--gutter),calc((100% - var(--page-max)) / 2 + var(--gutter))) 0;
+  background:color-mix(in srgb,var(--surface) 96%,transparent);border-bottom:1px solid var(--border);box-shadow:var(--shadow)}
+.page-bar .phone-brand{display:none}
+.page-title{margin:0;font-size:18px;font-weight:650;letter-spacing:-.01em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.page-bar .actions{margin-left:auto;display:flex;align-items:center;gap:6px}
+.page-bar .actions>*{min-height:var(--ctl-sm)}
+.mb-main>.wrap{max-width:var(--page-max);margin:0 auto;padding:20px max(var(--gutter),env(safe-area-inset-right)) 48px max(var(--gutter),env(safe-area-inset-left))}
+
+/* ---- phone bottom bar (hidden until <768px) ---- */
+.bnav{display:none}
+
+/* ---- tablet: compact rail ---- */
+@media (max-width:1023px){
+  .mb-side{width:var(--rail-w);padding-top:12px}
+  .mb-side .brand{justify-content:center;margin:0 10px 10px;padding:8px 0}
+  .mb-side .brand .bt,.side-label,.side-nav .count{display:none}
+  .side-nav{padding:0 6px}
+  .side-nav button,.side-nav a{flex-direction:column;justify-content:center;gap:3px;min-height:56px;padding:6px 2px;font-size:10.5px;text-align:center;line-height:1.15}
+  .side-nav [aria-current="page"],.side-nav [aria-current="page"]:hover{background:var(--g-rail) left center/3px 50% no-repeat,var(--accent-soft)}
+  .side-nav .dot{left:auto;right:12px}
+  .mb-main{margin-left:var(--rail-w)}
+}
+/* ---- phones: top bar with the brand + docked bottom bar ---- */
+@media (max-width:767px){
+  .mb-side{display:none}
+  .mb-main{margin-left:0}
+  .page-bar{padding:3px max(12px,env(safe-area-inset-right)) 0 max(12px,env(safe-area-inset-left));gap:8px}
+  .page-bar .phone-brand{display:flex;margin-left:-3px;padding:3px 6px 3px 3px}
+  .page-bar .page-title{display:none}               /* the view's own h2 / banner names the page on phones */
+  .page-bar .actions .hide-phone{display:none}
+  .bnav{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;position:fixed;left:0;right:0;bottom:0;z-index:40;
+    padding:0 env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);background:var(--surface);border-top:1px solid var(--border-strong)}
+  .bnav button,.bnav a{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;min-height:56px;border:0;border-radius:0;background:none;
+    font:500 11px var(--font);color:var(--ink-2);text-decoration:none}
+  .bnav svg{width:20px;height:20px}
+  .bnav [aria-current="page"]{color:var(--accent);font-weight:600;background:var(--g-underline,linear-gradient(var(--accent),var(--accent))) top/100% 2px no-repeat}
+  body.mb-shell{padding-bottom:calc(56px + env(safe-area-inset-bottom))}
+}
+@media (max-width:420px){.page-bar .phone-brand .bt span{display:none}}
+@media print{.mb-side,.bnav,.page-bar .actions,.mb-shell::before{display:none!important}.mb-main{margin-left:0}}
+</style>
+<style id="mb-suite-v3">
+/* =====================================================================
+   MB SUITE v3 · components: install card (Settings/More) and the share dialog.
+   Load after mb-suite-sidebar.css. Uses v1 tokens only; v2 gradients are picked up where present.
+   ===================================================================== */
+/* ---- install card ---- */
+.mb-install{display:flex;align-items:center;gap:12px;padding:12px 14px;border:1px solid var(--border);border-left:3px solid var(--accent);
+  border-radius:var(--r);background:var(--surface)}
+.mb-install>.uic{flex:none;width:22px;height:22px;color:var(--accent)}
+.mb-install>div{flex:1;min-width:0}
+.mb-install b{display:block;font-size:14px;font-weight:600;color:var(--ink)}
+.mb-install p{margin:2px 0 0;font-size:12.5px;color:var(--ink-2)}
+.mb-install p b{display:inline;font-size:inherit}
+.mb-install .btn{flex:none}
+.mb-install.is-done{border-left-color:var(--good)}
+.mb-install.is-done>.uic{color:var(--good-ink)}
+@media (max-width:520px){.mb-install{flex-wrap:wrap}.mb-install .btn{width:100%}}
+
+/* ---- share button (put it where the milestone is shown) ---- */
+.mb-share-btn .uic{width:16px;height:16px}
+
+/* ---- share dialog ---- */
+dialog.mb-share{width:min(460px,calc(100vw - 24px));max-height:calc(100dvh - 24px);padding:0;border:1px solid var(--border);border-radius:var(--r-lg);
+  background:var(--surface);color:var(--ink);box-shadow:var(--shadow-pop);overflow:auto}
+dialog.mb-share::backdrop{background:var(--scrim)}
+.mb-share .ms-head{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:12px 16px;border-bottom:1px solid var(--border)}
+.mb-share h3{margin:0;font-size:16px;font-weight:650}
+.mb-share .ms-prev{position:relative;margin:16px 16px 0;aspect-ratio:1;border:1px solid var(--border);border-radius:var(--r);overflow:hidden;background:var(--surface-2)}
+.mb-share .ms-prev img{display:block;width:100%;height:100%}
+.mb-share .ms-wait{position:absolute;inset:0;display:grid;place-items:center;margin:0;color:var(--muted);font-size:13px}
+.mb-share .ms-opts{display:flex;flex-wrap:wrap;gap:4px 16px;padding:12px 16px 0}
+.mb-share .ms-opts:empty{display:none}
+.mb-share .ms-opt{display:inline-flex;align-items:center;gap:8px;min-height:36px;font-size:13.5px}
+.mb-share .ms-note{margin:10px 16px 0;font-size:12px;color:var(--muted)}
+.mb-share .ms-btns{display:flex;justify-content:flex-end;gap:8px;padding:14px 16px 16px;margin-top:12px;border-top:1px solid var(--border)}
+@media (max-width:520px){.mb-share .ms-btns .btn{flex:1}}
+.mb-share [hidden],[data-mb-install][hidden]{display:none!important}
+/* v2 banner on phones: keep the text column clear of the art */
+@media (max-width:600px){:where(.cu-banner) .cu-txt{max-width:54%}}   /* same as the v2 adapters; low specificity so an adapter can override */
+</style>
+<style id="mbwishlist-adapter">
+/* ===== mbwishlist adapters: v2 cutouts + v3 shell fit (per-app; everything above this block is shared kit CSS) ===== */
+/* art + wash follow the brand amber (#D97706), not the deeper UI accent used for text contrast */
+:root{--cut-deep:var(--brand);--cut-mid:color-mix(in srgb,var(--brand) 52%,#fff);--cut-soft:color-mix(in srgb,var(--brand) 24%,#fff);
+  --wash-top:color-mix(in srgb,var(--brand) 7%,#fff);--wash-mid:color-mix(in srgb,var(--brand) 4%,var(--bg))}
+:root[data-theme="dark"]{--cut-deep:var(--accent);--cut-mid:color-mix(in srgb,var(--accent) 60%,var(--surface));--cut-soft:color-mix(in srgb,var(--accent) 30%,var(--surface));
+  --wash-top:color-mix(in srgb,var(--accent) 16%,var(--bg));--wash-mid:color-mix(in srgb,var(--accent) 7%,var(--bg))}
+/* gradient surfaces mapped to this app's selectors */
+.checkout-progress-fill{background:var(--g-bar)}
+.stats .cu-hero{background:var(--g-tile)}
+/* shell fit */
+/* light mode: accent text on accent-tinted backgrounds uses the deeper amber so it clears 4.5:1 (was 4.1-4.5) */
+:root:not([data-theme="dark"]) .side-nav [aria-current="page"],:root:not([data-theme="dark"]) .banner strong{color:var(--accent-hover)}
+.tld{font-style:normal;color:var(--accent)}
+@media (min-width:701px){ .toolbar select{width:auto;flex:0 1 auto;min-width:150px} }  /* filters sit in one row next to search (they stacked full-width before) */
+.page-bar{z-index:50}
+.page-bar .actions{gap:6px}
+.brand .logo svg{border-radius:0}
+.mb-side .side-nav .count{margin-left:auto}
+.cartbar{left:calc(50% + var(--side-w) / 2);width:min(760px,calc(100% - var(--side-w) - 24px))}
+.toast{left:calc(50% + var(--side-w) / 2)}
+.notice{left:calc(var(--side-w) + 16px)}
+#homeBanner .cu-art{max-width:62%}
+.page-h{align-items:flex-end}
+@media (min-width:768px){ .page-h h2{display:none} .page-h p{margin-top:0} }  /* the page bar names the view; the line under it stays */
+.lbl-add{display:inline}
+.empty-state .es-art{display:block;margin:0 auto 6px}
+.share-row{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:12px;padding:12px 14px}
+.share-row b{font-size:14px}
+.share-row p{color:var(--ink-2);font-size:13px;margin-top:2px}
+#faqInstall{margin-bottom:12px}
+@media (max-width:1023px){
+  .cartbar{left:calc(50% + var(--rail-w) / 2);width:min(760px,calc(100% - var(--rail-w) - 24px))}
+  .toast{left:calc(50% + var(--rail-w) / 2)}
+  .notice{left:calc(var(--rail-w) + 16px)}
+}
+@media (max-width:767px){
+  .cartbar,.toast{left:50%}
+  .cartbar{width:calc(100% - 24px)}
+  .notice{left:8px}
+  .page-bar .actions .hide-phone{display:none}
+}
+@media (max-width:520px){
+  .lbl-add{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+  #addItemBtn{width:var(--ctl-sm);padding:0}
+}
+</style>
 </head>
-<body>
+<body class="mb-shell">
 <svg xmlns="http://www.w3.org/2000/svg" style="display:none" aria-hidden="true">
   <symbol id="i-logo" viewBox="0 0 64 64"><rect width="64" height="64" rx="13" fill="#D97706"/><g transform="translate(0,-0.02416552)"><path d="m 17,24.524164 h 30 l -2.5,26 h -25 z" fill="none" stroke="#fff" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/><path d="m 25,24.524164 v -4 a 7,7 0 0 1 14,0 v 4" fill="none" stroke="#fff" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/><path d="m 32,43.341388 c -4.6,-3 -7.2,-5.4 -7.2,-8.1 a 3.7,3.7 0 0 1 7.2,-1.2 3.7,3.7 0 0 1 7.2,1.2 c 0,2.7 -2.6,5.1 -7.2,8.1 z" fill="#f2b640"/></g></symbol>
   <symbol id="i-cart" viewBox="0 0 24 24"><path d="M3 3.8h2.3l2.4 11.4a1.4 1.4 0 0 0 1.4 1.1h8.9a1.4 1.4 0 0 0 1.4-1l2-7.5H6.4"/><circle cx="9.8" cy="20" r="1.5" fill="currentColor" stroke="none"/><circle cx="17.7" cy="20" r="1.5" fill="currentColor" stroke="none"/></symbol>
@@ -459,25 +809,30 @@ body.has-cart .totop{bottom:calc(92px + env(safe-area-inset-bottom,0px))}
   <symbol id="i-up" viewBox="0 0 24 24"><path d="M12 19V5M5 12l7-7 7 7"/></symbol>
   <symbol id="i-doc" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8"/></symbol>
   <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></symbol>
+  <symbol id="i-share" viewBox="0 0 24 24"><path d="M4 12v7a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-7"/><path d="M16 6l-4-4-4 4M12 2v13"/></symbol>
   <symbol id="i-image" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></symbol>
 </svg>
 
 <a href="#main" class="skip">Skip to content</a>
-<div class="scroll-progress" id="scrollProgress"></div>
 
-<header class="top" id="siteHeader">
-  <div class="wrap">
-    <a class="brand" href="#main" aria-label="mbwishlist.online">
-      <span class="logo" aria-hidden="true"><svg class="logo-mark"><use href="#i-logo"/></svg></span>
-      <span class="bt"><b>mbwishlist.online</b><span>Want list &amp; shopping cart</span></span>
-    </a>
-    <nav class="tabs" id="siteNav" aria-label="Sections">
-      <button type="button" id="tabWishlist" data-tab="wishlist" aria-current="page"><svg class="i" aria-hidden="true"><use href="#i-list"/></svg>Wishlist <span class="count" id="countWishlist"></span></button>
-      <button type="button" id="tabPurchased" data-tab="purchased"><svg class="i" aria-hidden="true"><use href="#i-bought"/></svg>Purchased <span class="count" id="countPurchased"></span></button>
-      <button type="button" id="tabFaq" data-tab="faq"><svg class="i" aria-hidden="true"><use href="#i-help"/></svg>FAQ</button>
-    </nav>
-    <div class="actions">
-      <button type="button" class="bk-chip" id="bkChip" title="Save a backup now"><svg class="i" aria-hidden="true"><use href="#i-clock"/></svg><span id="bkChipText">Never backed up</span></button>
+<aside class="mb-side" aria-label="App">
+  <a class="brand" href="./" data-home aria-label="mbwishlist.online: go to My list"><span class="logo"><svg viewBox="0 0 64 64" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg"><rect width="64" height="64" rx="13" fill="#D97706"/><g transform="translate(0,-0.02416552)"><path d="m 17,24.524164 h 30 l -2.5,26 h -25 z" fill="none" stroke="#fff" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/><path d="m 25,24.524164 v -4 a 7,7 0 0 1 14,0 v 4" fill="none" stroke="#fff" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/><path d="m 32,43.341388 c -4.6,-3 -7.2,-5.4 -7.2,-8.1 a 3.7,3.7 0 0 1 7.2,-1.2 3.7,3.7 0 0 1 7.2,1.2 c 0,2.7 -2.6,5.1 -7.2,8.1 z" fill="#f2b640"/></g></svg></span><span class="bt"><b>mbwishlist<i class="tld">.online</i></b><span>Official Web App · v1.0</span></span></a>
+  <nav class="side-nav" id="siteNav" aria-label="Sections">
+    <button type="button" id="tabWishlist" data-tab="wishlist" aria-current="page"><svg class="i" aria-hidden="true"><use href="#i-list"/></svg><span>My list</span><span class="count" id="countWishlist"></span></button>
+    <button type="button" id="tabPurchased" data-tab="purchased"><svg class="i" aria-hidden="true"><use href="#i-bought"/></svg><span>Purchased</span><span class="count" id="countPurchased"></span></button>
+  </nav>
+  <nav class="side-nav side-end" aria-label="Help">
+    <button type="button" id="tabFaq" data-tab="faq"><svg class="i" aria-hidden="true"><use href="#i-help"/></svg><span>FAQ</span></button>
+  </nav>
+</aside>
+
+<div class="mb-main">
+<header class="page-bar" id="siteHeader">
+  <a class="brand phone-brand" href="./" data-home aria-label="mbwishlist.online: go to My list"><span class="logo"><svg viewBox="0 0 64 64" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg"><rect width="64" height="64" rx="13" fill="#D97706"/><g transform="translate(0,-0.02416552)"><path d="m 17,24.524164 h 30 l -2.5,26 h -25 z" fill="none" stroke="#fff" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/><path d="m 25,24.524164 v -4 a 7,7 0 0 1 14,0 v 4" fill="none" stroke="#fff" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/><path d="m 32,43.341388 c -4.6,-3 -7.2,-5.4 -7.2,-8.1 a 3.7,3.7 0 0 1 7.2,-1.2 3.7,3.7 0 0 1 7.2,1.2 c 0,2.7 -2.6,5.1 -7.2,8.1 z" fill="#f2b640"/></g></svg></span><span class="bt"><b>mbwishlist<i class="tld">.online</i></b><span>Official Web App · v1.0</span></span></a>
+  <h1 class="page-title" id="pageTitle">My list</h1>
+  <div class="actions">
+      <button type="button" class="btn sm ghost hide-phone" id="searchBtn" aria-label="Search (Ctrl/Cmd+K)" title="Search (Ctrl/Cmd+K)"><svg class="i" aria-hidden="true"><use href="#i-search"/></svg><kbd>Ctrl K</kbd></button>
+      <button type="button" class="bk-chip hide-phone" id="bkChip" title="Save a backup now"><svg class="i" aria-hidden="true"><use href="#i-clock"/></svg><span id="bkChipText">Never backed up</span></button>
       <div class="menu-wrap">
         <button type="button" class="btn sm" id="menuToggle" aria-haspopup="true" aria-expanded="false" aria-controls="settingsMenu" title="Data: backup, import, export">
           <svg class="i" aria-hidden="true"><use href="#i-data"/></svg><span class="lbl-t">Data</span><svg class="i" aria-hidden="true" style="width:14px;height:14px"><use href="#i-chev"/></svg><span class="dot" aria-hidden="true"></span>
@@ -495,6 +850,10 @@ body.has-cart .totop{bottom:calc(92px + env(safe-area-inset-bottom,0px))}
           <button type="button" class="dm-item" id="importBtn" role="menuitem">
             <svg class="i" aria-hidden="true"><use href="#i-upload"/></svg>
             <span class="dm-t"><b>Import Backup (JSON)…</b><small>Adds items. Skips ones already on your list</small></span>
+          </button>
+          <button type="button" class="dm-item" id="importCsvBtn" role="menuitem">
+            <svg class="i" aria-hidden="true"><use href="#i-sheet"/></svg>
+            <span class="dm-t"><b>Import Spreadsheet (CSV)…</b><small>Bring in a list from Excel or Sheets. You check the columns first</small></span>
           </button>
           <button type="button" class="dm-item" id="exportCsvBtn" role="menuitem">
             <svg class="i" aria-hidden="true"><use href="#i-sheet"/></svg>
@@ -517,29 +876,38 @@ body.has-cart .totop{bottom:calc(92px + env(safe-area-inset-bottom,0px))}
         </div>
       </div>
       <input type="file" id="importFileInput" accept="application/json,.json" hidden>
-      <button type="button" class="btn sm ghost" id="searchBtn" aria-label="Search (Ctrl/Cmd+K)" title="Search (Ctrl/Cmd+K)"><svg class="i" aria-hidden="true"><use href="#i-search"/></svg><kbd>Ctrl K</kbd></button>
+      <input type="file" id="importCsvInput" accept=".csv,text/csv" hidden>
       <button type="button" class="themesw" id="themeToggleBtn" role="switch" aria-checked="false" aria-label="Dark mode" title="Dark mode">
         <span class="tk"><span class="th"><svg class="i sun" aria-hidden="true"><use href="#i-sun"/></svg><svg class="i moon" aria-hidden="true"><use href="#i-moon"/></svg></span></span>
       </button>
-    </div>
+      <button type="button" class="btn sm primary" id="addItemBtn" aria-label="Add item"><svg class="i" aria-hidden="true"><use href="#i-plus"/></svg><span class="lbl-add">Add item</span></button>
   </div>
 </header>
 
 <main class="wrap" id="main" tabindex="-1">
-  <div class="page-h">
+  <section class="cu-banner" id="homeBanner">
+    <svg class="cu-art" viewBox="0 0 640 136" preserveAspectRatio="xMaxYMax slice" aria-hidden="true" focusable="false"><circle class="b" cx="560" cy="46" r="26"/><path class="s" d="M210 150 C315 80 525 80 630 150Z"/><path class="m" d="M410 150 C485 66 635 66 710 150Z"/><path class="d" d="M530 150 C585 90 695 90 750 150Z"/><path class="n" transform="translate(470 98) rotate(-64) scale(0.5)" d="M0 0 C 20 -34 66 -40 96 -6 C 70 28 22 34 0 0Z"/><path class="d" transform="translate(480 98) rotate(-116) scale(0.4)" d="M0 0 C 20 -34 66 -40 96 -6 C 70 28 22 34 0 0Z"/><circle class="r" cx="360" cy="44" r="6"/></svg>
+    <div class="cu-txt"><h2 class="cu-t">My list</h2><p class="cu-s" id="bannerSub">Planned purchases, in one place.</p></div>
+  </section>
+
+  <div class="page-h" id="viewHead" hidden>
     <div>
-      <h2 id="pageTitle">Wishlist</h2>
-      <p id="pageSub">Planned purchases, in one place.</p>
+      <h2 id="viewTitle">Purchased</h2>
+      <p id="pageSub"></p>
     </div>
     <div class="ph-actions">
       <button type="button" class="btn" id="releaseNotesBtn" hidden><svg class="i" aria-hidden="true"><use href="#i-doc"/></svg>Release notes</button>
-      <button type="button" class="btn primary" id="addItemBtn"><svg class="i" aria-hidden="true"><use href="#i-plus"/></svg>Add item</button>
     </div>
   </div>
 
   <div class="banner" id="demoBanner" hidden>
     <span><strong>Sample data.</strong> Clear it and start your own list.</span>
     <button type="button" class="btn sm" id="clearDemoBtn">Clear sample items</button>
+  </div>
+
+  <div class="banner" id="reviewBanner" hidden>
+    <span id="reviewBannerText"></span>
+    <button type="button" class="btn sm" id="startReviewBtn">Review now</button>
   </div>
 
   <div class="stats grid" id="statsRow"></div>
@@ -585,6 +953,7 @@ body.has-cart .totop{bottom:calc(92px + env(safe-area-inset-bottom,0px))}
       <div id="wishlistTable" class="tablewrap" hidden></div>
     </div>
     <div id="wishlistEmpty" class="empty-state" hidden>
+      <svg class="cu-art inline es-art" style="--cu-w:120px" viewBox="0 0 160 120" preserveAspectRatio="xMidYMid meet" aria-hidden="true" focusable="false"><path class="s" transform="translate(80 98)" d="M-48 2.2 C-48 -15.8 26.4 -16.5 48 -1.5 C49 14.2 -26.4 16.5 -48 2.2Z"/><path class="sd" d="M80 92 C75.6 71.8 83.3 54 80 41.4"/><path class="d" transform="translate(80 41.4) rotate(-38) scale(0.5)" d="M0 0 C 20 -34 66 -40 96 -6 C 70 28 22 34 0 0Z"/><path class="m" transform="translate(80 52.5) rotate(-150) scale(0.4)" d="M0 0 C 20 -34 66 -40 96 -6 C 70 28 22 34 0 0Z"/><circle class="b" cx="122" cy="40" r="7"/><path class="m" transform="translate(40 104)" d="M-13 0.9 C-13 -6.3 7.2 -6.6 13 -0.6 C13.3 5.7 -7.2 6.6 -13 0.9Z"/></svg>
       <h3 id="wishlistEmptyTitle">Nothing here yet</h3>
       <p id="wishlistEmptyText">Add something you're planning to buy. Paste a link, or fill it in by hand.</p>
       <div class="es-act" id="wishlistEmptyActions"></div>
@@ -592,14 +961,24 @@ body.has-cart .totop{bottom:calc(92px + env(safe-area-inset-bottom,0px))}
   </section>
 
   <section id="purchasedPane" hidden>
+    <div class="card share-row" id="shareRow" hidden>
+      <div><b id="shareRowTitle">Your progress</b><p>Share it as an image. Item names never go on it, and dollar amounts only if you turn them on.</p></div>
+      <button type="button" class="btn mb-share-btn" id="shareProgressBtn"><svg class="i" aria-hidden="true"><use href="#i-share"/></svg>Share</button>
+    </div>
     <div id="purchasedList" class="tablewrap"></div>
     <div id="purchasedEmpty" class="empty-state" hidden>
+      <svg class="cu-art inline es-art" style="--cu-w:120px" viewBox="0 0 160 120" preserveAspectRatio="xMidYMid meet" aria-hidden="true" focusable="false"><path class="s" transform="translate(80 98)" d="M-48 2.2 C-48 -15.8 26.4 -16.5 48 -1.5 C49 14.2 -26.4 16.5 -48 2.2Z"/><path class="sd" d="M80 92 C75.6 71.8 83.3 54 80 41.4"/><path class="d" transform="translate(80 41.4) rotate(-38) scale(0.5)" d="M0 0 C 20 -34 66 -40 96 -6 C 70 28 22 34 0 0Z"/><path class="m" transform="translate(80 52.5) rotate(-150) scale(0.4)" d="M0 0 C 20 -34 66 -40 96 -6 C 70 28 22 34 0 0Z"/><circle class="b" cx="122" cy="40" r="7"/><path class="m" transform="translate(40 104)" d="M-13 0.9 C-13 -6.3 7.2 -6.6 13 -0.6 C13.3 5.7 -7.2 6.6 -13 0.9Z"/></svg>
       <h3>No purchases yet</h3>
-      <p>Items you mark purchased land here with what you spent, so you can see where the money went.</p>
+      <p>Items you mark purchased land here with what you spent, so you can see where the money went. On My list, use Buy now or Mark purchased.</p>
+    </div>
+    <div id="droppedWrap" hidden>
+      <h3 class="dropped-h">Decided against</h3>
+      <div id="droppedList" class="tablewrap"></div>
     </div>
   </section>
 
   <section id="faqSection" hidden>
+    <div id="faqInstall" data-mb-install data-app-name="Wishlist" data-note="Opens in its own window with its own icon. Works offline after the first visit."></div>
     <div class="faq-list" id="faqList">
       <div class="faq-item" id="faq-1">
         <button class="faq-q" aria-expanded="false"><span>Where is my list saved?</span><svg class="i chev" aria-hidden="true"><use href="#i-chev"/></svg></button>
@@ -629,11 +1008,35 @@ body.has-cart .totop{bottom:calc(92px + env(safe-area-inset-bottom,0px))}
         <button class="faq-q" aria-expanded="false"><span>What are the small store labels on my items?</span><svg class="i chev" aria-hidden="true"><use href="#i-chev"/></svg></button>
         <div class="faq-answer"><p>When a link matches a store this app recognizes, it shows that store's name as a label. This app isn't affiliated with any retailer it labels.</p></div>
       </div>
+      <div class="faq-item" id="faq-8">
+        <button class="faq-q" aria-expanded="false"><span>Can I bring in my old spreadsheet?</span><svg class="i chev" aria-hidden="true"><use href="#i-chev"/></svg></button>
+        <div class="faq-answer"><p>Yes. Save it as CSV from Excel or Google Sheets (File, Save As or Download, CSV), then use Data, "Import Spreadsheet (CSV)". The app finds the header row, guesses which column is the name, price, quantity, link, priority, category and date, and lets you change any of them before importing.</p></div>
+      </div>
+      <div class="faq-item" id="faq-9">
+        <button class="faq-q" aria-expanded="false"><span>Does it track prices automatically?</span><svg class="i chev" aria-hidden="true"><use href="#i-chev"/></svg></button>
+        <div class="faq-answer"><p>No. Everything runs in your browser with no server, so it can't check store prices in the background. When you update an item's price, the old one is kept in its price history, and the card shows the lowest price you've recorded and whether it went up or down.</p></div>
+      </div>
+      <div class="faq-item" id="faq-10">
+        <button class="faq-q" aria-expanded="false"><span>What's the "quick pause" when I mark something ready?</span><svg class="i chev" aria-hidden="true"><use href="#i-chev"/></svg></button>
+        <div class="faq-answer"><p>When a Want of $100 or more is set to "Ready to buy", the app offers an optional waiting period of a day, a week or a month. Needs never get the prompt. During the wait the item shows a "Cooling off" label and Buy now asks once before opening the link. You can skip it every time.</p></div>
+      </div>
+      <div class="faq-item" id="faq-11">
+        <button class="faq-q" aria-expanded="false"><span>What does "Not buying" do?</span><svg class="i chev" aria-hidden="true"><use href="#i-chev"/></svg></button>
+        <div class="faq-answer"><p>It takes an item off your wishlist without deleting it, and lists it under "Decided against" on the Purchased tab with what it would have cost. Items untouched for 90 days are flagged for a quick review so the list doesn't fill up with things you no longer want.</p></div>
+      </div>
+      <div class="faq-item" id="faq-12">
+        <button class="faq-q" aria-expanded="false"><span>Can I install it like an app?</span><svg class="i chev" aria-hidden="true"><use href="#i-chev"/></svg></button>
+        <div class="faq-answer"><p>Yes. In Chrome or Edge, use the Install button at the top of this page when your browser offers it, or the install icon in the address bar. On iPhone or iPad, tap Share, then Add to Home Screen. Installed, it opens in its own window and works offline after the first visit. On iPhone and iPad the Home Screen version keeps its own storage, so use a backup to move your list into it.</p></div>
+      </div>
+      <div class="faq-item" id="faq-13">
+        <button class="faq-q" aria-expanded="false"><span>What does the Share button make?</span><svg class="i chev" aria-hidden="true"><use href="#i-chev"/></svg></button>
+        <div class="faq-answer"><p>On the Purchased tab, Share makes a square image of your progress: how many planned things you bought, how many you decided against, and how many are still on your list. It's drawn on your device and nothing is uploaded. Item names never go on it, and dollar amounts only appear if you turn them on.</p></div>
+      </div>
     </div>
   </section>
 </main>
 
-<footer class="wrap site-footer">
+<footer class="site-footer">
   <span>mbwishlist.online · Your data stays in this browser.</span>
   <span class="footer-links">
     <button type="button" id="releaseNotesFooterBtn">Release notes</button>
@@ -642,9 +1045,10 @@ body.has-cart .totop{bottom:calc(92px + env(safe-area-inset-bottom,0px))}
     <button type="button" id="termsFooterBtn">Terms of Use</button>
   </span>
 </footer>
+</div><!-- /.mb-main -->
 
 <nav class="bnav" id="bnav" aria-label="Sections">
-  <button type="button" data-tab="wishlist" aria-current="page"><svg class="i" aria-hidden="true"><use href="#i-list"/></svg><span>Wishlist</span></button>
+  <button type="button" data-tab="wishlist" aria-current="page"><svg class="i" aria-hidden="true"><use href="#i-list"/></svg><span>My list</span></button>
   <button type="button" data-tab="purchased"><svg class="i" aria-hidden="true"><use href="#i-bought"/></svg><span>Purchased</span></button>
   <button type="button" data-tab="faq"><svg class="i" aria-hidden="true"><use href="#i-help"/></svg><span>FAQ</span></button>
   <button type="button" id="bnMoreBtn" aria-expanded="false" aria-controls="bnSheet"><svg class="i" aria-hidden="true"><use href="#i-more"/></svg><span>More</span></button>
@@ -662,8 +1066,12 @@ body.has-cart .totop{bottom:calc(92px + env(safe-area-inset-bottom,0px))}
     <div class="cart-info"><svg class="i" aria-hidden="true"><use href="#i-cart"/></svg><span><span id="cartCount">0</span> selected</span></div>
     <div class="cart-total money">$<span id="cartTotal">0.00</span></div>
   </div>
-  <button type="button" class="btn sm ghost" id="cartClearBtn">Clear</button>
-  <button type="button" class="btn primary" id="cartBuyBtn">Buy selected</button>
+  <div class="cart-btns">
+    <button type="button" class="btn sm ghost" id="cartClearBtn">Clear</button>
+    <button type="button" class="btn sm" id="cartEditBtn">Edit</button>
+    <button type="button" class="btn sm" id="cartCompareBtn" title="Compare 2 to 4 selected items">Compare</button>
+    <button type="button" class="btn primary" id="cartBuyBtn">Buy selected</button>
+  </div>
 </div>
 
 <div class="modal-overlay" id="itemModalOverlay" hidden>
@@ -700,6 +1108,7 @@ body.has-cart .totop{bottom:calc(92px + env(safe-area-inset-bottom,0px))}
       <div class="field">
         <label for="fieldCost">Unit cost ($)</label>
         <input type="number" id="fieldCost" min="0" step="0.01" placeholder="0.00" inputmode="decimal">
+        <span class="hint" id="priceHistHint"></span>
       </div>
       <div class="field">
         <label for="fieldTarget">Target price ($)</label>
@@ -759,7 +1168,7 @@ body.has-cart .totop{bottom:calc(92px + env(safe-area-inset-bottom,0px))}
           <button type="button" class="btn sm ghost" id="removeImageBtn" hidden>Remove</button>
           <input type="file" id="imageFileInput" accept="image/*" hidden>
         </div>
-        <span class="hint">Photos are stored on-device in IndexedDB, not in the main list blob.</span>
+        <span class="hint">Photos stay on this device. They're never uploaded.</span>
       </div>
 
       <div class="field">
@@ -771,6 +1180,7 @@ body.has-cart .totop{bottom:calc(92px + env(safe-area-inset-bottom,0px))}
 
     <div class="modal-actions">
       <button type="button" class="btn danger" id="deleteItemBtn" hidden><svg class="i" aria-hidden="true"><use href="#i-trash"/></svg>Delete</button>
+      <button type="button" class="btn ghost" id="dropItemBtn" hidden title="Keep a record that you decided against it">Not buying</button>
       <div class="right">
         <button type="button" class="btn" id="cancelModalBtn">Cancel</button>
         <button type="button" class="btn primary" id="saveItemBtn">Save item</button>
@@ -787,6 +1197,92 @@ body.has-cart .totop{bottom:calc(92px + env(safe-area-inset-bottom,0px))}
     <div class="checkout-list" id="checkoutList"></div>
     <div class="modal-actions">
       <div class="right"><button type="button" class="btn primary" id="checkoutDoneBtn">Done</button></div>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="compareOverlay" hidden>
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="cmpTitle" style="max-width:820px">
+    <h2 id="cmpTitle">Compare</h2>
+    <p class="modal-sub">Side by side. The best value in each row is highlighted.</p>
+    <div class="cmp-wrap" id="compareBody"></div>
+    <div class="modal-actions"><div class="right"><button type="button" class="btn primary" id="compareCloseBtn">Close</button></div></div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="pauseOverlay" hidden>
+  <div class="modal sm" role="dialog" aria-modal="true" aria-labelledby="pauseTitle" style="max-width:460px">
+    <h2 id="pauseTitle">Quick pause before buying?</h2>
+    <p class="modal-sub" id="pauseSub"></p>
+    <ul class="pause-list">
+      <li>Do you need this, or mostly want it?</li>
+      <li>What problem does it solve?</li>
+      <li>Do you already own something that does this?</li>
+      <li>Is there a cheaper option that would do the job?</li>
+      <li>Does it fit what you planned to spend?</li>
+    </ul>
+    <p class="hint" style="margin-bottom:8px">Pick a waiting period, or skip it. You can still buy any time.</p>
+    <div class="pause-opts">
+      <button type="button" class="btn" data-pause="1">Wait 24 hours</button>
+      <button type="button" class="btn" data-pause="7">Wait 7 days</button>
+      <button type="button" class="btn" data-pause="30">Wait 30 days</button>
+    </div>
+    <div class="modal-actions"><div class="right"><button type="button" class="btn primary" id="pauseSkipBtn">No wait, it's ready</button></div></div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="reviewOverlay" hidden>
+  <div class="modal sm" role="dialog" aria-modal="true" aria-labelledby="reviewTitle" style="max-width:460px">
+    <h2 id="reviewTitle">Still want these?</h2>
+    <p class="modal-sub" id="reviewProgress"></p>
+    <div id="reviewBody"></div>
+    <div class="review-btns">
+      <button type="button" class="btn primary" id="reviewKeepBtn">Still want it</button>
+      <button type="button" class="btn" id="reviewEditBtn">Edit</button>
+      <button type="button" class="btn danger" id="reviewDropBtn">Not anymore</button>
+    </div>
+    <div class="modal-actions"><div class="right"><button type="button" class="btn" id="reviewCloseBtn">Finish later</button></div></div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="bulkOverlay" hidden>
+  <div class="modal sm" role="dialog" aria-modal="true" aria-labelledby="bulkTitle">
+    <h2 id="bulkTitle">Edit selected</h2>
+    <p class="modal-sub" id="bulkSub"></p>
+    <div class="field">
+      <label for="bulkStatus">Status</label>
+      <select id="bulkStatus"><option value="">Leave as is</option><option value="someday">Someday</option><option value="researching">Researching</option><option value="saving">Saving</option><option value="ready">Ready to buy</option></select>
+    </div>
+    <div class="field">
+      <label for="bulkPriority">Priority</label>
+      <select id="bulkPriority"><option value="">Leave as is</option><option value="need">Need</option><option value="want">Want</option></select>
+    </div>
+    <div class="field">
+      <label for="bulkCategory">Category</label>
+      <input type="text" id="bulkCategory" list="categoryList" placeholder="Leave blank to keep each item's category" autocomplete="off">
+    </div>
+    <div class="modal-actions">
+      <button type="button" class="btn ghost" id="bulkDropBtn">Not buying these</button>
+      <div class="right">
+        <button type="button" class="btn" id="bulkCancelBtn">Cancel</button>
+        <button type="button" class="btn primary" id="bulkApplyBtn">Apply</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="csvMapOverlay" hidden>
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="csvMapTitle">
+    <h2 id="csvMapTitle">Import spreadsheet</h2>
+    <p class="modal-sub" id="csvMapSub"></p>
+    <div class="map-grid" id="csvMapGrid"></div>
+    <div class="map-sample" id="csvMapSample" aria-label="Preview of first rows"></div>
+    <p class="hint" style="margin-top:8px">Picture URLs aren't imported. This app only shows photos you upload, so nothing loads from other sites.</p>
+    <div class="modal-actions">
+      <div class="right">
+        <button type="button" class="btn" id="csvMapCancelBtn">Cancel</button>
+        <button type="button" class="btn primary" id="csvMapOkBtn">Continue</button>
+      </div>
     </div>
   </div>
 </div>
@@ -847,7 +1343,31 @@ body.has-cart .totop{bottom:calc(92px + env(safe-area-inset-bottom,0px))}
     <h2 id="relTitle">Release notes</h2>
     <div class="release-list">
       <div class="release-entry">
-        <div class="rel-head"><span class="rel-version">v1.7</span><span class="pill">Latest</span><span class="rel-date">Oct 12, 2026</span></div>
+        <div class="rel-head"><span class="rel-version">v1.9</span><span class="pill">Latest</span><span class="rel-date">Oct 13, 2026</span></div>
+        <ul>
+          <li>New layout shared with the other mb apps: sections in a left sidebar (a bottom bar on phones), and the logo always takes you back to your list</li>
+          <li>Share your progress from the Purchased tab as an image made on your device. Amounts stay hidden unless you turn them on</li>
+          <li>Install card in the FAQ, and the installed app is now called "Wishlist"</li>
+          <li>Darker amber for buttons and links so text is easier to read</li>
+          <li>Dialogs now move keyboard focus inside and give it back when they close</li>
+        </ul>
+      </div>
+      <div class="release-entry">
+        <div class="rel-head"><span class="rel-version">v1.8</span><span class="rel-date">Oct 13, 2026</span></div>
+        <ul>
+          <li>Import a spreadsheet (CSV) with column matching you can check before importing</li>
+          <li>Price history per item: lowest recorded price and up/down since last change</li>
+          <li>Compare 2 to 4 selected items side by side</li>
+          <li>Edit status, priority or category for several items at once</li>
+          <li>"Not buying" keeps a record of what you decided against, and what it would have cost</li>
+          <li>Items untouched for 90 days get a quick "still want this?" review</li>
+          <li>Optional waiting period when a $100+ Want is marked ready to buy</li>
+          <li>Per-week amount to set aside for items you're saving for</li>
+          <li>Installable as an app, works offline, and accepts links from your phone's share menu</li>
+        </ul>
+      </div>
+      <div class="release-entry">
+        <div class="rel-head"><span class="rel-version">v1.7</span><span class="rel-date">Oct 12, 2026</span></div>
         <ul>
           <li>Photos stored in IndexedDB instead of the main localStorage list (more reliable for larger lists)</li>
           <li>Faster list updates: debounced search, cached filters, lighter qty/selection updates</li>
@@ -883,11 +1403,13 @@ body.has-cart .totop{bottom:calc(92px + env(safe-area-inset-bottom,0px))}
   <div class="modal" role="dialog" aria-modal="true" aria-labelledby="privTitle">
     <h2 id="privTitle">Privacy Policy</h2>
     <div class="legal-text">
-      <p class="legal-updated">Last updated: October 12, 2026</p>
+      <p class="legal-updated">Last updated: October 13, 2026</p>
       <p>mbwishlist.online is a free tool built by one person. There's no company, no account system, and no server database behind it.</p>
       <h3>What's stored, and where</h3>
       <p>Item details are saved in local storage. Photos are saved in IndexedDB on your device. Backup file handles (when supported) are also kept in IndexedDB. Nothing is sent to a server.</p>
       <p>Keys used include: <code>wantlist_items_v1</code>, <code>wantlist_theme</code>, <code>wantlist_view</code>, <code>wantlist_last_backup</code>, <code>wantlist_privacy_ack</code>, <code>wantlist_onboarded</code>, and IndexedDB database <code>mbwishlist</code>.</p>
+      <p>To work offline, the app keeps a copy of its own page files (not your list) in the browser's Cache Storage. Spreadsheets you import are read in your browser and never uploaded.</p>
+      <p>Share images are drawn on your device. They go nowhere unless you save them or pick somewhere to share them, and they never include item names.</p>
       <h3>What this app does not do</h3>
       <ul>
         <li>No account or sign-up</li>
@@ -916,7 +1438,261 @@ body.has-cart .totop{bottom:calc(92px + env(safe-area-inset-bottom,0px))}
 
 <button type="button" class="totop" id="backToTopBtn" aria-label="Back to top" title="Back to top"><svg class="i" aria-hidden="true"><use href="#i-up"/></svg></button>
 <div id="toastHost" role="status" aria-live="polite"></div>
+<template id="shareArt"><svg viewBox="0 0 640 136" preserveAspectRatio="xMaxYMax slice" aria-hidden="true" focusable="false"><circle class="b" cx="560" cy="46" r="26"/><path class="s" d="M210 150 C315 80 525 80 630 150Z"/><path class="m" d="M410 150 C485 66 635 66 710 150Z"/><path class="d" d="M530 150 C585 90 695 90 750 150Z"/><path class="n" transform="translate(470 98) rotate(-64) scale(0.5)" d="M0 0 C 20 -34 66 -40 96 -6 C 70 28 22 34 0 0Z"/><path class="d" transform="translate(480 98) rotate(-116) scale(0.4)" d="M0 0 C 20 -34 66 -40 96 -6 C 70 28 22 34 0 0Z"/><circle class="r" cx="360" cy="44" r="6"/></svg></template>
 
+<!-- MB Suite v3 kit scripts (inlined so the app stays one file; CSP allows inline scripts only) -->
+<script id="mb-title">
+/* MB Suite v3 · browser tab titles: "<Short name> | <Page>"  e.g. "Money | Budget"
+   Put the short name on <html data-app-short="Money"> and call MBTitle.set('Budget') whenever the view changes.
+   The static <title> in index.html should already read "Money | Dashboard" (the start view) so the tab is right before JS runs.
+   Dialogs and legal pages may use their own name: MBTitle.set('Privacy'). No dependencies; safe to inline (recompute CSP hashes if you do). */
+(function () {
+  var app = document.documentElement.getAttribute('data-app-short') || (document.title.split('|')[0] || '').trim() || 'App';
+  window.MBTitle = {
+    app: app,
+    set: function (page) { document.title = page ? app + ' | ' + page : app; }
+  };
+})();
+</script>
+<script id="mb-install">
+/* =====================================================================
+   MB Suite v3 · "Install app" card for the Settings / More page. No dependencies.
+   1) Put this where the card should appear (Settings or More), once:
+        <div data-mb-install data-app-name="Money"
+             data-note="Opens in its own window with its own icon. Works offline after the first visit."></div>
+   2) Load this file (or inline it) once. If the Settings view is re-rendered by your app, call MBInstall.render() after it renders.
+   3) Register the service worker once, at the end of the app's main script:  MBInstall.registerSW('sw.js');
+   What the card shows:
+     - Chrome / Edge / Android when the browser offers install: an "Install <name>" button (opens the browser's own dialog).
+     - iPhone / iPad (no install API): "Tap Share, then Add to Home Screen."
+     - Already installed (running as the app): a one-line "Installed on this device" status.
+     - Anything else (Firefox, a browser that hasn't offered install yet, file://): nothing; the box stays hidden.
+   Never shows a button that does nothing. Needs HTTPS (or localhost) for the install prompt and the service worker.
+   ===================================================================== */
+(function () {
+  var deferred = null;
+  function standalone() { return (window.matchMedia && matchMedia('(display-mode: standalone)').matches) || navigator.standalone === true; }
+  function ios() { return /iphone|ipad|ipod/i.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1); }
+  function esc(s) { return String(s || '').replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
+  var ICON = '<svg class="uic" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="6" y="2.5" width="12" height="19" rx="2.5"/><path d="M12 7v7M9 11l3 3 3-3M10 18.5h4"/></svg>';
+  function render() {
+    var boxes = document.querySelectorAll('[data-mb-install]');
+    for (var i = 0; i < boxes.length; i++) {
+      var box = boxes[i], name = box.getAttribute('data-app-name') || document.documentElement.getAttribute('data-app-short') || 'this app';
+      var note = box.getAttribute('data-note') || 'Opens in its own window with its own icon.';
+      var html = '';
+      if (standalone()) {
+        html = '<div class="mb-install is-done" role="status">' + ICON + '<div><b>Installed on this device</b><p>You are using the app version of ' + esc(name) + '.</p></div></div>';
+      } else if (deferred) {
+        html = '<div class="mb-install">' + ICON + '<div><b>Install ' + esc(name) + '</b><p>' + esc(note) + '</p></div>' +
+               '<button type="button" class="btn primary" data-mb-install-btn>Install</button></div>';
+      } else if (ios()) {
+        html = '<div class="mb-install">' + ICON + '<div><b>Add ' + esc(name) + ' to your Home Screen</b><p>On iPhone or iPad: tap <b>Share</b>, then <b>Add to Home Screen</b>. It opens full screen with its own icon.</p></div></div>';
+      }
+      box.innerHTML = html;
+      box.hidden = !html;
+    }
+  }
+  function install() {
+    if (!deferred) return Promise.resolve(false);
+    var d = deferred; deferred = null;                // the event can only be used once
+    try { d.prompt(); } catch (e) { render(); return Promise.resolve(false); }
+    return (d.userChoice || Promise.resolve({})).then(function (c) { render(); return c && c.outcome === 'accepted'; }, function () { render(); return false; });
+  }
+  function registerSW(url) {
+    if ('serviceWorker' in navigator && /^https?:$/.test(location.protocol)) {
+      return navigator.serviceWorker.register(url || 'sw.js').catch(function () {});
+    }
+    return Promise.resolve();
+  }
+  window.addEventListener('beforeinstallprompt', function (e) { e.preventDefault(); deferred = e; render(); });
+  window.addEventListener('appinstalled', function () { deferred = null; render(); });
+  document.addEventListener('click', function (e) { var b = e.target.closest && e.target.closest('[data-mb-install-btn]'); if (b) install(); });
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', render); else render();
+  window.MBInstall = { render: render, install: install, registerSW: registerSW, canInstall: function () { return !!deferred; }, isInstalled: standalone };
+})();
+</script>
+<script id="mb-share">
+/* =====================================================================
+   MB Suite v3 · share cards for progress, updates and milestones. No dependencies.
+   Draws a 1080×1080 PNG on the device (canvas) in the app's own colors, shows a preview, then
+   opens the phone/computer share sheet (Web Share API with files) or saves the image.
+   Nothing is uploaded anywhere; the card holds only what the preview shows.
+
+   Usage:
+     MBShare.open({
+       kicker: 'Milestone',                         // small accent label (optional)
+       headline: 'Net worth up 12% this year',      // the one thing worth sharing
+       sub: 'January to October 2026',              // one supporting line (optional)
+       stats: [{ label: 'Months tracked', value: '10' }, { label: 'Savings rate', value: '22%' }],   // 0-3 (optional)
+       art: document.querySelector('#share-art svg'),   // an NA-/CU- template <svg> already in the page (optional)
+       fileName: 'mbmoney-milestone.png',
+       options: [ { id: 'amounts', label: 'Show dollar amounts', value: false } ],   // optional privacy toggles
+       build: function (opts) { return { headline: …, stats: … } }                  // re-builds the text when a toggle changes
+     });
+   Requires on <html>: data-app-short="Money" and data-app-domain="mbmoney.online".
+   The badge is read from the first ".brand .logo svg" in the page.
+   CSP: needs img-src data: blob: (the art is drawn from a data: URL, the preview is a blob: URL). Inline it and recompute hashes if the app uses script hashes.
+   ===================================================================== */
+(function () {
+  var W = 1080, FONT = '"Segoe UI Variable Text","Segoe UI",system-ui,-apple-system,BlinkMacSystemFont,Roboto,"Helvetica Neue",Arial,sans-serif';
+
+  function resolve(v, fallback) {          // turn a CSS custom property into a concrete color the canvas understands
+    var el = document.createElement('i'); el.style.color = 'var(' + v + ',' + (fallback || '#888') + ')';
+    el.style.display = 'none'; document.body.appendChild(el);
+    var c = getComputedStyle(el).color; el.remove(); return c;
+  }
+  function svgImage(svgEl, roleColors) {
+    return new Promise(function (ok) {
+      if (!svgEl) return ok(null);
+      var clone = svgEl.cloneNode(true);
+      clone.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
+      clone.removeAttribute('style'); clone.removeAttribute('class');
+      var vb = (clone.getAttribute('viewBox') || '0 0 300 150').split(/[\s,]+/);
+      clone.setAttribute('width', vb[2]); clone.setAttribute('height', vb[3]);
+      var css = Object.keys(roleColors).map(function (k) { return '.' + k + '{fill:' + roleColors[k] + '}'; }).join('') +
+        '.sd{fill:none;stroke:' + roleColors.d + ';stroke-width:3;stroke-linecap:round}.sm{fill:none;stroke:' + roleColors.m + ';stroke-width:3;stroke-linecap:round}';
+      var st = document.createElementNS('http://www.w3.org/2000/svg', 'style'); st.textContent = css; clone.insertBefore(st, clone.firstChild);
+      var img = new Image();
+      img.onload = function () { ok(img); }; img.onerror = function () { ok(null); };
+      img.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(new XMLSerializer().serializeToString(clone));
+    });
+  }
+  function wrap(g, text, maxW, maxLines) {
+    var words = String(text || '').split(/\s+/), lines = [], line = '';
+    words.forEach(function (w) {
+      var t = line ? line + ' ' + w : w;
+      if (g.measureText(t).width > maxW && line) { lines.push(line); line = w; } else line = t;
+    });
+    if (line) lines.push(line);
+    if (lines.length > maxLines) { lines = lines.slice(0, maxLines); lines[maxLines - 1] = lines[maxLines - 1].replace(/\s*\S*$/, '') + '…'; }
+    return lines;
+  }
+  function rr(g, x, y, w, h, r) { g.beginPath(); g.moveTo(x + r, y); g.arcTo(x + w, y, x + w, y + h, r); g.arcTo(x + w, y + h, x, y + h, r); g.arcTo(x, y + h, x, y, r); g.arcTo(x, y, x + w, y, r); g.closePath(); }
+
+  // Share cards are always drawn in the LIGHT palette (they leave the app, so they shouldn't depend on dark mode).
+  // Every color derives from the app's brand color (--brand), the same way mb-suite-cutouts.css derives the art roles.
+  function rgb(str) { var m = String(str).match(/[\d.]+/g) || [0, 0, 0]; return [+m[0], +m[1], +m[2]]; }
+  function hex(c) { return '#' + c.map(function (v) { return ('0' + Math.round(Math.max(0, Math.min(255, v))).toString(16)).slice(-2); }).join(''); }
+  function mix(a, b, t) { return a.map(function (v, i) { return v + (b[i] - v) * t; }); }   // t = share of b
+  function hueShift(c, deg) {                       // approximate the v2 "neighbor hue" (+34°) in HSL
+    var r = c[0] / 255, g = c[1] / 255, b = c[2] / 255, mx = Math.max(r, g, b), mn = Math.min(r, g, b), h = 0, l = (mx + mn) / 2, s = 0, dd = mx - mn;
+    if (dd) { s = l > .5 ? dd / (2 - mx - mn) : dd / (mx + mn); h = mx === r ? (g - b) / dd + (g < b ? 6 : 0) : mx === g ? (b - r) / dd + 2 : (r - g) / dd + 4; h *= 60; }
+    h = (h + deg + 360) % 360; var C = (1 - Math.abs(2 * l - 1)) * s, X = C * (1 - Math.abs((h / 60) % 2 - 1)), m = l - C / 2, q;
+    q = h < 60 ? [C, X, 0] : h < 120 ? [X, C, 0] : h < 180 ? [0, C, X] : h < 240 ? [0, X, C] : h < 300 ? [X, 0, C] : [C, 0, X];
+    return q.map(function (v) { return (v + m) * 255; });
+  }
+  function palette() {
+    var brand = rgb(resolve('--brand', resolve('--accent', '#087F5B'))), W8 = [255, 255, 255];
+    var P = { accent: hex(brand), ink: '#1b1f24', ink2: '#48505c', muted: '#5f6773', border: '#dfe2e7',
+      wash: hex(mix(brand, W8, .92)), mid: hex(mix(brand, W8, .48)), butter: '#ffd98a' };
+    var roles = { d: hex(brand), m: P.mid, s: hex(mix(brand, W8, .76)), n: hex(hueShift(brand, 34)), b: '#ffd98a', r: '#f7b8a8' };
+    return { C: P, roles: roles };
+  }
+
+  function draw(d) {
+    var root = document.documentElement, pal = palette(), C = pal.C, roles = pal.roles;
+    var app = root.getAttribute('data-app-short') || 'App', domain = root.getAttribute('data-app-domain') || location.hostname;
+    var badge = document.querySelector('.brand .logo svg');
+    return Promise.all([svgImage(badge, roles), svgImage(d.art, roles)]).then(function (imgs) {
+      var c = document.createElement('canvas'); c.width = W; c.height = W; var g = c.getContext('2d');
+      // text and tiles are drawn first; the art and the paper go *behind* them (destination-over) once we know where the text ends
+      // brand row
+      var x = 72, y = 92;
+      if (imgs[0]) g.drawImage(imgs[0], x, y - 4, 72, 72);
+      g.fillStyle = C.ink; g.font = '650 34px ' + FONT; g.textBaseline = 'middle';
+      var nm = domain.replace(/\.online$/, ''); g.fillText(nm, x + 92, y + 32);
+      if (/\.online$/.test(domain)) { var nw = g.measureText(nm).width; g.fillStyle = C.accent; g.fillText('.online', x + 92 + nw, y + 32); }
+      // kicker + headline + sub
+      g.textBaseline = 'alphabetic'; y = 300;
+      if (d.kicker) { g.fillStyle = C.accent; g.font = '700 30px ' + FONT; g.fillText(String(d.kicker).toUpperCase(), x, y); y += 26; }
+      g.fillStyle = C.ink; g.font = '750 76px ' + FONT;
+      wrap(g, d.headline, W - 2 * x, 3).forEach(function (l) { y += 86; g.fillText(l, x, y); });
+      if (d.sub) { g.fillStyle = C.ink2; g.font = '400 36px ' + FONT; y += 18; wrap(g, d.sub, W - 2 * x, 2).forEach(function (l) { y += 48; g.fillText(l, x, y); }); }
+      // stat tiles (white paper cards)
+      var st = (d.stats || []).slice(0, 3);
+      if (st.length) {
+        y += 56; var gap = 20, tw = (W - 2 * x - gap * (st.length - 1)) / st.length;
+        st.forEach(function (s, i) {
+          var tx = x + i * (tw + gap);
+          g.fillStyle = 'rgba(20,24,31,.06)'; rr(g, tx, y + 3, tw, 150, 12); g.fill();
+          g.fillStyle = '#ffffff'; rr(g, tx, y, tw, 150, 12); g.fill(); g.strokeStyle = C.border; g.lineWidth = 2; g.stroke();
+          g.fillStyle = C.accent; g.fillRect(tx, y + 18, 5, 114);
+          g.fillStyle = C.muted; g.font = '650 24px ' + FONT; g.fillText(String(s.label).toUpperCase(), tx + 28, y + 52);
+          g.fillStyle = C.ink; g.font = '700 54px ' + FONT; g.fillText(wrap(g, s.value, tw - 48, 1)[0], tx + 28, y + 118);
+        });
+      }
+      // art bleeding off the bottom-right corner, sized to fit between the content and the footer
+      var contentBottom = st.length ? y + 150 : y + 12;
+      if (imgs[1]) {
+        var ar = imgs[1].naturalWidth && imgs[1].naturalHeight ? imgs[1].naturalWidth / imgs[1].naturalHeight : 2;
+        var aw = ar >= 1.6 ? W * .92 : W * .56, ah = aw / ar, artBottom = W - 118, avail = artBottom - contentBottom - 20;
+        if (ah > avail && avail >= 140) { ah = avail; aw = ah * ar; }
+        g.globalCompositeOperation = 'destination-over';
+        g.drawImage(imgs[1], W - aw + 30, artBottom - ah, aw, ah);
+        g.globalCompositeOperation = 'source-over';
+      }
+      // paper background (behind everything): white sheet with an accent wash from the top-left, then the family accent line on top
+      g.globalCompositeOperation = 'destination-over';
+      var bg = g.createLinearGradient(0, 0, W * .7, W); bg.addColorStop(0, C.wash); bg.addColorStop(.6, '#ffffff'); g.fillStyle = bg; g.fillRect(0, 0, W, W);
+      g.fillStyle = '#ffffff'; g.fillRect(0, 0, W, W);
+      g.globalCompositeOperation = 'source-over';
+      var ln = g.createLinearGradient(0, 0, W, 0); ln.addColorStop(0, C.accent); ln.addColorStop(.55, C.mid); ln.addColorStop(1, C.butter); g.fillStyle = ln; g.fillRect(0, 0, W, 14);
+      // footer: where it came from (this is what helps the app grow)
+      g.fillStyle = C.ink2; g.font = '600 28px ' + FONT;
+      g.fillText((d.date ? d.date + '  ·  ' : '') + 'Made with ' + domain, x, W - 64);
+      g.fillStyle = C.muted; g.font = '400 24px ' + FONT; g.fillText('Free · No account · Your data stays on your device', x, W - 30);
+      return c;
+    });
+  }
+
+  function toBlob(c) { return new Promise(function (ok, bad) { try { c.toBlob(function (b) { b ? ok(b) : bad(new Error('blob')); }, 'image/png'); } catch (e) { bad(e); } }); }
+  function save(blob, name) { var a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = name; document.body.appendChild(a); a.click(); setTimeout(function () { URL.revokeObjectURL(a.href); a.remove(); }, 1500); }
+
+  var dlg;
+  function open(cfg) {
+    var opts = {}; (cfg.options || []).forEach(function (o) { opts[o.id] = !!o.value; });
+    function data() { var extra = cfg.build ? cfg.build(opts) || {} : {}; var d = {}; Object.keys(cfg).forEach(function (k) { d[k] = cfg[k]; }); Object.keys(extra).forEach(function (k) { d[k] = extra[k]; }); return d; }
+    if (!dlg) {
+      dlg = document.createElement('dialog'); dlg.className = 'mb-share'; dlg.setAttribute('aria-labelledby', 'mbShareTitle');
+      dlg.innerHTML = '<div class="ms-head"><h3 id="mbShareTitle">Share</h3><button type="button" class="btn ghost sm" data-ms="close" aria-label="Close">Close</button></div>' +
+        '<div class="ms-prev"><img alt="" data-ms="img"><p class="ms-wait" data-ms="wait">Making your card…</p></div>' +
+        '<div class="ms-opts" data-ms="opts"></div>' +
+        '<p class="ms-note">The image is made on this device. It shows only what you see above: no location, notes or account details.</p>' +
+        '<div class="ms-btns"><button type="button" class="btn" data-ms="save">Save image</button><button type="button" class="btn primary" data-ms="share">Share…</button></div>';
+      document.body.appendChild(dlg);
+      dlg.addEventListener('click', function (e) { if (e.target === dlg) dlg.close(); });
+    }
+    var img = dlg.querySelector('[data-ms=img]'), wait = dlg.querySelector('[data-ms=wait]'), box = dlg.querySelector('[data-ms=opts]');
+    dlg.querySelector('#mbShareTitle').textContent = cfg.title || 'Share your progress';
+    box.innerHTML = (cfg.options || []).map(function (o) { return '<label class="ms-opt"><input type="checkbox" data-opt="' + o.id + '"' + (opts[o.id] ? ' checked' : '') + '> ' + o.label + '</label>'; }).join('');
+    var current = null, url = null;
+    function refresh() {
+      wait.hidden = false; img.hidden = true;
+      return draw(data()).then(toBlob).then(function (b) {
+        current = b; if (url) URL.revokeObjectURL(url); url = URL.createObjectURL(b); img.src = url; img.hidden = false; wait.hidden = true;
+        img.alt = 'Preview of the image you are about to share: ' + (data().headline || '');
+      }).catch(function () { wait.textContent = 'This browser could not make the image.'; });
+    }
+    box.onchange = function (e) { var id = e.target.getAttribute('data-opt'); if (id) { opts[id] = e.target.checked; refresh(); } };
+    var file = function () { return new File([current], cfg.fileName || 'share.png', { type: 'image/png' }); };
+    var shareBtn = dlg.querySelector('[data-ms=share]');
+    var canShareFiles = !!(navigator.canShare && navigator.share);
+    shareBtn.hidden = !canShareFiles;                                      // no share sheet here: Save image is the only action
+    dlg.querySelector('[data-ms=save]').classList.toggle('primary', !canShareFiles);
+    shareBtn.onclick = function () {
+      if (!current) return; var f = file();
+      if (navigator.canShare({ files: [f] })) navigator.share({ files: [f], title: cfg.headline || '' }).then(function () { dlg.close(); }, function () {});
+      else save(current, f.name);
+    };
+    dlg.querySelector('[data-ms=save]').onclick = function () { if (current) save(current, cfg.fileName || 'share.png'); };
+    dlg.querySelector('[data-ms=close]').onclick = function () { dlg.close(); };
+    if (!dlg.open) dlg.showModal();
+    return refresh();
+  }
+  window.MBShare = { open: open, draw: draw };
+})();
+</script>
 <script>
 (function(){
   "use strict";
@@ -924,6 +1700,9 @@ body.has-cart .totop{bottom:calc(92px + env(safe-area-inset-bottom,0px))}
   var CATEGORY_PALETTE = ["#0e6878","#6b7684","#a0701c","#5d7a2e","#7a4f8f","#a4532f","#3d6a9e"];
   var STATUS_LABELS = {someday:"Someday",researching:"Researching",saving:"Saving",ready:"Ready to buy"};
   var VALID_STATUS = {someday:1,researching:1,saving:1,ready:1};
+  var PAUSE_MIN = 100;      // Wants at/above this total get the optional cooling-off prompt
+  var REVIEW_DAYS = 90;     // untouched this long = "still want this?" review
+  var HISTORY_MAX = 60;
 
   var items = [];
   var dataRevision = 0;
@@ -981,6 +1760,65 @@ body.has-cart .totop{bottom:calc(92px + env(safe-area-inset-bottom,0px))}
     return diff > 0 ? diff * (it.quantity||1) : 0;
   }
   function bumpRevision(){ dataRevision++; filterCacheList = null; filterCacheKey = ""; }
+
+  /* ---- v1.8 helpers: price history, cooling off, review, saving plan ---- */
+  function isoDay(s){ return typeof s === 'string' && /^\d{4}-\d{2}-\d{2}/.test(s) && !isNaN(new Date(s.slice(0,10)+'T00:00:00').getTime()); }
+  function sanitizeHistory(arr){
+    if(!Array.isArray(arr)) return [];
+    return arr.filter(function(h){ return h && isoDay(h.d) && isFinite(parseFloat(h.p)) && parseFloat(h.p) >= 0; })
+      .map(function(h){ return { d: h.d.slice(0,10), p: Math.round(parseFloat(h.p)*100)/100 }; })
+      .slice(-HISTORY_MAX);
+  }
+  function recordPrice(it, price){
+    if(!Array.isArray(it.priceHistory)) it.priceHistory = [];
+    var h = it.priceHistory;
+    var last = h.length ? h[h.length-1] : null;
+    if(last && last.p === price) return;
+    var today = todayISO();
+    if(last && last.d === today) last.p = price;   // same-day edits overwrite, not stack
+    else h.push({ d: today, p: price });
+    if(h.length > HISTORY_MAX) h.splice(0, h.length - HISTORY_MAX);
+  }
+  function priceInfo(it){
+    var h = Array.isArray(it.priceHistory) ? it.priceHistory : [];
+    if(h.length < 2) return null;
+    var low = h.reduce(function(m,x){ return x.p < m.p ? x : m; }, h[0]);
+    var cur = h[h.length-1].p, prev = h[h.length-2].p;
+    return { low: low, cur: cur, prev: prev, delta: cur - prev, count: h.length };
+  }
+  function priceTrendHtml(it){
+    var pi = priceInfo(it);
+    if(!pi) return '';
+    var dir = pi.delta < 0 ? '<span class="down">↓ $'+money(-pi.delta)+'</span>' : (pi.delta > 0 ? '<span class="up">↑ $'+money(pi.delta)+'</span>' : '');
+    var lowTxt = pi.cur <= pi.low.p ? 'lowest recorded' : 'low $'+money(pi.low.p);
+    return '<div class="price-trend">'+dir+(dir?' · ':'')+lowTxt+'</div>';
+  }
+  function isCooling(it){
+    if(!it.coolUntil) return false;
+    return new Date(it.coolUntil).getTime() > Date.now();
+  }
+  function coolLabel(it){
+    var ms = new Date(it.coolUntil).getTime() - Date.now();
+    var hrs = Math.ceil(ms / 3600000);
+    return hrs <= 24 ? 'Cooling off · '+hrs+'h' : 'Cooling off · '+Math.ceil(hrs/24)+'d';
+  }
+  function lastTouched(it){
+    var d = new Date(it.reviewedAt || it.dateAdded || 0);
+    return isNaN(d.getTime()) ? new Date(0) : d;
+  }
+  function needsReview(it){
+    if(it.purchased || it.dropped || it.isDemo) return false;
+    return (Date.now() - lastTouched(it).getTime()) >= REVIEW_DAYS * 86400000;
+  }
+  function planNote(it){
+    if(it.status !== 'saving' || !it.needByDate) return '';
+    var d = daysUntil(it.needByDate);
+    if(d == null || d <= 0) return '';
+    var weeks = Math.max(1, d / 7);
+    var aim = (it.targetPrice != null && it.targetPrice < (it.unitCost||0)) ? it.targetPrice * (it.quantity||1) : itemTotal(it);
+    if(!(aim > 0)) return '';
+    return '<div class="plan-note">Set aside ≈ $'+money(aim / weeks)+'/week</div>';
+  }
 
   var KNOWN_RETAILERS = {
     "amazon.com":"Amazon","walmart.com":"Walmart","target.com":"Target","ebay.com":"eBay",
@@ -1164,13 +2002,16 @@ body.has-cart .totop{bottom:calc(92px + env(safe-area-inset-bottom,0px))}
     var past = new Date(); past.setDate(past.getDate()-3);
     var nextWeek = new Date(); nextWeek.setDate(nextWeek.getDate()+6);
     var later = new Date(); later.setDate(later.getDate()+32);
+    var ago = function(n){ var d = new Date(); d.setDate(d.getDate()-n); return localDateStr(d); };
     return [
       mk({name:"Winter coat, size L", category:"Clothing", priority:"need", stars:5, unitCost:120, quantity:1, needByDate: localDateStr(soon), status:"ready", targetPrice:90, notes:"Old one finally gave out at the zipper."}),
       mk({name:"Set of 4 all-season tires", category:"Auto", priority:"need", stars:5, unitCost:600, quantity:1, needByDate: localDateStr(past), status:"saving", targetPrice:520}),
       mk({name:"Birthday gift for Mom", category:"Gifts", priority:"need", stars:4, unitCost:45, quantity:1, needByDate: localDateStr(nextWeek), status:"researching"}),
-      mk({name:"Wireless earbuds", category:"Electronics", priority:"want", stars:3, unitCost:99, quantity:1, status:"someday", targetPrice:69}),
+      mk({name:"Wireless earbuds", category:"Electronics", priority:"want", stars:3, unitCost:99, quantity:1, status:"someday", targetPrice:69,
+        priceHistory:[{d:ago(40),p:129},{d:ago(12),p:109},{d:todayISO(),p:99}]}),
       mk({name:"Instant Pot", category:"Kitchen", priority:"want", stars:3, unitCost:89, quantity:1, status:"someday"}),
-      mk({name:"Robot vacuum", category:"Home", priority:"want", stars:2, unitCost:249, quantity:1, status:"saving", targetPrice:199}),
+      mk({name:"Robot vacuum", category:"Home", priority:"want", stars:2, unitCost:249, quantity:1, status:"saving", targetPrice:199, needByDate: localDateStr(later),
+        priceHistory:[{d:ago(30),p:279},{d:ago(9),p:229},{d:todayISO(),p:249}]}),
       mk({name:"Concert tickets", category:"Entertainment", priority:"want", stars:4, unitCost:75, quantity:2, needByDate: localDateStr(later), status:"ready"})
     ];
   }
@@ -1184,11 +2025,22 @@ body.has-cart .totop{bottom:calc(92px + env(safe-area-inset-bottom,0px))}
       target = parseFloat(target);
       if(isNaN(target) || target < 0) target = null;
     }
+    var cost = Math.max(0, parseFloat(raw.unitCost) || 0);
+    var hist = sanitizeHistory(raw.priceHistory);
+    if(!hist.length && cost > 0){
+      var d0 = typeof raw.dateAdded === 'string' && isoDay(raw.dateAdded) ? raw.dateAdded.slice(0,10) : todayISO();
+      hist = [{ d: d0, p: cost }];
+    }
     return Object.assign({}, raw, {
+      priceHistory: hist,
+      dropped: !!raw.dropped && !raw.purchased,
+      dateDropped: raw.dropped && isoDay(raw.dateDropped) ? raw.dateDropped : (raw.dropped ? new Date().toISOString() : null),
+      coolUntil: typeof raw.coolUntil === 'string' && !isNaN(new Date(raw.coolUntil).getTime()) ? raw.coolUntil : null,
+      reviewedAt: typeof raw.reviewedAt === 'string' && !isNaN(new Date(raw.reviewedAt).getTime()) ? raw.reviewedAt : null,
       status: status,
       targetPrice: target,
       quantity: Math.max(1, parseInt(raw.quantity,10) || 1),
-      unitCost: Math.max(0, parseFloat(raw.unitCost) || 0),
+      unitCost: cost,
       stars: Math.min(5, Math.max(1, parseInt(raw.stars,10) || 3)),
       priority: raw.priority === 'need' ? 'need' : 'want',
       imageDataUrl: isSafeImageSrc(raw.imageDataUrl) ? raw.imageDataUrl : null
@@ -1198,7 +2050,7 @@ body.has-cart .totop{bottom:calc(92px + env(safe-area-inset-bottom,0px))}
   function init(){
     var loaded = safeLoad();
     if(loaded === null){
-      items = demoItems();
+      items = demoItems().map(normalizeItem);
       save();
     } else {
       items = loaded.map(normalizeItem).filter(Boolean);
@@ -1249,7 +2101,11 @@ body.has-cart .totop{bottom:calc(92px + env(safe-area-inset-bottom,0px))}
     items.forEach(function(it){ if(it.category) set[it.category] = true; });
     return Object.keys(set).sort(function(a,b){ return a.localeCompare(b); });
   }
-  function activeItems(){ return items.filter(function(i){ return !i.purchased; }); }
+  function activeItems(){ return items.filter(function(i){ return !i.purchased && !i.dropped; }); }
+  function droppedItems(){
+    return items.filter(function(i){ return i.dropped && !i.purchased; })
+      .sort(function(a,b){ return new Date(b.dateDropped) - new Date(a.dateDropped); });
+  }
   function purchasedItems(){
     return items.filter(function(i){ return i.purchased; })
       .sort(function(a,b){ return new Date(b.datePurchased) - new Date(a.datePurchased); });
@@ -1265,9 +2121,9 @@ body.has-cart .totop{bottom:calc(92px + env(safe-area-inset-bottom,0px))}
     var bought = purchasedItems();
     var saveAmt = savingsOf(active);
     var html = "";
+    html += stat('Wishlist total', '$' + money(sumOf(active)), plural(active.length,'item'), 'var(--accent)', true);
     html += stat('Needs', '$' + money(sumOf(needs)), plural(needs.length,'item'), 'var(--need)');
     html += stat('Wants', '$' + money(sumOf(wants)), plural(wants.length,'item'), 'var(--want)');
-    html += stat('Wishlist total', '$' + money(sumOf(active)), plural(active.length,'item'), 'var(--accent)');
     if(saveAmt > 0){
       html += stat('If targets hit', '$' + money(saveAmt), 'potential savings', 'var(--good)');
     } else {
@@ -1275,8 +2131,8 @@ body.has-cart .totop{bottom:calc(92px + env(safe-area-inset-bottom,0px))}
     }
     $('statsRow').innerHTML = html;
   }
-  function stat(label, value, note, color){
-    return '<div class="card tile"><div class="lbl"><i style="--c:'+color+'"></i>'+escapeHtml(label)+'</div>' +
+  function stat(label, value, note, color, hero){
+    return '<div class="card tile'+(hero?' cu-hero':'')+'"><div class="lbl"><i style="--c:'+color+'"></i>'+escapeHtml(label)+'</div>' +
       '<div class="val money">'+value+'</div><div class="note">'+escapeHtml(note)+'</div></div>';
   }
 
@@ -1389,7 +2245,7 @@ body.has-cart .totop{bottom:calc(92px + env(safe-area-inset-bottom,0px))}
   function buyHtml(it, nm, small){
     var sz = (small ? ' sm' : '') + ' buy';
     return isSafeUrl(it.purchaseUrl)
-      ? '<a class="btn'+sz+'" href="'+escapeHtml(it.purchaseUrl)+'" target="_blank" rel="noopener noreferrer" aria-label="Open '+nm+' in new tab">Buy now'+ic('ext')+'</a>'
+      ? '<a class="btn'+sz+'" data-buyid="'+it.id+'" href="'+escapeHtml(it.purchaseUrl)+'" target="_blank" rel="noopener noreferrer" aria-label="Open '+nm+' in new tab">Buy now'+ic('ext')+'</a>'
       : '<button type="button" class="btn'+sz+'" data-markpurchased="'+it.id+'" aria-label="Mark '+nm+' as purchased">'+ic('check')+'Mark purchased</button>';
   }
   function editDelHtml(it, nm){
@@ -1398,6 +2254,12 @@ body.has-cart .totop{bottom:calc(92px + env(safe-area-inset-bottom,0px))}
   }
   function statusLabel(it){
     return STATUS_LABELS[it.status] || STATUS_LABELS.someday;
+  }
+  function extraPills(it){
+    var s = '';
+    if(isCooling(it)) s += '<span class="pill cool" title="Waiting until '+escapeHtml(new Date(it.coolUntil).toLocaleString())+'">'+coolLabel(it)+'</span>';
+    if(needsReview(it)) s += '<span class="pill review" title="Not touched in '+REVIEW_DAYS+'+ days">Review</span>';
+    return s;
   }
 
   function cardHtml(it){
@@ -1418,9 +2280,11 @@ body.has-cart .totop{bottom:calc(92px + env(safe-area-inset-bottom,0px))}
           '<span class="tag">'+escapeHtml(statusLabel(it))+'</span></span>' +
           starsHtml(it.stars) +
         '</div>' +
-        (badge ? '<div><span class="pill '+badge.cls+'">'+badge.text+'</span></div>' : '') +
+        ((badge || extraPills(it)) ? '<div class="tags">'+(badge ? '<span class="pill '+badge.cls+'">'+badge.text+'</span>' : '')+extraPills(it)+'</div>' : '') +
         '<div class="meta-row">' + qtyHtml(it, nm) + '<span class="unit">$'+money(it.unitCost)+' ea</span></div>' +
+        priceTrendHtml(it) +
         (sav > 0 ? '<div class="target-note">Target $'+money(it.targetPrice)+' · save $'+money(sav)+'</div>' : (it.targetPrice!=null ? '<div class="unit">Target $'+money(it.targetPrice)+'</div>' : '')) +
+        planNote(it) +
         '<div class="price-row"><span class="total money" data-total="'+it.id+'">$'+money(itemTotal(it))+'</span>' +
           '<span class="rowact">' + editDelHtml(it, nm) + '</span>' +
         '</div>' +
@@ -1443,9 +2307,9 @@ body.has-cart .totop{bottom:calc(92px + env(safe-area-inset-bottom,0px))}
           '<div class="nm">'+nm+'</div>' +
           '<div class="sub">' + (it.category ? '<span class="tag">'+escapeHtml(it.category)+'</span>' : '') +
             (retailer ? '<span class="tag">'+escapeHtml(retailer)+'</span>' : '') +
-            '<span class="tag">'+escapeHtml(statusLabel(it))+'</span>' +
+            '<span class="tag">'+escapeHtml(statusLabel(it))+'</span>' + extraPills(it) +
             '<span class="m-only" style="gap:6px;align-items:center;flex-wrap:wrap">'+pri+badgeHtml+'<span>'+it.quantity+' × $'+money(it.unitCost)+'</span></span>' +
-          '</div>' +
+          '</div>' + priceTrendHtml(it) + planNote(it) +
           '<div class="sub m-only" style="margin-top:6px">' + buyHtml(it, nm, true) + editDelHtml(it, nm) + '</div>' +
         '</div></div></td>' +
         '<td class="d-only">'+pri+'</td>' +
@@ -1505,6 +2369,59 @@ body.has-cart .totop{bottom:calc(92px + env(safe-area-inset-bottom,0px))}
     '</table>';
   }
 
+  function renderDropped(){
+    var list = droppedItems();
+    $('droppedWrap').hidden = list.length === 0;
+    if(!list.length){ $('droppedList').innerHTML = ''; return; }
+    var rows = list.map(function(it){
+      var nm = escapeHtml(it.name);
+      var when = it.dateDropped ? new Date(it.dateDropped).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}) : '';
+      return '<tr data-id="'+it.id+'">' +
+        '<td><div class="it"><span class="th-sm">'+thumbHtml(it)+'</span><div style="min-width:0"><div class="nm">'+nm+'</div>' +
+          '<div class="sub m-only">'+escapeHtml(it.category||'Uncategorized')+' · '+when+'</div></div></div></td>' +
+        '<td class="d-only">'+escapeHtml(it.category||'Uncategorized')+'</td>' +
+        '<td class="d-only num">'+when+'</td>' +
+        '<td class="r money">$'+money(itemTotal(it))+'</td>' +
+        '<td><div class="rowact">' +
+          '<button type="button" class="ib" data-restore="'+it.id+'" title="Back to wishlist" aria-label="Move '+nm+' back to wishlist">'+ic('undo')+'</button>' +
+          '<button type="button" class="ib danger" data-del="'+it.id+'" title="Delete" aria-label="Delete '+nm+'">'+ic('trash')+'</button>' +
+        '</div></td></tr>';
+    }).join('');
+    $('droppedList').innerHTML = '<table class="datatable" aria-label="Items you decided against">' +
+      '<thead><tr><th>Item</th><th class="d-only">Category</th><th class="d-only">Decided</th><th class="r">Would have cost</th><th><span class="sr-only">Actions</span></th></tr></thead>' +
+      '<tbody>'+rows+'</tbody>' +
+      '<tfoot><tr><td>Not spent · '+plural(list.length,'item')+'</td><td class="d-only" colspan="2"></td><td class="r money">$'+money(sumOf(list))+'</td><td></td></tr></tfoot></table>';
+  }
+
+  function renderReviewBanner(){
+    var n = activeTab === 'wishlist' ? activeItems().filter(needsReview).length : 0;
+    $('reviewBanner').hidden = n === 0;
+    if(n) $('reviewBannerText').innerHTML = '<strong>'+plural(n,'item')+'</strong> '+(n===1?'hasn\'t':'haven\'t')+' been touched in '+REVIEW_DAYS+'+ days. Still want '+(n===1?'it':'them')+'?';
+  }
+
+  function dropItem(id, silent){
+    var it = items.find(function(i){ return i.id===id; });
+    if(!it || it.purchased) return;
+    it.dropped = true;
+    it.dateDropped = new Date().toISOString();
+    it.coolUntil = null;
+    selectedIds.delete(id);
+    bumpRevision(); save();
+    if(silent) return;
+    renderAll();
+    toast('Moved to "Decided against". $'+money(itemTotal(it))+' not spent.', function(){
+      it.dropped = false; it.dateDropped = null;
+      bumpRevision(); save(); renderAll();
+    });
+  }
+  function restoreItem(id){
+    var it = items.find(function(i){ return i.id===id; });
+    if(!it) return;
+    it.dropped = false; it.dateDropped = null; it.reviewedAt = new Date().toISOString();
+    bumpRevision(); save(); renderAll();
+    toast('Back on your wishlist.');
+  }
+
   function renderCartBar(){
     var selected = items.filter(function(i){ return selectedIds.has(i.id); });
     var bar = $('cartBar');
@@ -1513,6 +2430,9 @@ body.has-cart .totop{bottom:calc(92px + env(safe-area-inset-bottom,0px))}
     bar.hidden = false;
     $('cartCount').textContent = selected.length;
     $('cartTotal').textContent = money(sumOf(selected));
+    var canCmp = selected.length >= 2 && selected.length <= 4;
+    $('cartCompareBtn').disabled = !canCmp;
+    $('cartCompareBtn').title = canCmp ? 'Compare selected items' : 'Select 2 to 4 items to compare';
   }
 
   function renderDemoBanner(){
@@ -1524,13 +2444,63 @@ body.has-cart .totop{bottom:calc(92px + env(safe-area-inset-bottom,0px))}
     $('countPurchased').textContent = p ? String(p) : '';
   }
 
+  function renderBannerSub(){
+    var active = activeItems();
+    var ready = active.filter(function(i){ return i.status === 'ready'; }).length;
+    var txt = active.length
+      ? plural(active.length,'item') + ' · $' + money(sumOf(active)) + ' planned' + (ready ? ' · ' + ready + ' ready to buy' : '')
+      : 'Nothing planned yet. Add the first thing you want to buy.';
+    $('bannerSub').textContent = txt;
+  }
+  function renderShareRow(){
+    var bought = purchasedItems().length, dropped = droppedItems().length;
+    $('shareRow').hidden = activeTab !== 'purchased' || (bought + dropped) === 0;
+    $('shareRowTitle').textContent = bought
+      ? plural(bought,'planned purchase') + ' made' + (dropped ? ', ' + dropped + ' decided against' : '')
+      : plural(dropped,'item') + ' decided against';
+  }
+  /* MB Suite v3 §6: share card from real data only. Amounts hidden by default; item names never on the card. */
+  function openShareProgress(){
+    if(!window.MBShare) return;
+    var bought = purchasedItems(), dropped = droppedItems(), active = activeItems();
+    var nb = bought.length, nd = dropped.length;
+    var headline = nb ? 'Bought ' + nb + ' thing' + (nb===1?'':'s') + ' I planned for'
+                      : 'Decided against ' + nd + ' purchase' + (nd===1?'':'s');
+    var sub = nb && nd ? 'And skipped ' + nd + ' I decided I didn\'t need.'
+            : (nb ? 'Each one was on my want list before I bought it.' : 'Thought it over and kept the money.');
+    var now = new Date();
+    MBShare.open({
+      title: 'Share your progress',
+      kicker: 'Progress',
+      headline: headline,
+      sub: sub,
+      art: document.getElementById('shareArt').content.firstElementChild,
+      fileName: 'mbwishlist-progress.png',
+      date: now.toLocaleDateString('en-US', { month:'short', year:'numeric' }),
+      options: [{ id:'amounts', label:'Show dollar amounts', value:false }],
+      build: function(o){
+        var stats = o.amounts
+          ? [{ label:'Spent as planned', value:'$' + Math.round(sumOf(bought)).toLocaleString('en-US') },
+             { label:'Not spent', value:'$' + Math.round(sumOf(dropped)).toLocaleString('en-US') },
+             { label:'Still planned', value:'$' + Math.round(sumOf(active)).toLocaleString('en-US') }]
+          : [{ label:'Bought', value:String(nb) },
+             { label:'Decided against', value:String(nd) },
+             { label:'Still on my list', value:String(active.length) }];
+        return { stats: stats };
+      }
+    });
+  }
+
   function renderAll(){
     renderStats();
+    renderBannerSub();
+    renderShareRow();
     renderCategoryFilter();
     renderDemoBanner();
     renderCounts();
     if(activeTab === 'wishlist'){ renderGrid(); }
-    else if(activeTab === 'purchased'){ renderPurchased(); }
+    else if(activeTab === 'purchased'){ renderPurchased(); renderDropped(); }
+    renderReviewBanner();
     renderCartBar();
     renderBackupStatus();
   }
@@ -1565,6 +2535,11 @@ body.has-cart .totop{bottom:calc(92px + env(safe-area-inset-bottom,0px))}
     setMoreDetails(hasExtra);
 
     $('deleteItemBtn').hidden = !it;
+    $('dropItemBtn').hidden = !it || it.purchased || it.dropped;
+    var pi = it ? priceInfo(it) : null;
+    $('priceHistHint').textContent = pi
+      ? plural(pi.count,'price')+' recorded · low $'+money(pi.low.p)+' on '+new Date(pi.low.d+'T00:00:00').toLocaleDateString('en-US',{month:'short',day:'numeric'})
+      : (it ? 'Change the price later and the old one is kept.' : '');
     $('itemModalOverlay').hidden = false;
     $('fieldUrl').focus();
   }
@@ -1629,23 +2604,172 @@ body.has-cart .totop{bottom:calc(92px + env(safe-area-inset-bottom,0px))}
     };
 
     var isNew = !editingId;
-    var it;
+    var it, wasReady = false;
     if(editingId){
       it = items.find(function(i){ return i.id===editingId; });
+      wasReady = it.status === 'ready';
       Object.assign(it, data);
       it.isDemo = false;
     } else {
       it = Object.assign({
-        id: uid(), dateAdded: new Date().toISOString(), purchased:false, datePurchased:null, isDemo:false
+        id: uid(), dateAdded: new Date().toISOString(), purchased:false, datePurchased:null, isDemo:false,
+        priceHistory: [], dropped:false, dateDropped:null, coolUntil:null
       }, data);
       items.push(it);
     }
+    it.reviewedAt = new Date().toISOString();
+    if(it.unitCost > 0) recordPrice(it, Math.round(it.unitCost*100)/100);
+    if(it.status !== 'ready') it.coolUntil = null;
     bumpRevision();
     save();
     saveItemImages(it);
     closeModal();
     renderAll();
     toast(isNew ? 'Added to your list.' : 'Changes saved.');
+    if(it.status === 'ready' && !wasReady && it.priority === 'want' && itemTotal(it) >= PAUSE_MIN && !it.purchased){
+      openPause(it.id);
+    }
+  }
+
+  /* ---- cooling-off pause ---- */
+  var pauseId = null;
+  function openPause(id){
+    var it = items.find(function(i){ return i.id===id; });
+    if(!it) return;
+    pauseId = id;
+    $('pauseSub').textContent = it.name + ' · $' + money(itemTotal(it)) + '. Worth a moment before you buy. Nothing here is required.';
+    $('pauseOverlay').hidden = false;
+    setTimeout(function(){ $('pauseSkipBtn').focus(); }, 0);
+  }
+  function closePause(days){
+    var it = items.find(function(i){ return i.id===pauseId; });
+    $('pauseOverlay').hidden = true;
+    pauseId = null;
+    if(!it) return;
+    if(days){
+      it.coolUntil = new Date(Date.now() + days*86400000).toISOString();
+      bumpRevision(); save(); renderAll();
+      toast('Waiting '+(days===1?'24 hours':days+' days')+'. Buy now will check with you first.');
+    }
+  }
+
+  /* ---- review stale items ---- */
+  var reviewQueue = [], reviewIdx = 0, reviewKept = 0, reviewDropped = 0;
+  function startReview(){
+    reviewQueue = activeItems().filter(needsReview)
+      .sort(function(a,b){ return lastTouched(a) - lastTouched(b); }).map(function(i){ return i.id; });
+    reviewIdx = 0; reviewKept = 0; reviewDropped = 0;
+    if(!reviewQueue.length){ toast('Nothing to review right now.'); return; }
+    $('reviewOverlay').hidden = false;
+    showReviewItem();
+  }
+  function showReviewItem(){
+    var it = null;
+    while(reviewIdx < reviewQueue.length){
+      it = items.find(function(i){ return i.id===reviewQueue[reviewIdx]; });
+      if(it && !it.purchased && !it.dropped) break;
+      it = null; reviewIdx++;
+    }
+    if(!it){ finishReview(); return; }
+    var days = Math.floor((Date.now() - lastTouched(it).getTime())/86400000);
+    $('reviewProgress').textContent = (reviewIdx+1)+' of '+reviewQueue.length+' · on your list, untouched for '+days+' days';
+    $('reviewBody').innerHTML = '<div class="review-card"><span class="th-sm">'+thumbHtml(it)+'</span><div style="min-width:0">' +
+      '<div class="nm">'+escapeHtml(it.name)+'</div>' +
+      '<div class="unit">'+(it.priority==='need'?'Need':'Want')+' · '+escapeHtml(statusLabel(it))+(it.category?' · '+escapeHtml(it.category):'')+'</div>' +
+      '<div class="money" style="font-weight:650;margin-top:2px">$'+money(itemTotal(it))+'</div>' + priceTrendHtml(it) +
+      '</div></div>';
+    setTimeout(function(){ $('reviewKeepBtn').focus(); }, 0);
+  }
+  function reviewAct(kind){
+    var id = reviewQueue[reviewIdx];
+    var it = items.find(function(i){ return i.id===id; });
+    if(!it){ reviewIdx++; showReviewItem(); return; }
+    if(kind === 'keep'){
+      it.reviewedAt = new Date().toISOString(); reviewKept++;
+      bumpRevision(); save();
+    } else if(kind === 'drop'){
+      dropItem(id, true); reviewDropped++;
+    } else if(kind === 'edit'){
+      $('reviewOverlay').hidden = true;
+      renderAll();
+      openModal(id);
+      return;
+    }
+    reviewIdx++;
+    showReviewItem();
+  }
+  function finishReview(){
+    $('reviewOverlay').hidden = true;
+    renderAll();
+    if(reviewKept || reviewDropped){
+      toast('Review done: kept '+reviewKept+', decided against '+reviewDropped+'.');
+    }
+  }
+
+  /* ---- compare ---- */
+  function openCompare(){
+    var list = items.filter(function(i){ return selectedIds.has(i.id); });
+    if(list.length < 2 || list.length > 4){ toast('Select 2 to 4 items to compare.'); return; }
+    var best = function(vals, lowWins){
+      var nums = vals.filter(function(v){ return v != null && isFinite(v); });
+      if(nums.length < 2) return null;
+      var b = lowWins ? Math.min.apply(null, nums) : Math.max.apply(null, nums);
+      var ties = nums.filter(function(v){ return v === b; }).length;
+      return ties === nums.length ? null : b;
+    };
+    var totals = list.map(itemTotal);
+    var units = list.map(function(i){ return i.unitCost||0; });
+    var lows = list.map(function(i){ var h = Array.isArray(i.priceHistory) && i.priceHistory.length ? i.priceHistory : null; return h ? Math.min.apply(null, h.map(function(x){ return x.p; })) : (i.unitCost > 0 ? i.unitCost : null); });
+    var gaps = list.map(function(i){ return i.targetPrice != null ? Math.max(0,(i.unitCost||0) - i.targetPrice) : null; });
+    var starsV = list.map(function(i){ return i.stars; });
+    var bT = best(totals,true), bU = best(units,true), bL = best(lows,true), bG = best(gaps,true), bS = best(starsV,false);
+    var cell = function(v, b, txt){ return '<td'+(b!=null && v===b ? ' class="best"' : '')+'>'+txt+'</td>'; };
+    var row = function(label, cells){ return '<tr><th scope="row">'+label+'</th>'+cells.join('')+'</tr>'; };
+    var html = '<table class="cmp"><thead><tr><th><span class="sr-only">Attribute</span></th>' +
+      list.map(function(it){ return '<th scope="col"><span class="th-sm" style="display:block">'+thumbHtml(it)+'</span>'+escapeHtml(it.name)+'</th>'; }).join('') +
+      '</tr></thead><tbody>';
+    html += row('Total', list.map(function(it,i){ return cell(totals[i], bT, '$'+money(totals[i])); }));
+    html += row('Unit price', list.map(function(it,i){ return cell(units[i], bU, '$'+money(units[i])+(it.quantity>1?' × '+it.quantity:'')); }));
+    html += row('Lowest recorded', list.map(function(it,i){ return cell(lows[i], bL, lows[i]!=null ? '$'+money(lows[i]) : '<span class="unit">—</span>'); }));
+    html += row('Target', list.map(function(it,i){ return cell(gaps[i], bG, it.targetPrice!=null ? '$'+money(it.targetPrice)+(gaps[i]>0?' <span class="unit">($'+money(gaps[i])+' above)</span>':' <span class="unit">(met)</span>') : '<span class="unit">—</span>'); }));
+    html += row('Priority', list.map(function(it){ return '<td>'+(it.priority==='need'?'Need':'Want')+'</td>'; }));
+    html += row('How badly', list.map(function(it,i){ return cell(starsV[i], bS, starsHtml(it.stars)); }));
+    html += row('Status', list.map(function(it){ return '<td>'+escapeHtml(statusLabel(it))+'</td>'; }));
+    html += row('Need by', list.map(function(it){ var b = formatDateBadge(it.needByDate); return '<td>'+(b ? b.text : '<span class="unit">—</span>')+'</td>'; }));
+    html += row('Store', list.map(function(it){
+      var r = it.purchaseUrl ? getRetailerName(it.purchaseUrl) : null;
+      return '<td>'+(isSafeUrl(it.purchaseUrl) ? '<a href="'+escapeHtml(it.purchaseUrl)+'" target="_blank" rel="noopener noreferrer">'+escapeHtml(r||'Link')+'</a>' : '<span class="unit">—</span>')+'</td>';
+    }));
+    html += row('Notes', list.map(function(it){ return '<td style="white-space:pre-wrap">'+(it.notes ? escapeHtml(it.notes) : '<span class="unit">—</span>')+'</td>'; }));
+    html += '</tbody></table>';
+    $('compareBody').innerHTML = html;
+    $('compareOverlay').hidden = false;
+    setTimeout(function(){ $('compareCloseBtn').focus(); }, 0);
+  }
+
+  /* ---- bulk edit ---- */
+  function openBulk(){
+    var n = items.filter(function(i){ return selectedIds.has(i.id); }).length;
+    if(!n) return;
+    $('bulkSub').textContent = 'Changes apply to ' + plural(n,'selected item') + '. Anything left blank stays the same.';
+    $('bulkStatus').value = ''; $('bulkPriority').value = ''; $('bulkCategory').value = '';
+    $('bulkOverlay').hidden = false;
+    setTimeout(function(){ $('bulkStatus').focus(); }, 0);
+  }
+  function applyBulk(){
+    var st = $('bulkStatus').value, pr = $('bulkPriority').value, cat = $('bulkCategory').value.trim().slice(0,60);
+    if(!st && !pr && !cat){ $('bulkOverlay').hidden = true; return; }
+    var n = 0, now = new Date().toISOString();
+    items.forEach(function(it){
+      if(!selectedIds.has(it.id)) return;
+      if(VALID_STATUS[st]){ it.status = st; if(st !== 'ready') it.coolUntil = null; }
+      if(pr === 'need' || pr === 'want') it.priority = pr;
+      if(cat) it.category = cat;
+      it.isDemo = false; it.reviewedAt = now; n++;
+    });
+    $('bulkOverlay').hidden = true;
+    bumpRevision(); save(); renderAll();
+    toast('Updated ' + plural(n,'item') + '.');
   }
 
   function deleteItem(id){
@@ -1832,11 +2956,11 @@ body.has-cart .totop{bottom:calc(92px + env(safe-area-inset-bottom,0px))}
     return JSON.stringify({ app:'mbwishlist', format:2, exportedAt:new Date().toISOString(), items:items }, null, 2);
   }
   function toCsv(){
-    var headers = ["Name","Category","Priority","Status","Stars","Need By","Unit Cost","Target Price","Quantity","Total","Purchase URL","Notes","Purchased","Date Purchased"];
+    var headers = ["Name","Category","Priority","Status","Stars","Need By","Unit Cost","Target Price","Quantity","Total","Purchase URL","Notes","Purchased","Date Purchased","Not Buying","Lowest Recorded"];
     var rows = items.map(function(it){
       return [it.name, it.category, it.priority, it.status||'someday', it.stars, it.needByDate,
         it.unitCost, it.targetPrice!=null?it.targetPrice:'', it.quantity, itemTotal(it).toFixed(2),
-        it.purchaseUrl, it.notes, it.purchased ? 'Yes':'No', it.datePurchased||''];
+        it.purchaseUrl, it.notes, it.purchased ? 'Yes':'No', it.datePurchased||'', it.dropped ? 'Yes':'No', (priceInfo(it) ? priceInfo(it).low.p : '')];
     });
     var esc = function(v){
       if(typeof v === 'number') return String(v);
@@ -2012,7 +3136,12 @@ body.has-cart .totop{bottom:calc(92px + env(safe-area-inset-bottom,0px))}
       dateAdded: validDate(p.dateAdded) ? p.dateAdded : new Date().toISOString(),
       purchased: purchased,
       datePurchased: purchased ? (validDate(p.datePurchased) ? p.datePurchased : new Date().toISOString()) : null,
-      isDemo: false
+      isDemo: false,
+      dropped: !purchased && !!p.dropped,
+      dateDropped: !purchased && p.dropped ? (validDate(p.dateDropped) ? p.dateDropped : new Date().toISOString()) : null,
+      coolUntil: typeof p.coolUntil === 'string' && !isNaN(new Date(p.coolUntil).getTime()) ? p.coolUntil : null,
+      reviewedAt: typeof p.reviewedAt === 'string' && !isNaN(new Date(p.reviewedAt).getTime()) ? p.reviewedAt : null,
+      priceHistory: sanitizeHistory(p.priceHistory)
     };
   }
   function itemSig(it){
@@ -2032,32 +3161,228 @@ body.has-cart .totop{bottom:calc(92px + env(safe-area-inset-bottom,0px))}
         toast("That file doesn't look like a backup for this list.");
         return;
       }
-      var have = {};
-      items.forEach(function(it){ var s = itemSig(it); have[s] = (have[s]||0) + 1; });
-      var fresh = [], skipped = 0;
-      clean.forEach(function(it){
-        var s = itemSig(it);
-        if(have[s] > 0){ have[s]--; skipped++; } else { fresh.push(it); }
-      });
-      if(!fresh.length){
-        toast('Nothing new. All ' + plural(clean.length,'item') + ' in that backup are already on your list.');
-        return;
-      }
-      askConfirm('Import backup?',
-        'This adds ' + plural(fresh.length,'item') + ' to your list' +
-        (skipped ? ' and skips ' + skipped + ' already on it' : '') +
-        '. Nothing you already have is removed.',
-        function(){
-          items = items.concat(fresh);
-          bumpRevision();
-          save();
-          Promise.all(fresh.map(function(it){ return persistImage(it.id, it.imageDataUrl); })).then(function(){
-            renderAll();
-            toast('Imported ' + plural(fresh.length,'item') + '.');
-          });
-        }, 'Import', 'primary');
+      mergeImported(clean.map(normalizeItem), itemSig, 'backup');
     };
     reader.readAsText(file);
+  }
+  function mergeImported(clean, sigFn, label){
+    var have = {};
+    items.forEach(function(it){ var s = sigFn(it); have[s] = (have[s]||0) + 1; });
+    var fresh = [], skipped = 0;
+    clean.forEach(function(it){
+      var s = sigFn(it);
+      if(have[s] > 0){ have[s]--; skipped++; } else { fresh.push(it); }
+    });
+    if(!fresh.length){
+      toast('Nothing new. All ' + plural(clean.length,'item') + ' in that ' + label + ' are already on your list.');
+      return;
+    }
+    askConfirm('Import ' + label + '?',
+      'This adds ' + plural(fresh.length,'item') + ' to your list' +
+      (skipped ? ' and skips ' + skipped + ' already on it' : '') +
+      '. Nothing you already have is removed.',
+      function(){
+        items = items.concat(fresh);
+        bumpRevision();
+        save();
+        Promise.all(fresh.map(function(it){ return persistImage(it.id, it.imageDataUrl); })).then(function(){
+          renderAll();
+          toast('Imported ' + plural(fresh.length,'item') + '.');
+        });
+      }, 'Import', 'primary');
+  }
+
+  /* ---- spreadsheet (CSV) import with column matching ---- */
+  function parseCsv(text){
+    text = String(text).replace(/^﻿/, '');
+    var delim = ',';
+    var firstLine = text.split(/\r?\n/, 1)[0] || '';
+    if((firstLine.match(/;/g)||[]).length > (firstLine.match(/,/g)||[]).length) delim = ';';
+    if((firstLine.match(/\t/g)||[]).length > (firstLine.match(/,/g)||[]).length) delim = '\t';
+    var rows = [], row = [], field = '', q = false, i = 0, c;
+    while(i < text.length){
+      c = text[i];
+      if(q){
+        if(c === '"'){ if(text[i+1] === '"'){ field += '"'; i++; } else q = false; }
+        else field += c;
+      } else if(c === '"' && field === ''){ q = true; }
+      else if(c === delim){ row.push(field); field = ''; }
+      else if(c === '\n' || c === '\r'){
+        if(c === '\r' && text[i+1] === '\n') i++;
+        row.push(field); rows.push(row); row = []; field = '';
+      } else field += c;
+      i++;
+      if(rows.length > 5000) break;
+    }
+    if(field !== '' || row.length){ row.push(field); rows.push(row); }
+    return rows.map(function(r){ return r.map(function(v){ return v.trim(); }); });
+  }
+  var CSV_FIELDS = [
+    { key:'name', label:'Name *', syn:['itemname','name','productname','item','product','title','description'] },
+    { key:'unitCost', label:'Unit cost', syn:['unitcost','unitprice','price','cost','each','priceeach'] },
+    { key:'quantity', label:'Quantity', syn:['quantity','qty','count'] },
+    { key:'purchaseUrl', label:'Purchase link', syn:['purchaseurl','producturl','url','link','buylink','website'] },
+    { key:'priority', label:'Priority', syn:['priority','needwant','importance'] },
+    { key:'stars', label:'Stars (1–5)', syn:['stars','rating','howbadly'] },
+    { key:'category', label:'Category', syn:['category','keyword','keywords','tag','tags','type','group','project'] },
+    { key:'status', label:'Status', syn:['status','stage'] },
+    { key:'needByDate', label:'Need by', syn:['needby','needbydate','needdate','duedate','deadline','date'] },
+    { key:'targetPrice', label:'Target price', syn:['targetprice','target','wantprice'] },
+    { key:'notes', label:'Notes', syn:['notes','note','comments','comment'] },
+    { key:'purchased', label:'Purchased (yes/no)', syn:['purchased','bought'] },
+    { key:'datePurchased', label:'Date purchased', syn:['datepurchased','purchasedon','purchasedate'] },
+    { key:'dropped', label:'Not buying (yes/no)', syn:['notbuying','dropped'] }
+  ];
+  function normHeader(s){ return String(s||'').toLowerCase().replace(/[^a-z0-9]/g,''); }
+  function findHeaderRow(rows){
+    var all = {};
+    CSV_FIELDS.forEach(function(f){ f.syn.forEach(function(s){ all[s] = f.key; }); });
+    var bestIdx = -1, bestScore = 0;
+    for(var r = 0; r < Math.min(rows.length, 20); r++){
+      var keys = {};
+      rows[r].forEach(function(h){ var k = all[normHeader(h)]; if(k) keys[k] = 1; });
+      var score = Object.keys(keys).length + (keys.name ? 2 : 0);
+      if(score > bestScore){ bestScore = score; bestIdx = r; }
+    }
+    return bestScore >= 3 ? bestIdx : 0;
+  }
+  function autoMap(headers){
+    var map = {}, used = {};
+    var norm = headers.map(normHeader);
+    CSV_FIELDS.forEach(function(f){
+      for(var s = 0; s < f.syn.length; s++){
+        var idx = norm.indexOf(f.syn[s]);
+        while(idx !== -1 && used[idx]) idx = norm.indexOf(f.syn[s], idx+1);
+        if(idx !== -1){ map[f.key] = idx; used[idx] = 1; return; }
+      }
+    });
+    return map;
+  }
+  function csvMoney(v){
+    if(v == null) return null;
+    var s = String(v).replace(/[$,\s]/g,'');
+    if(s === '' || /^#/.test(s)) return null;
+    var n = parseFloat(s);
+    return isFinite(n) ? n : null;
+  }
+  function csvDate(v){
+    v = String(v||'').trim();
+    if(!v) return '';
+    if(/^\d{4}-\d{2}-\d{2}/.test(v)) return v.slice(0,10);
+    var m = v.match(/^(\d{1,2})[\/\-.](\d{1,2})[\/\-.](\d{2,4})/);
+    if(m){
+      var y = m[3].length === 2 ? '20'+m[3] : m[3];
+      var mo = parseInt(m[1],10), d = parseInt(m[2],10);
+      if(mo>=1 && mo<=12 && d>=1 && d<=31) return y+'-'+String(mo).padStart(2,'0')+'-'+String(d).padStart(2,'0');
+    }
+    var t = new Date(v);
+    return isNaN(t.getTime()) ? '' : localDateStr(t);
+  }
+  function csvYes(v){ return /^(y|yes|true|1|x|✓|bought|purchased)$/i.test(String(v||'').trim()); }
+  function csvPriority(v){
+    var s = String(v||'').toLowerCase();
+    var out = { priority: /need|must|essential/.test(s) ? 'need' : 'want', stars: null };
+    if(/really|high|must/.test(s)) out.stars = 4;
+    else if(/somewhat|low|maybe/.test(s)) out.stars = 2;
+    else if(/need/.test(s)) out.stars = 5;
+    return out;
+  }
+  function csvStatus(v){
+    var s = normHeader(v);
+    if(VALID_STATUS[s]) return s;
+    if(/ready|buy/.test(s)) return 'ready';
+    if(/sav/.test(s)) return 'saving';
+    if(/research|compar/.test(s)) return 'researching';
+    return 'someday';
+  }
+  var csvState = null;
+  function importCsvFile(file){
+    if(file.size > 5 * 1024 * 1024){ toast('That file is too large. Try one under 5 MB.'); return; }
+    var reader = new FileReader();
+    reader.onload = function(e){
+      var rows = parseCsv(e.target.result).filter(function(r){ return r.some(function(v){ return v !== ''; }); });
+      if(rows.length < 2){ toast("Couldn't find any rows in that file."); return; }
+      var h = findHeaderRow(rows);
+      var headers = rows[h];
+      var data = rows.slice(h+1);
+      csvState = { headers: headers, data: data, map: autoMap(headers), fileName: file.name };
+      openCsvMap();
+    };
+    reader.onerror = function(){ toast("Couldn't read that file."); };
+    reader.readAsText(file);
+  }
+  function openCsvMap(){
+    var s = csvState;
+    var opts = function(sel){
+      return '<option value="">Skip</option>' + s.headers.map(function(hd, i){
+        var lbl = hd ? hd : 'Column ' + (i+1);
+        return '<option value="'+i+'"'+(sel === i ? ' selected' : '')+'>'+escapeHtml(lbl.slice(0,40))+'</option>';
+      }).join('');
+    };
+    $('csvMapSub').textContent = s.fileName + ' · ' + plural(s.data.length,'row') + ' found. Check the columns, then continue.';
+    $('csvMapGrid').innerHTML = CSV_FIELDS.map(function(f){
+      return '<label for="map_'+f.key+'">'+escapeHtml(f.label)+'</label><select id="map_'+f.key+'" data-map="'+f.key+'">'+opts(s.map[f.key])+'</select>';
+    }).join('');
+    updateCsvSample();
+    $('csvMapOverlay').hidden = false;
+    setTimeout(function(){ $('map_name').focus(); }, 0);
+  }
+  function readCsvMap(){
+    var m = {};
+    document.querySelectorAll('#csvMapGrid [data-map]').forEach(function(sel){
+      if(sel.value !== '') m[sel.dataset.map] = parseInt(sel.value,10);
+    });
+    csvState.map = m;
+    return m;
+  }
+  function csvRowToRaw(r, m){
+    var g = function(k){ return m[k] != null ? (r[m[k]] || '') : ''; };
+    var name = g('name');
+    if(!name || /^#/.test(name)) return null;
+    var pr = csvPriority(g('priority'));
+    var cost = csvMoney(g('unitCost'));
+    var qty = parseInt(String(g('quantity')).replace(/[^\d]/g,''),10);
+    var starsRaw = parseInt(g('stars'),10);
+    var tgt = csvMoney(g('targetPrice'));
+    var purchased = csvYes(g('purchased'));
+    var dp = csvDate(g('datePurchased'));
+    return {
+      name: name,
+      unitCost: cost != null ? cost : 0,
+      quantity: qty > 0 ? qty : 1,
+      purchaseUrl: g('purchaseUrl'),
+      priority: m.priority != null ? pr.priority : (g('priority') === 'need' ? 'need' : 'want'),
+      stars: starsRaw >= 1 && starsRaw <= 5 ? starsRaw : (pr.stars || 3),
+      category: g('category'),
+      status: m.status != null ? csvStatus(g('status')) : 'someday',
+      needByDate: csvDate(g('needByDate')),
+      targetPrice: tgt,
+      notes: g('notes'),
+      purchased: purchased,
+      datePurchased: purchased && dp ? dp + 'T12:00:00.000Z' : null,
+      dropped: !purchased && csvYes(g('dropped'))
+    };
+  }
+  function updateCsvSample(){
+    var m = readCsvMap();
+    var sample = csvState.data.slice(0,4).map(function(r){ return csvRowToRaw(r, m); }).filter(Boolean);
+    $('csvMapSample').textContent = m.name == null
+      ? 'Pick which column holds the item name.'
+      : (sample.length ? 'Preview:\n' + sample.map(function(x){
+          return '• ' + x.name.slice(0,60) + ' · $' + money(x.unitCost) + (x.quantity>1?' × '+x.quantity:'') + ' · ' + (x.priority==='need'?'Need':'Want') + (x.category?' · '+x.category.slice(0,24):'');
+        }).join('\n') : 'No usable rows with that name column.');
+    $('csvMapOkBtn').disabled = m.name == null;
+  }
+  function finishCsvImport(){
+    var m = readCsvMap();
+    if(m.name == null){ toast('Pick the name column first.'); return; }
+    var clean = csvState.data.map(function(r){ return csvRowToRaw(r, m); })
+      .map(sanitizeImportedItem).filter(Boolean).map(normalizeItem);
+    $('csvMapOverlay').hidden = true;
+    csvState = null;
+    if(!clean.length){ toast('No rows with an item name were found.'); return; }
+    var csvSig = function(it){ return [String(it.name||'').trim().toLowerCase(), String(it.purchaseUrl||'')].join('|'); };
+    mergeImported(clean, csvSig, 'spreadsheet');
   }
 
   function lastBackup(){
@@ -2174,9 +3499,17 @@ body.has-cart .totop{bottom:calc(92px + env(safe-area-inset-bottom,0px))}
     });
     $('removeImageBtn').onclick = function(){ editingImageDataUrl = null; updateImagePreview(); };
 
-    document.querySelectorAll('nav.tabs [data-tab], #bnav [data-tab]').forEach(function(b){
-      b.addEventListener('click', function(){ switchTab(b.dataset.tab); closeSheet(); });
+    document.querySelectorAll('.side-nav [data-tab], #bnav [data-tab]').forEach(function(b){
+      b.addEventListener('click', function(){ switchTab(b.dataset.tab); closeSheet(); window.scrollTo(0,0); });
     });
+    // MB Suite v3 §3: every brand block is one link to the start view (no reload in this single-page app)
+    document.querySelectorAll('a.brand[data-home]').forEach(function(a){
+      a.addEventListener('click', function(e){
+        if(e.metaKey || e.ctrlKey || e.shiftKey || e.button === 1) return;   // let "open in new tab" work
+        e.preventDefault(); closeSheet(); switchTab('wishlist'); window.scrollTo(0,0);
+      });
+    });
+    $('shareProgressBtn').onclick = openShareProgress;
 
     $('searchInput').addEventListener('input', function(){
       clearTimeout(searchTimer);
@@ -2191,7 +3524,7 @@ body.has-cart .totop{bottom:calc(92px + env(safe-area-inset-bottom,0px))}
     });
 
     $('wishlistResults').addEventListener('click', gridClickHandler);
-    $('purchasedList').addEventListener('click', purchasedClickHandler);
+    $('purchasedPane').addEventListener('click', purchasedClickHandler);
     $('wishlistEmptyActions').addEventListener('click', function(e){
       var b = e.target.closest('[data-empty]'); if(!b) return;
       var a = b.dataset.empty;
@@ -2205,6 +3538,41 @@ body.has-cart .totop{bottom:calc(92px + env(safe-area-inset-bottom,0px))}
     });
 
     $('cartClearBtn').onclick = function(){ selectedIds.clear(); renderAll(); };
+    $('cartCompareBtn').onclick = openCompare;
+    $('cartEditBtn').onclick = openBulk;
+    $('compareCloseBtn').onclick = function(){ $('compareOverlay').hidden = true; };
+    $('compareOverlay').addEventListener('click', function(e){ if(e.target === this) this.hidden = true; });
+    $('bulkApplyBtn').onclick = applyBulk;
+    $('bulkCancelBtn').onclick = function(){ $('bulkOverlay').hidden = true; };
+    $('bulkOverlay').addEventListener('click', function(e){ if(e.target === this) this.hidden = true; });
+    $('bulkDropBtn').onclick = function(){
+      var ids = items.filter(function(i){ return selectedIds.has(i.id) && !i.purchased; }).map(function(i){ return i.id; });
+      $('bulkOverlay').hidden = true;
+      if(!ids.length) return;
+      askConfirm('Not buying these?', 'Moves ' + plural(ids.length,'item') + ' to "Decided against" on the Purchased tab. You can move them back any time.', function(){
+        ids.forEach(function(id){ dropItem(id, true); });
+        renderAll();
+        toast('Moved ' + plural(ids.length,'item') + ' to "Decided against".');
+      }, 'Not buying', 'primary');
+    };
+    $('dropItemBtn').onclick = function(){ var id = editingId; closeModal(); dropItem(id); };
+    $('pauseSkipBtn').onclick = function(){ closePause(0); };
+    document.querySelectorAll('#pauseOverlay [data-pause]').forEach(function(b){
+      b.onclick = function(){ closePause(Number(b.dataset.pause)); };
+    });
+    $('startReviewBtn').onclick = startReview;
+    $('reviewKeepBtn').onclick = function(){ reviewAct('keep'); };
+    $('reviewDropBtn').onclick = function(){ reviewAct('drop'); };
+    $('reviewEditBtn').onclick = function(){ reviewAct('edit'); };
+    $('reviewCloseBtn').onclick = finishReview;
+    $('importCsvBtn').onclick = function(){ closeDataMenu(); $('importCsvInput').click(); };
+    $('importCsvInput').addEventListener('change', function(e){
+      if(e.target.files[0]) importCsvFile(e.target.files[0]);
+      e.target.value = '';
+    });
+    $('csvMapGrid').addEventListener('change', updateCsvSample);
+    $('csvMapOkBtn').onclick = finishCsvImport;
+    $('csvMapCancelBtn').onclick = function(){ $('csvMapOverlay').hidden = true; csvState = null; };
     $('cartBuyBtn').onclick = openCheckout;
     $('checkoutList').addEventListener('click', function(e){
       var btn = e.target.closest('[data-checkout-buy]'); if(!btn) return;
@@ -2253,7 +3621,7 @@ body.has-cart .totop{bottom:calc(92px + env(safe-area-inset-bottom,0px))}
       askConfirm('Clear wishlist items?', 'This removes every item on your list and puts the sample items back. This can\'t be undone, so save a backup first if you want one.', function(){
         try{ localStorage.removeItem(STORAGE_KEY); }catch(e){}
         idbClearStore(IDB_IMAGES);
-        items = demoItems();
+        items = demoItems().map(normalizeItem);
         bumpRevision();
         save();
         selectedIds.clear();
@@ -2292,6 +3660,11 @@ body.has-cart .totop{bottom:calc(92px + env(safe-area-inset-bottom,0px))}
         if(!$('confirmOverlay').hidden){ $('confirmOverlay').hidden = true; confirmCallback = null; return; }
         closeDataMenu();
         closeSheet();
+        if(!$('pauseOverlay').hidden){ closePause(0); return; }
+        if(!$('reviewOverlay').hidden){ finishReview(); return; }
+        $('compareOverlay').hidden = true;
+        $('bulkOverlay').hidden = true;
+        if(!$('csvMapOverlay').hidden){ $('csvMapOverlay').hidden = true; csvState = null; }
         closeModal();
         if(!$('checkoutOverlay').hidden) closeCheckout();
         $('searchOverlay').hidden = true;
@@ -2331,7 +3704,20 @@ body.has-cart .totop{bottom:calc(92px + env(safe-area-inset-bottom,0px))}
     if(edit){ openModal(edit.dataset.edit); return; }
     var del = t.closest('[data-del]');
     if(del){ askConfirm('Delete this item?', 'You can undo it from the toast that appears.', function(){ deleteItem(del.dataset.del); }, 'Delete'); return; }
-    // Buy now is a plain link — does not mark purchased
+    // Buy now is a plain link — does not mark purchased. During a cooling-off wait it checks first.
+    var buy = t.closest('a[data-buyid]');
+    if(buy){
+      var bi = items.find(function(i){ return i.id === buy.dataset.buyid; });
+      if(bi && isCooling(bi)){
+        e.preventDefault();
+        var href = buy.href;
+        askConfirm('Still in your waiting period', 'You chose to wait on ' + bi.name + ' until ' + new Date(bi.coolUntil).toLocaleString('en-US',{month:'short',day:'numeric',hour:'numeric',minute:'2-digit'}) + '. Open the link anyway?', function(){
+          bi.coolUntil = null; bumpRevision(); save(); renderAll();
+          window.open(href, '_blank', 'noopener,noreferrer');
+        }, 'Open link', 'primary');
+      }
+      return;
+    }
     var mark = t.closest('[data-markpurchased]');
     if(mark){ markPurchased(mark.dataset.markpurchased); return; }
   }
@@ -2339,6 +3725,8 @@ body.has-cart .totop{bottom:calc(92px + env(safe-area-inset-bottom,0px))}
     var t = e.target;
     var un = t.closest('[data-unpurchase]');
     if(un){ unpurchase(un.dataset.unpurchase); return; }
+    var rs = t.closest('[data-restore]');
+    if(rs){ restoreItem(rs.dataset.restore); return; }
     var del = t.closest('[data-del]');
     if(del){ askConfirm('Delete this item?', 'This removes it from your purchase history for good.', function(){ deleteItem(del.dataset.del); }, 'Delete'); return; }
   }
@@ -2390,18 +3778,23 @@ body.has-cart .totop{bottom:calc(92px + env(safe-area-inset-bottom,0px))}
   }
 
   var PAGE_COPY = {
-    wishlist: ['Wishlist', 'Planned purchases, in one place.'],
-    purchased: ['Purchased', 'What you bought, and what it cost.'],
-    faq: ['FAQ', 'How this list works.']
+    wishlist: ['My list', 'Planned purchases, in one place.'],
+    purchased: ['Purchased', 'What you bought, and what you decided against.'],
+    faq: ['FAQ', 'How this list works, plus installing it as an app.']
   };
   function switchTab(tab){
     if(!PAGE_COPY[tab]) tab = 'wishlist';
     activeTab = tab;
-    document.querySelectorAll('nav.tabs [data-tab], #bnav [data-tab]').forEach(function(b){
+    document.querySelectorAll('.side-nav [data-tab], #bnav [data-tab]').forEach(function(b){
       if(b.dataset.tab === tab) b.setAttribute('aria-current','page'); else b.removeAttribute('aria-current');
     });
     $('pageTitle').textContent = PAGE_COPY[tab][0];
+    $('viewTitle').textContent = PAGE_COPY[tab][0];
     $('pageSub').textContent = PAGE_COPY[tab][1];
+    $('homeBanner').hidden = tab !== 'wishlist';
+    $('viewHead').hidden = tab === 'wishlist';
+    if(window.MBTitle) MBTitle.set(PAGE_COPY[tab][0]);
+    if(tab === 'faq' && window.MBInstall) MBInstall.render();
     $('wishlistPane').hidden = tab !== 'wishlist';
     $('purchasedPane').hidden = tab !== 'purchased';
     $('faqSection').hidden = tab !== 'faq';
@@ -2437,13 +3830,9 @@ body.has-cart .totop{bottom:calc(92px + env(safe-area-inset-bottom,0px))}
 
   function initScrollEffects(){
     var header = $('siteHeader');
-    var progress = $('scrollProgress');
     var backToTop = $('backToTopBtn');
     function onScroll(){
       var scrollTop = window.scrollY || document.documentElement.scrollTop;
-      var docHeight = document.documentElement.scrollHeight - window.innerHeight;
-      var pct = docHeight > 0 ? Math.min(100, (scrollTop/docHeight)*100) : 0;
-      if(progress) progress.style.width = pct + '%';
       if(header) header.classList.toggle('scrolled', scrollTop > 4);
       if(backToTop) backToTop.classList.toggle('visible', scrollTop > 400);
     }
@@ -2662,10 +4051,96 @@ body.has-cart .totop{bottom:calc(92px + env(safe-area-inset-bottom,0px))}
     $('saveNowKbd').textContent = '⌘S';
   }
 
+  /* ---- PWA: offline cache + share-sheet links ---- */
+  function registerSW(){
+    if(fsBlocked) return;   // not inside an embed/iframe
+    if(location.protocol !== 'https:' && location.hostname !== 'localhost' && location.hostname !== '127.0.0.1') return;
+    if(window.MBInstall) MBInstall.registerSW('sw.js');
+  }
+  function handleSharedLink(){
+    var p;
+    try{ p = new URLSearchParams(location.search); }catch(e){ return; }
+    var url = p.get('url') || '', text = p.get('text') || '', title = p.get('title') || '';
+    if(!url){
+      var m = (text + ' ' + title).match(/https?:\/\/[^\s<>"']+/);
+      if(m) url = m[0];
+    }
+    if(!url && !title && !text) return;
+    try{ history.replaceState(null, '', location.pathname); }catch(e){}
+    if(!$('onboardingOverlay').hidden) dismissOnboarding();
+    openModal(null);
+    if(isSafeUrl(url)){ $('fieldUrl').value = url.slice(0,2000); handleUrlInput(); }
+    var paste = [title, text.replace(url,'').trim()].filter(Boolean).join('\n').slice(0,600);
+    if(paste){ $('fieldPaste').value = paste; handlePaste(); }
+  }
+
+  /* ---- dialogs: move focus in when one opens, keep Tab inside it, return focus when it closes ---- */
+  function initDialogFocus(){
+    var FOCUSABLE = 'a[href],button:not([disabled]),input:not([disabled]):not([type=hidden]),select:not([disabled]),textarea:not([disabled]),[tabindex]:not([tabindex="-1"])';
+    var stack = [], lastOutside = null;
+    document.addEventListener('focusin', function(e){
+      if(!e.target.closest || !e.target.closest('.modal-overlay')) lastOutside = e.target;
+    });
+    document.addEventListener('pointerdown', function(e){   // Safari doesn't focus buttons on click; remember what was pressed
+      var b = e.target.closest && e.target.closest('button,a[href]');
+      if(b && !b.closest('.modal-overlay')) lastOutside = b;
+    }, true);
+    function visible(el){ return !!(el.offsetWidth || el.offsetHeight || el.getClientRects().length); }
+    function topOverlay(){
+      var open = Array.prototype.filter.call(document.querySelectorAll('.modal-overlay'), function(o){ return !o.hidden; });
+      return open.length ? open[open.length-1] : null;
+    }
+    function onOpen(o){
+      var opener = stack.length ? document.activeElement : (lastOutside || document.activeElement);
+      stack.push({ el:o, ret:opener });
+      setTimeout(function(){
+        if(o.hidden) return;
+        var dlg = o.querySelector('.modal') || o;
+        if(dlg.contains(document.activeElement)) return;      // the app already focused a field
+        if(!dlg.hasAttribute('tabindex')) dlg.setAttribute('tabindex','-1');
+        dlg.focus({ preventScroll:true });
+      }, 40);
+    }
+    var mo = new MutationObserver(function(muts){
+      muts.forEach(function(m){
+        var o = m.target;
+        if(!o.hidden && !stack.some(function(x){ return x.el === o; })){
+          onOpen(o);
+        } else if(o.hidden){
+          for(var i = stack.length-1; i >= 0; i--){
+            if(stack[i].el === o){
+              var r = stack[i].ret; stack.splice(i,1);
+              if(r && r.focus && document.contains(r) && visible(r) && !topOverlay()) r.focus({ preventScroll:true });
+              break;
+            }
+          }
+        }
+      });
+    });
+    document.querySelectorAll('.modal-overlay').forEach(function(o){
+      mo.observe(o, { attributes:true, attributeFilter:['hidden'] });
+      if(!o.hidden) onOpen(o);   // already open at startup (onboarding)
+    });
+    document.addEventListener('keydown', function(e){
+      if(e.key !== 'Tab') return;
+      var o = topOverlay(); if(!o) return;
+      var f = Array.prototype.filter.call(o.querySelectorAll(FOCUSABLE), visible);
+      if(!f.length) return;
+      var first = f[0], last = f[f.length-1];
+      if(!o.contains(document.activeElement)){ e.preventDefault(); first.focus(); return; }
+      if(e.shiftKey && (document.activeElement === first || document.activeElement === o.querySelector('.modal'))){ e.preventDefault(); last.focus(); }
+      else if(!e.shiftKey && document.activeElement === last){ e.preventDefault(); first.focus(); }
+    });
+  }
+  initDialogFocus();
+
   Promise.resolve(init()).then(function(){
+    bumpRevision(); // setView() rendered before items loaded; drop that cached empty list
     switchTab('wishlist');
     loadHandles();
     setInterval(renderBackupStatus, 60000);
+    handleSharedLink();
+    registerSW();
   });
 })();
 </script>

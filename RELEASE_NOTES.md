@@ -1,0 +1,18 @@
+# Release notes · Wishlist (mbwishlist.online)
+
+Newest first. One entry per release, in plain words a user would understand.
+
+## 2026-10-13 · v1.9
+
+- New layout shared with the other mb apps: your sections are in a left sidebar (an icon rail on tablets, a bottom bar on phones), and the logo always takes you back to your list.
+- The first section is now called **My list**, and browser tabs read "Wishlist | My list", "Wishlist | Purchased" and so on.
+- Share your progress from the Purchased tab as a square image made on your device: how many planned things you bought, how many you decided against, and how many are still on your list. Item names never go on it; dollar amounts only if you turn them on.
+- Install card at the top of the FAQ ("Install Wishlist" in Chrome and Edge, Add to Home Screen steps on iPhone). The installed app is now named "Wishlist".
+- Buttons, links and the selected section use a deeper amber so text is easier to read.
+- The search box and filters sit in one row on wider screens instead of stacking.
+- Dialogs move keyboard focus inside when they open, keep Tab inside, and hand focus back when they close.
+- Link previews (Facebook, iMessage, Slack and others) now show a proper title, description and image.
+
+## 2026-10-13 · v1.8
+
+- Import a spreadsheet (CSV) with column matching, price history, compare 2 to 4 items, bulk edit, "Not buying", 90-day review, an optional waiting period for $100+ wants, a per-week set-aside amount, offline use and share-menu links. (Recorded from the in-app release notes.)
