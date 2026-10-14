@@ -2,6 +2,13 @@
 
 Newest first. One entry per release, in plain words a user would understand.
 
+## 1.1 · 2026-10-14
+
+- About card at the bottom of the FAQ page: version, release date, links and copyright in one place. The Install card moved from the top of the FAQ down next to it.
+- Installing from matthewbroyer.com: the hub's Install button opens the app with a short install prompt.
+- New "page not found" page that matches the app and links back to it.
+- Version numbers restart at 1.x with the suite's "Official Web App" label; earlier releases were numbered v1.5 to v1.9 (the entries below use those build numbers).
+
 ## 2026-10-13 · v1.9
 
 - New layout shared with the other mb apps: your sections are in a left sidebar (an icon rail on tablets, a bottom bar on phones), and the logo always takes you back to your list.

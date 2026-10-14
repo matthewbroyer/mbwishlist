@@ -709,6 +709,18 @@ a.brand:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 .mb-install.is-done{border-left-color:var(--good)}
 .mb-install.is-done>.uic{color:var(--good-ink)}
 @media (max-width:520px){.mb-install{flex-wrap:wrap}.mb-install .btn{width:100%}}
+/* ---- about card (bottom of Settings/More, below the Install card · SUITE-STANDARDS §1 · kit v3.1) ---- */
+.mb-about{display:flex;align-items:flex-start;gap:12px;padding:12px 14px;margin-top:12px;border:1px solid var(--border);border-left:3px solid var(--accent);
+  border-radius:var(--r);background:var(--surface)}
+.mb-about>.uic{flex:none;width:22px;height:22px;color:var(--accent)}
+.mb-about>div{flex:1;min-width:0}
+.mb-about b{display:block;font-size:14px;font-weight:600;color:var(--ink)}
+.mb-about p{margin:2px 0 0;font-size:12.5px;color:var(--ink-2)}
+.mb-about .mb-about-links{display:flex;flex-wrap:wrap;gap:0 14px;margin-top:4px}
+.mb-about .mb-about-links a,.mb-about .mb-about-links button{display:inline-flex;align-items:center;min-height:28px;padding:0;border:0;background:none;
+  font:inherit;color:var(--accent);text-decoration:underline;text-underline-offset:2px;cursor:pointer}
+.mb-about .mb-about-links a:hover,.mb-about .mb-about-links button:hover{color:var(--accent-hover)}
+.mb-about .mb-about-copy{margin-top:4px;color:var(--muted,var(--ink-2))}
 
 /* ---- share button (put it where the milestone is shown) ---- */
 .mb-share-btn .uic{width:16px;height:16px}
@@ -762,7 +774,7 @@ dialog.mb-share::backdrop{background:var(--scrim)}
 .share-row{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:12px;padding:12px 14px}
 .share-row b{font-size:14px}
 .share-row p{color:var(--ink-2);font-size:13px;margin-top:2px}
-#faqInstall{margin-bottom:12px}
+#faqInstall{margin-top:12px}
 @media (max-width:1023px){
   .cartbar{left:calc(50% + var(--rail-w) / 2);width:min(760px,calc(100% - var(--rail-w) - 24px))}
   .toast{left:calc(50% + var(--rail-w) / 2)}
@@ -816,7 +828,7 @@ dialog.mb-share::backdrop{background:var(--scrim)}
 <a href="#main" class="skip">Skip to content</a>
 
 <aside class="mb-side" aria-label="App">
-  <a class="brand" href="./" data-home aria-label="mbwishlist.online: go to My list"><span class="logo"><svg viewBox="0 0 64 64" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg"><rect width="64" height="64" rx="13" fill="#D97706"/><g transform="translate(0,-0.02416552)"><path d="m 17,24.524164 h 30 l -2.5,26 h -25 z" fill="none" stroke="#fff" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/><path d="m 25,24.524164 v -4 a 7,7 0 0 1 14,0 v 4" fill="none" stroke="#fff" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/><path d="m 32,43.341388 c -4.6,-3 -7.2,-5.4 -7.2,-8.1 a 3.7,3.7 0 0 1 7.2,-1.2 3.7,3.7 0 0 1 7.2,1.2 c 0,2.7 -2.6,5.1 -7.2,8.1 z" fill="#f2b640"/></g></svg></span><span class="bt"><b>mbwishlist<i class="tld">.online</i></b><span>Official Web App · v1.0</span></span></a>
+  <a class="brand" href="./" data-home aria-label="mbwishlist.online: go to My list"><span class="logo"><svg viewBox="0 0 64 64" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg"><rect width="64" height="64" rx="13" fill="#D97706"/><g transform="translate(0,-0.02416552)"><path d="m 17,24.524164 h 30 l -2.5,26 h -25 z" fill="none" stroke="#fff" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/><path d="m 25,24.524164 v -4 a 7,7 0 0 1 14,0 v 4" fill="none" stroke="#fff" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/><path d="m 32,43.341388 c -4.6,-3 -7.2,-5.4 -7.2,-8.1 a 3.7,3.7 0 0 1 7.2,-1.2 3.7,3.7 0 0 1 7.2,1.2 c 0,2.7 -2.6,5.1 -7.2,8.1 z" fill="#f2b640"/></g></svg></span><span class="bt"><b>mbwishlist<i class="tld">.online</i></b><span>Official Web App · v1.1</span></span></a>
   <nav class="side-nav" id="siteNav" aria-label="Sections">
     <button type="button" id="tabWishlist" data-tab="wishlist" aria-current="page"><svg class="i" aria-hidden="true"><use href="#i-list"/></svg><span>My list</span><span class="count" id="countWishlist"></span></button>
     <button type="button" id="tabPurchased" data-tab="purchased"><svg class="i" aria-hidden="true"><use href="#i-bought"/></svg><span>Purchased</span><span class="count" id="countPurchased"></span></button>
@@ -828,7 +840,7 @@ dialog.mb-share::backdrop{background:var(--scrim)}
 
 <div class="mb-main">
 <header class="page-bar" id="siteHeader">
-  <a class="brand phone-brand" href="./" data-home aria-label="mbwishlist.online: go to My list"><span class="logo"><svg viewBox="0 0 64 64" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg"><rect width="64" height="64" rx="13" fill="#D97706"/><g transform="translate(0,-0.02416552)"><path d="m 17,24.524164 h 30 l -2.5,26 h -25 z" fill="none" stroke="#fff" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/><path d="m 25,24.524164 v -4 a 7,7 0 0 1 14,0 v 4" fill="none" stroke="#fff" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/><path d="m 32,43.341388 c -4.6,-3 -7.2,-5.4 -7.2,-8.1 a 3.7,3.7 0 0 1 7.2,-1.2 3.7,3.7 0 0 1 7.2,1.2 c 0,2.7 -2.6,5.1 -7.2,8.1 z" fill="#f2b640"/></g></svg></span><span class="bt"><b>mbwishlist<i class="tld">.online</i></b><span>Official Web App · v1.0</span></span></a>
+  <a class="brand phone-brand" href="./" data-home aria-label="mbwishlist.online: go to My list"><span class="logo"><svg viewBox="0 0 64 64" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg"><rect width="64" height="64" rx="13" fill="#D97706"/><g transform="translate(0,-0.02416552)"><path d="m 17,24.524164 h 30 l -2.5,26 h -25 z" fill="none" stroke="#fff" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/><path d="m 25,24.524164 v -4 a 7,7 0 0 1 14,0 v 4" fill="none" stroke="#fff" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/><path d="m 32,43.341388 c -4.6,-3 -7.2,-5.4 -7.2,-8.1 a 3.7,3.7 0 0 1 7.2,-1.2 3.7,3.7 0 0 1 7.2,1.2 c 0,2.7 -2.6,5.1 -7.2,8.1 z" fill="#f2b640"/></g></svg></span><span class="bt"><b>mbwishlist<i class="tld">.online</i></b><span>Official Web App · v1.1</span></span></a>
   <h1 class="page-title" id="pageTitle">My list</h1>
   <div class="actions">
       <button type="button" class="btn sm ghost hide-phone" id="searchBtn" aria-label="Search (Ctrl/Cmd+K)" title="Search (Ctrl/Cmd+K)"><svg class="i" aria-hidden="true"><use href="#i-search"/></svg><kbd>Ctrl K</kbd></button>
@@ -978,7 +990,6 @@ dialog.mb-share::backdrop{background:var(--scrim)}
   </section>
 
   <section id="faqSection" hidden>
-    <div id="faqInstall" data-mb-install data-app-name="Wishlist" data-note="Opens in its own window with its own icon. Works offline after the first visit."></div>
     <div class="faq-list" id="faqList">
       <div class="faq-item" id="faq-1">
         <button class="faq-q" aria-expanded="false"><span>Where is my list saved?</span><svg class="i chev" aria-hidden="true"><use href="#i-chev"/></svg></button>
@@ -1030,11 +1041,21 @@ dialog.mb-share::backdrop{background:var(--scrim)}
       </div>
       <div class="faq-item" id="faq-12">
         <button class="faq-q" aria-expanded="false"><span>Can I install it like an app?</span><svg class="i chev" aria-hidden="true"><use href="#i-chev"/></svg></button>
-        <div class="faq-answer"><p>Yes. In Chrome or Edge, use the Install button at the top of this page when your browser offers it, or the install icon in the address bar. On iPhone or iPad, tap Share, then Add to Home Screen. Installed, it opens in its own window and works offline after the first visit. On iPhone and iPad the Home Screen version keeps its own storage, so use a backup to move your list into it.</p></div>
+        <div class="faq-answer"><p>Yes. In Chrome or Edge, use the Install button at the bottom of this page when your browser offers it, or the install icon in the address bar. On iPhone or iPad, tap Share, then Add to Home Screen. Installed, it opens in its own window and works offline after the first visit. On iPhone and iPad the Home Screen version keeps its own storage, so use a backup to move your list into it.</p></div>
       </div>
       <div class="faq-item" id="faq-13">
         <button class="faq-q" aria-expanded="false"><span>What does the Share button make?</span><svg class="i chev" aria-hidden="true"><use href="#i-chev"/></svg></button>
         <div class="faq-answer"><p>On the Purchased tab, Share makes a square image of your progress: how many planned things you bought, how many you decided against, and how many are still on your list. It's drawn on your device and nothing is uploaded. Item names never go on it, and dollar amounts only appear if you turn them on.</p></div>
+      </div>
+    </div>
+    <div id="faqInstall" data-mb-install data-app-name="Wishlist" data-note="Opens in its own window with its own icon. Works offline after the first visit."></div>
+    <div class="mb-about" role="group" aria-label="About this app">
+      <svg class="uic" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="9.5"/><path d="M12 11v6M12 7.5v.01"/></svg>
+      <div>
+        <b>mbwishlist.online™</b>
+        <p>Version 1.1 · Oct 14, 2026</p>
+        <p class="mb-about-links"><button type="button" id="aboutWhatsNewBtn">What's new</button><button type="button" id="aboutPrivacyBtn">Privacy</button><button type="button" id="aboutTermsBtn">Terms</button><a href="https://matthewbroyer.com/">More free apps at matthewbroyer.com</a></p>
+        <p class="mb-about-copy">© 2026 Matthew Broyer. All rights reserved.</p>
       </div>
     </div>
   </section>
@@ -1348,7 +1369,16 @@ dialog.mb-share::backdrop{background:var(--scrim)}
     <h2 id="relTitle">Release notes</h2>
     <div class="release-list">
       <div class="release-entry">
-        <div class="rel-head"><span class="rel-version">v1.9</span><span class="pill">Latest</span><span class="rel-date">Oct 13, 2026</span></div>
+        <div class="rel-head"><span class="rel-version">v1.1</span><span class="pill">Latest</span><span class="rel-date">Oct 14, 2026</span></div>
+        <ul>
+          <li>About card at the bottom of the FAQ page: version, release date, links and copyright in one place. The Install card moved down next to it</li>
+          <li>Installing from matthewbroyer.com: the hub's Install button opens the app with a short install prompt</li>
+          <li>New "page not found" page that matches the app and links back to it</li>
+          <li>Version numbers restart at 1.x with the suite's "Official Web App" label; earlier releases were numbered v1.5 to v1.9</li>
+        </ul>
+      </div>
+      <div class="release-entry">
+        <div class="rel-head"><span class="rel-version">v1.9</span><span class="rel-date">Oct 13, 2026</span></div>
         <ul>
           <li>New layout shared with the other mb apps: sections in a left sidebar (a bottom bar on phones), and the logo always takes you back to your list</li>
           <li>Share your progress from the Purchased tab as an image made on your device. Amounts stay hidden unless you turn them on</li>
@@ -1515,6 +1545,66 @@ dialog.mb-share::backdrop{background:var(--scrim)}
   window.addEventListener('appinstalled', function () { deferred = null; render(); });
   document.addEventListener('click', function (e) { var b = e.target.closest && e.target.closest('[data-mb-install-btn]'); if (b) install(); });
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', render); else render();
+  /* ---- v3.1 · install link ------------------------------------------------------------
+     Opening the app as <domain>/?install (the hub's Install buttons do this) shows a small
+     install sheet once, then removes ?install from the address bar. It uses the same rules as
+     the card: a real Install button only when the browser offers install, iPhone steps on iOS,
+     plain guidance otherwise, nothing when already running as the installed app. */
+  var sheet = null, sheetUsed = false, sheetDone = false;
+  var SHEET_CSS = '.mb-isheet{position:fixed;left:50%;bottom:calc(16px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);z-index:2147483000;width:min(460px,calc(100% - 24px));border-radius:var(--r,6px);box-shadow:0 12px 32px -8px rgba(20,24,31,.35),0 2px 6px rgba(20,24,31,.12);animation:mbis .16s ease-out}' +
+    '.mb-isheet .mb-install{align-items:flex-start;padding:14px 44px 14px 14px;position:relative;flex-wrap:nowrap}' +
+    '.mb-isheet-a{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}.mb-isheet-a .btn{width:auto!important}' +
+    '.mb-isheet-x{position:absolute;top:6px;right:6px;width:32px;height:32px;display:grid;place-items:center;border:0;border-radius:4px;background:none;color:var(--ink-2,#48505c);font-size:22px;line-height:1;cursor:pointer}' +
+    '.mb-isheet-x:hover{background:var(--hover-band,rgba(20,24,31,.06))}' +
+    '@media (max-width:767px){.mb-isheet{bottom:calc(84px + env(safe-area-inset-bottom,0px))}.mb-isheet-x{width:44px;height:44px;top:2px;right:2px}}' +
+    '@keyframes mbis{from{opacity:0;transform:translate(-50%,8px)}}@media (prefers-reduced-motion:reduce){.mb-isheet{animation:none}}';
+  function appName() {
+    var box = document.querySelector('[data-mb-install][data-app-name]'), m = document.querySelector('meta[name="application-name"]');
+    return (box && box.getAttribute('data-app-name')) || document.documentElement.getAttribute('data-app-short') || (m && m.content) || (document.title.split('|')[0] || '').trim() || 'this app';
+  }
+  function wantSheet() {
+    try {
+      var u = new URL(location.href), hit = u.searchParams.has('install') || u.hash === '#install';
+      if (!hit) return false;
+      u.searchParams.delete('install'); if (u.hash === '#install') u.hash = '';
+      history.replaceState(history.state, '', u.pathname + u.search + u.hash);
+      return true;
+    } catch (e) { return false; }
+  }
+  function sheetBody(name) {
+    var n = esc(name), close = '<button type="button" class="btn" data-mb-isheet-close>Not now</button>';
+    if (sheetDone) return '<div><b id="mb-isheet-t">' + n + ' is installed</b><p>Open it from your home screen or app list.</p><div class="mb-isheet-a"><button type="button" class="btn primary" data-mb-isheet-close>Done</button></div></div>';
+    if (standalone()) return '';
+    if (deferred) return '<div><b id="mb-isheet-t">Install ' + n + '</b><p>Opens in its own window with its own icon. Remove it any time like any other app.</p><div class="mb-isheet-a"><button type="button" class="btn primary" data-mb-install-btn>Install</button>' + close + '</div></div>';
+    if (sheetUsed) return '';                       // the prompt was answered; nothing more to say
+    if (ios()) return '<div><b id="mb-isheet-t">Add ' + n + ' to your Home Screen</b><p>Tap <b>Share</b>, then <b>Add to Home Screen</b>. It opens full screen with its own icon.</p><div class="mb-isheet-a"><button type="button" class="btn primary" data-mb-isheet-close>Got it</button></div></div>';
+    return '<div><b id="mb-isheet-t">Install ' + n + '</b><p>This browser hasn’t offered to install the app. In Chrome or Edge, use the install icon in the address bar or the browser menu. Some browsers, like Firefox on a computer, can’t install web apps. Already installed? Open it from your apps.</p><div class="mb-isheet-a"><button type="button" class="btn primary" data-mb-isheet-close>OK</button></div></div>';
+  }
+  function closeSheet() { if (sheet) { sheet.remove(); sheet = null; } }
+  function showSheet() {
+    var body = sheetBody(appName());
+    if (!body) { closeSheet(); return; }
+    var fresh = !sheet;
+    if (fresh) {
+      if (!document.getElementById('mb-isheet-css')) { var st = document.createElement('style'); st.id = 'mb-isheet-css'; st.textContent = SHEET_CSS; document.head.appendChild(st); }
+      sheet = document.createElement('div'); sheet.className = 'mb-isheet';
+      sheet.setAttribute('role', 'dialog'); sheet.setAttribute('aria-labelledby', 'mb-isheet-t');
+      document.body.appendChild(sheet);
+    }
+    sheet.innerHTML = '<div class="mb-install">' + ICON + body + '<button type="button" class="mb-isheet-x" data-mb-isheet-close aria-label="Close">×</button></div>';
+    var first = sheet.querySelector('.btn.primary'); if (first && (fresh || !sheet.contains(document.activeElement))) first.focus();
+  }
+  document.addEventListener('click', function (e) {
+    if (e.target.closest && e.target.closest('[data-mb-isheet-close]')) closeSheet();
+    else if (sheet && e.target.closest && e.target.closest('.mb-isheet [data-mb-install-btn]')) { sheetUsed = true; setTimeout(closeSheet, 0); }   // the browser's own dialog takes over
+  });
+  document.addEventListener('keydown', function (e) { if (sheet && e.key === 'Escape') { e.stopImmediatePropagation(); closeSheet(); } }, true);   // Esc closes only the sheet, not the app's own dialog under it
+  window.addEventListener('appinstalled', function () { if (sheet) { sheetDone = true; showSheet(); } });
+  window.addEventListener('beforeinstallprompt', function () { if (sheet) setTimeout(showSheet, 0); });
+  if (wantSheet()) {
+    var go = function () { setTimeout(showSheet, deferred ? 0 : 1200); };   // give the browser a moment to offer install
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', go); else go();
+  }
   window.MBInstall = { render: render, install: install, registerSW: registerSW, canInstall: function () { return !!deferred; }, isInstalled: standalone };
 })();
 </script>
@@ -3925,8 +4015,8 @@ dialog.mb-share::backdrop{background:var(--scrim)}
       if(closeBtn) closeBtn.onclick = close;
       overlay.addEventListener('click', function(e){ if(e.target === this) close(); });
     }
-    wireOverlay('privacyOverlay', ['privacyFooterBtn'], 'privacyCloseBtn');
-    wireOverlay('termsOverlay', ['termsFooterBtn'], 'termsCloseBtn');
+    wireOverlay('privacyOverlay', ['privacyFooterBtn', 'aboutPrivacyBtn'], 'privacyCloseBtn');
+    wireOverlay('termsOverlay', ['termsFooterBtn', 'aboutTermsBtn'], 'termsCloseBtn');
   }
 
   function initReleaseNotes(){
@@ -3938,6 +4028,8 @@ dialog.mb-share::backdrop{background:var(--scrim)}
     var footerBtn = $('releaseNotesFooterBtn');
     if(btn) btn.onclick = open;
     if(footerBtn) footerBtn.onclick = open;
+    var aboutBtn = $('aboutWhatsNewBtn');
+    if(aboutBtn) aboutBtn.onclick = open;
     $('releaseNotesCloseBtn').onclick = close;
     overlay.addEventListener('click', function(e){ if(e.target === this) close(); });
   }
