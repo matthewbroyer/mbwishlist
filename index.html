@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; img-src 'self' data: blob:; script-src 'unsafe-inline'; base-uri 'none'; form-action 'none'; connect-src 'none'; manifest-src 'self'; worker-src 'self';">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; script-src 'unsafe-inline'; base-uri 'none'; form-action 'none'; connect-src 'none'; manifest-src 'self'; worker-src 'self';">
 <title>Wishlist | My list</title>
 <meta name="description" content="Free wishlist and shopping planner. Track needs and wants, target prices and need-by dates. No account, and your list stays in your browser.">
 <link rel="canonical" href="https://mbwishlist.online/">
@@ -135,23 +135,17 @@ kbd{font-family:var(--font);font-size:11px;font-weight:600;line-height:1;padding
 .btn.buy{color:var(--accent);border-color:var(--accent-line);background:var(--surface)}
 .btn.buy:hover{background:var(--accent-soft);border-color:var(--accent)}
 .btn:disabled,.btn:disabled:hover{opacity:1;background:var(--surface-2);border-color:var(--border);color:var(--muted);cursor:not-allowed}
-#searchBtn{gap:8px;color:var(--ink-2)}
-.actions .btn,.actions .lvlchip,#searchBtn{min-height:var(--ctl-sm)}
+.actions .btn,.actions .lvlchip{min-height:var(--ctl-sm)}
+.page-bar .actions .tb-chip{min-height:var(--tb-h,36px)}   /* backup chip matches the 36px bar controls */
 .bk-chip{display:inline-flex;align-items:center;gap:6px;min-height:var(--ctl-sm);padding:0 10px;border:1px solid var(--border);border-radius:var(--r-sm);background:var(--surface-2);color:var(--ink-2);font-size:12px;font-weight:550;white-space:nowrap;transition:background-color var(--ease),border-color var(--ease),color var(--ease)}
 .bk-chip svg.i{width:14px;height:14px}
 .bk-chip:hover{border-color:var(--border-strong);color:var(--ink)}
 .bk-chip.warn{background:color-mix(in srgb,var(--warn) 14%,var(--surface));border-color:color-mix(in srgb,var(--warn) 55%,transparent);color:var(--warn-ink)}
 .menu-wrap{position:relative}
-#menuToggle{position:relative}
-#menuToggle .dot{position:absolute;top:5px;right:5px;width:7px;height:7px;border-radius:2px;background:var(--warn);display:none}
+/* Data button: styled by mb-suite-topbar.css; the dot only shows when the backup is stale (JS toggles .stale) */
+#menuToggle:not(.stale) .tb-dot{display:none}
 
-.themesw{display:inline-flex;align-items:center;justify-content:center;min-height:var(--ctl-sm);padding:0 2px;background:none;border:0;border-radius:var(--r-sm)}
-.themesw .tk{position:relative;display:block;border:1px solid var(--border-strong);background:var(--surface-2);border-radius:var(--r-sm);width:52px;height:26px}
-.themesw .th{position:absolute;left:2px;display:grid;place-items:center;color:var(--accent-ink);border-radius:3px;background:var(--accent);width:22px;height:20px;top:2px;transition:transform var(--ease)}
-.themesw .th svg.i{width:12px;height:12px;stroke-width:2.4}
-.themesw .th .moon,.themesw[aria-checked="true"] .th .sun{display:none}
-.themesw[aria-checked="true"] .th .moon{display:block}
-.themesw[aria-checked="true"] .th{transform:translateX(24px)}
+/* theme switch: styled by mb-suite-topbar.css (v3.2 standard) */
 
 .dm-panel{position:absolute;right:0;top:calc(100% + 6px);z-index:70;width:330px;max-width:calc(100vw - 24px);background:var(--surface);border:1px solid var(--border-strong);border-radius:var(--r);box-shadow:var(--shadow-pop);padding:4px}
 .dm-item{display:flex;align-items:center;gap:10px;width:100%;text-align:left;background:none;border:0;color:var(--ink);font-size:13.5px;border-radius:var(--r-sm);min-height:48px;padding:8px 12px}
@@ -409,7 +403,6 @@ body.has-cart .totop{bottom:calc(92px + env(safe-area-inset-bottom,0px))}
 
 @media(max-width:860px){
   .stats{grid-template-columns:repeat(2,minmax(0,1fr))}
-  #searchBtn kbd{display:none}
 }
 /* phones (<768, the MB Suite v3 phone breakpoint): bottom bar + its More sheet */
 @media(max-width:767px){
@@ -439,8 +432,6 @@ body.has-cart .totop{bottom:calc(92px + env(safe-area-inset-bottom,0px))}
 @media(max-width:520px){
   .wrap{padding-inline:12px}
   .bk-chip{display:none}
-  #menuToggle.stale .dot{display:block}
-  #menuToggle .lbl-t{display:none}
   .dm-panel{position:fixed;left:8px;right:8px;top:58px;width:auto;max-width:none;max-height:calc(100vh - 140px);overflow-y:auto}
   .page-h .ph-actions .btn{flex:1}
   .page-h .ph-actions{width:100%}
@@ -760,7 +751,6 @@ dialog.mb-share::backdrop{background:var(--scrim)}
 .tld{font-style:normal;color:var(--accent)}
 @media (min-width:701px){ .toolbar select{width:auto;flex:0 1 auto;min-width:150px} }  /* filters sit in one row next to search (they stacked full-width before) */
 .page-bar{z-index:50}
-.page-bar .actions{gap:6px}
 .brand .logo svg{border-radius:0}
 .mb-side .side-nav .count{margin-left:auto}
 .cartbar{left:calc(50% + var(--side-w) / 2);width:min(760px,calc(100% - var(--side-w) - 24px))}
@@ -769,7 +759,6 @@ dialog.mb-share::backdrop{background:var(--scrim)}
 #homeBanner .cu-art{max-width:62%}
 .page-h{align-items:flex-end}
 @media (min-width:768px){ .page-h h2{display:none} .page-h p{margin-top:0} }  /* the page bar names the view; the line under it stays */
-.lbl-add{display:inline}
 .empty-state .es-art{display:block;margin:0 auto 6px}
 .share-row{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:12px;padding:12px 14px}
 .share-row b{font-size:14px}
@@ -786,21 +775,20 @@ dialog.mb-share::backdrop{background:var(--scrim)}
   .notice{left:8px}
   .page-bar .actions .hide-phone{display:none}
 }
-@media (max-width:520px){
-  .lbl-add{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
-  #addItemBtn{width:var(--ctl-sm);padding:0}
-}
 </style>
+<link rel="stylesheet" href="mb-suite-topbar.css"><!-- MB Suite v3.2 standard top bar: keep LAST -->
 </head>
 <body class="mb-shell">
 <svg xmlns="http://www.w3.org/2000/svg" style="display:none" aria-hidden="true"><defs><linearGradient id="mbwi-g1-1" gradientUnits="userSpaceOnUse" x1="10" y1="0" x2="54" y2="64"><stop offset="0" stop-color="#de8a29"/><stop offset=".55" stop-color="#D97706"/><stop offset="1" stop-color="#ae5f05"/></linearGradient><clipPath id="mbwi-c1-1"><rect width="64" height="64" rx="18"/></clipPath></defs><g clip-path="url(#mbwi-c1-1)"><rect width="64" height="64" fill="url(#mbwi-g1-1)"/><path d="M33 12h15a4 4 0 0 1 4 4v15a4 4 0 0 1-1.2 2.8L33.5 51.2a4 4 0 0 1-5.7 0L12.8 36.2a4 4 0 0 1 0-5.7L30.2 13.2A4 4 0 0 1 33 12z" fill="#fff"/>
 <circle cx="43.5" cy="20.5" r="3.2" fill="#D97706"/><path d="M30.5 41c-4.4-3-6.8-5.2-6.8-7.8a3.5 3.5 0 0 1 6.8-1.1 3.5 3.5 0 0 1 6.8 1.1c0 2.6-2.4 4.8-6.8 7.8z" fill="#9A4F05"/></g></svg>
 
+<!-- UI icon sprite (24px stroke icons; svg.i sets stroke/fill). Every <use href="#i-…"> in this page must resolve here. -->
+<svg xmlns="http://www.w3.org/2000/svg" width="0" height="0" style="position:absolute;width:0;height:0;overflow:hidden" aria-hidden="true" focusable="false"><symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></symbol><symbol id="i-data" viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v14c0 1.7 3.6 3 8 3s8-1.3 8-3V5"/><path d="M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3"/></symbol><symbol id="i-chev" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></symbol><symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol><symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol><symbol id="i-more" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></symbol><symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></symbol><symbol id="i-moon" viewBox="0 0 24 24"><path d="M20 14.5A8 8 0 0 1 9.5 4 8 8 0 1 0 20 14.5Z"/></symbol><symbol id="i-list" viewBox="0 0 24 24"><path d="M9 6h11M9 12h11M9 18h11"/><path d="M4.5 6h.01M4.5 12h.01M4.5 18h.01"/></symbol><symbol id="i-bought" viewBox="0 0 24 24"><path d="M6 7h12l-1 13H7L6 7Z"/><path d="M9 7a3 3 0 0 1 6 0"/><path d="m9.5 13.5 2 2 3.5-4"/></symbol><symbol id="i-cart" viewBox="0 0 24 24"><circle cx="9" cy="20" r="1.5"/><circle cx="18" cy="20" r="1.5"/><path d="M2 3h3l2.7 12.4a1 1 0 0 0 1 .8h9.6a1 1 0 0 0 1-.8L21 7H6"/></symbol><symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7.5"/></symbol><symbol id="i-help" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.2a2.6 2.6 0 0 1 5 .9c0 1.7-2.5 2.2-2.5 3.9"/><path d="M12 17.2h.01"/></symbol><symbol id="i-doc" viewBox="0 0 24 24"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8l-5-5Z"/><path d="M14 3v5h5M9 13h6M9 17h6"/></symbol><symbol id="i-download" viewBox="0 0 24 24"><path d="M12 4v11m-4.5-4.5L12 15l4.5-4.5"/><path d="M4 17v2a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-2"/></symbol><symbol id="i-upload" viewBox="0 0 24 24"><path d="M12 15V4m-4.5 4.5L12 4l4.5 4.5"/><path d="M4 17v2a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-2"/></symbol><symbol id="i-save" viewBox="0 0 24 24"><path d="M5 3h11l4 4v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 1-2Z"/><path d="M8 3v5h7V3M8 21v-7h8v7"/></symbol><symbol id="i-sheet" viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M4 9h16M4 15h16M10 3v18"/></symbol><symbol id="i-trash" viewBox="0 0 24 24"><path d="M4 7h16M10 11v6M14 11v6"/><path d="M6 7l1 12a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2l1-12M9 7V4h6v3"/></symbol><symbol id="i-grid" viewBox="0 0 24 24"><rect x="4" y="4" width="7" height="7" rx="1"/><rect x="13" y="4" width="7" height="7" rx="1"/><rect x="4" y="13" width="7" height="7" rx="1"/><rect x="13" y="13" width="7" height="7" rx="1"/></symbol><symbol id="i-rows" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M4 9.5h16M4 14.5h16"/></symbol><symbol id="i-image" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="2"/><path d="m21 16-5-5-9 9"/></symbol><symbol id="i-share" viewBox="0 0 24 24"><path d="M12 15V3m-4 4 4-4 4 4"/><path d="M8 11H6a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-6a2 2 0 0 0-2-2h-2"/></symbol><symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3 5 6v5c0 4.5 3 8.3 7 10 4-1.7 7-5.5 7-10V6l-7-3Z"/><path d="m9 12 2 2 4-4"/></symbol><symbol id="i-up" viewBox="0 0 24 24"><path d="M12 19V5m-6 6 6-6 6 6"/></symbol><symbol id="i-edit" viewBox="0 0 24 24"><path d="M4 20h4L19 9a2.8 2.8 0 0 0-4-4L4 16v4Z"/><path d="m13.5 6.5 4 4"/></symbol><symbol id="i-ext" viewBox="0 0 24 24"><path d="M14 4h6v6M20 4l-9 9"/><path d="M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></symbol><symbol id="i-undo" viewBox="0 0 24 24"><path d="M9 14 4 9l5-5"/><path d="M4 9h10.5a5.5 5.5 0 0 1 0 11H11"/></symbol><symbol id="i-logo" viewBox="12 10 42 44"><path d="M33 12h15a4 4 0 0 1 4 4v15a4 4 0 0 1-1.2 2.8L33.5 51.2a4 4 0 0 1-5.7 0L12.8 36.2a4 4 0 0 1 0-5.7L30.2 13.2A4 4 0 0 1 33 12z" fill="currentColor"/><circle cx="43.5" cy="20.5" r="3.2" fill="var(--accent,#D97706)"/><path d="M30.5 41c-4.4-3-6.8-5.2-6.8-7.8a3.5 3.5 0 0 1 6.8-1.1 3.5 3.5 0 0 1 6.8 1.1c0 2.6-2.4 4.8-6.8 7.8z" fill="#9A4F05"/></symbol></svg>
 <a href="#main" class="skip">Skip to content</a>
 
 <aside class="mb-side" aria-label="App">
   <a class="brand" href="./" data-home aria-label="mbwishlist.online: go to My list"><span class="logo"><svg viewBox="0 0 64 64" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="mbwi-g1-2" gradientUnits="userSpaceOnUse" x1="10" y1="0" x2="54" y2="64"><stop offset="0" stop-color="#de8a29"/><stop offset=".55" stop-color="#D97706"/><stop offset="1" stop-color="#ae5f05"/></linearGradient><clipPath id="mbwi-c1-2"><rect width="64" height="64" rx="18"/></clipPath></defs><g clip-path="url(#mbwi-c1-2)"><rect width="64" height="64" fill="url(#mbwi-g1-2)"/><path d="M33 12h15a4 4 0 0 1 4 4v15a4 4 0 0 1-1.2 2.8L33.5 51.2a4 4 0 0 1-5.7 0L12.8 36.2a4 4 0 0 1 0-5.7L30.2 13.2A4 4 0 0 1 33 12z" fill="#fff"/>
-<circle cx="43.5" cy="20.5" r="3.2" fill="#D97706"/><path d="M30.5 41c-4.4-3-6.8-5.2-6.8-7.8a3.5 3.5 0 0 1 6.8-1.1 3.5 3.5 0 0 1 6.8 1.1c0 2.6-2.4 4.8-6.8 7.8z" fill="#9A4F05"/></g></svg></span><span class="bt"><b>mbwishlist<i class="tld">.online</i></b><span>Official Web App · v1.1</span></span></a>
+<circle cx="43.5" cy="20.5" r="3.2" fill="#D97706"/><path d="M30.5 41c-4.4-3-6.8-5.2-6.8-7.8a3.5 3.5 0 0 1 6.8-1.1 3.5 3.5 0 0 1 6.8 1.1c0 2.6-2.4 4.8-6.8 7.8z" fill="#9A4F05"/></g></svg></span><span class="bt"><b>mbwishlist<i class="tld">.online</i></b><span>Official Web App · v1.2</span></span></a>
   <nav class="side-nav" id="siteNav" aria-label="Sections">
     <button type="button" id="tabWishlist" data-tab="wishlist" aria-current="page"><svg class="i" aria-hidden="true"><use href="#i-list"/></svg><span>My list</span><span class="count" id="countWishlist"></span></button>
     <button type="button" id="tabPurchased" data-tab="purchased"><svg class="i" aria-hidden="true"><use href="#i-bought"/></svg><span>Purchased</span><span class="count" id="countPurchased"></span></button>
@@ -813,14 +801,14 @@ dialog.mb-share::backdrop{background:var(--scrim)}
 <div class="mb-main">
 <header class="page-bar" id="siteHeader">
   <a class="brand phone-brand" href="./" data-home aria-label="mbwishlist.online: go to My list"><span class="logo"><svg viewBox="0 0 64 64" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="mbwi-g1-3" gradientUnits="userSpaceOnUse" x1="10" y1="0" x2="54" y2="64"><stop offset="0" stop-color="#de8a29"/><stop offset=".55" stop-color="#D97706"/><stop offset="1" stop-color="#ae5f05"/></linearGradient><clipPath id="mbwi-c1-3"><rect width="64" height="64" rx="18"/></clipPath></defs><g clip-path="url(#mbwi-c1-3)"><rect width="64" height="64" fill="url(#mbwi-g1-3)"/><path d="M33 12h15a4 4 0 0 1 4 4v15a4 4 0 0 1-1.2 2.8L33.5 51.2a4 4 0 0 1-5.7 0L12.8 36.2a4 4 0 0 1 0-5.7L30.2 13.2A4 4 0 0 1 33 12z" fill="#fff"/>
-<circle cx="43.5" cy="20.5" r="3.2" fill="#D97706"/><path d="M30.5 41c-4.4-3-6.8-5.2-6.8-7.8a3.5 3.5 0 0 1 6.8-1.1 3.5 3.5 0 0 1 6.8 1.1c0 2.6-2.4 4.8-6.8 7.8z" fill="#9A4F05"/></g></svg></span><span class="bt"><b>mbwishlist<i class="tld">.online</i></b><span>Official Web App · v1.1</span></span></a>
+<circle cx="43.5" cy="20.5" r="3.2" fill="#D97706"/><path d="M30.5 41c-4.4-3-6.8-5.2-6.8-7.8a3.5 3.5 0 0 1 6.8-1.1 3.5 3.5 0 0 1 6.8 1.1c0 2.6-2.4 4.8-6.8 7.8z" fill="#9A4F05"/></g></svg></span><span class="bt"><b>mbwishlist<i class="tld">.online</i></b><span>Official Web App · v1.2</span></span></a>
   <h1 class="page-title" id="pageTitle">My list</h1>
   <div class="actions">
-      <button type="button" class="btn sm ghost hide-phone" id="searchBtn" aria-label="Search (Ctrl/Cmd+K)" title="Search (Ctrl/Cmd+K)"><svg class="i" aria-hidden="true"><use href="#i-search"/></svg><kbd>Ctrl K</kbd></button>
-      <button type="button" class="bk-chip hide-phone" id="bkChip" title="Save a backup now"><svg class="i" aria-hidden="true"><use href="#i-clock"/></svg><span id="bkChipText">Never backed up</span></button>
+      <button type="button" class="tb tb-search tb-opt" id="searchBtn" aria-label="Search (/ or Ctrl+K)" title="Search (/ or Ctrl+K)"><svg class="i" aria-hidden="true"><use href="#i-search"/></svg><span class="tb-lbl">Search…</span><kbd>/</kbd></button>
+      <button type="button" class="bk-chip tb-chip hide-phone" id="bkChip" title="Save a backup now"><svg class="i" aria-hidden="true"><use href="#i-clock"/></svg><span id="bkChipText">Never backed up</span></button>
       <div class="menu-wrap">
-        <button type="button" class="btn sm" id="menuToggle" aria-haspopup="true" aria-expanded="false" aria-controls="settingsMenu" title="Data: backup, import, export">
-          <svg class="i" aria-hidden="true"><use href="#i-data"/></svg><span class="lbl-t">Data</span><svg class="i" aria-hidden="true" style="width:14px;height:14px"><use href="#i-chev"/></svg><span class="dot" aria-hidden="true"></span>
+        <button type="button" class="tb" id="menuToggle" aria-haspopup="true" aria-expanded="false" aria-controls="settingsMenu" aria-label="Data: backup, import, export" title="Data: backup, import, export">
+          <svg class="i" aria-hidden="true"><use href="#i-data"/></svg><span class="tb-lbl lbl-t">Data</span><svg class="i tb-chev" aria-hidden="true"><use href="#i-chev"/></svg><span class="dot tb-dot" aria-hidden="true"></span>
         </button>
         <div class="dm-panel" id="settingsMenu" role="menu" aria-label="Data" hidden>
           <button type="button" class="dm-item primary" id="saveNowBtn" role="menuitem">
@@ -862,10 +850,8 @@ dialog.mb-share::backdrop{background:var(--scrim)}
       </div>
       <input type="file" id="importFileInput" accept="application/json,.json" hidden>
       <input type="file" id="importCsvInput" accept=".csv,text/csv" hidden>
-      <button type="button" class="themesw" id="themeToggleBtn" role="switch" aria-checked="false" aria-label="Dark mode" title="Dark mode">
-        <span class="tk"><span class="th"><svg class="i sun" aria-hidden="true"><use href="#i-sun"/></svg><svg class="i moon" aria-hidden="true"><use href="#i-moon"/></svg></span></span>
-      </button>
-      <button type="button" class="btn sm primary" id="addItemBtn" aria-label="Add item"><svg class="i" aria-hidden="true"><use href="#i-plus"/></svg><span class="lbl-add">Add item</span></button>
+      <button type="button" class="themesw" id="themeToggleBtn" role="switch" aria-checked="false" aria-label="Dark mode" title="Dark mode"><span class="tk"><svg class="i-sun" viewBox="0 0 20 20" width="14" height="14" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="10" cy="10" r="3.2"/><path d="M10 2.5v1.8M10 15.7v1.8M2.5 10h1.8M15.7 10h1.8M4.7 4.7l1.3 1.3M14 14l1.3 1.3M4.7 15.3 6 14M14 6l1.3-1.3"/></svg><svg class="i-moon" viewBox="0 0 20 20" width="14" height="14" aria-hidden="true" fill="currentColor"><path d="M16.5 12.2A6.6 6.6 0 0 1 7.8 3.5a6.6 6.6 0 1 0 8.7 8.7Z"/></svg><i class="th"></i></span></button>
+      <button type="button" class="tb tb-primary" id="addItemBtn" aria-label="Add item" title="Add item"><svg class="i" aria-hidden="true"><use href="#i-plus"/></svg><span class="tb-lbl">Add item</span></button>
   </div>
 </header>
 
@@ -1026,7 +1012,7 @@ dialog.mb-share::backdrop{background:var(--scrim)}
       <svg class="uic" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="9.5"/><path d="M12 11v6M12 7.5v.01"/></svg>
       <div>
         <b>mbwishlist.online™</b>
-        <p>Version 1.1 · Oct 14, 2026</p>
+        <p>Version 1.2 · Oct 14, 2026</p>
         <p class="mb-about-links"><button type="button" id="aboutWhatsNewBtn">What's new</button><button type="button" id="aboutPrivacyBtn">Privacy</button><button type="button" id="aboutTermsBtn">Terms</button><a href="https://matthewbroyer.com/">More free apps at matthewbroyer.com</a></p>
         <p class="mb-about-copy">© 2026 Matthew Broyer. All rights reserved.</p>
       </div>
@@ -1342,7 +1328,14 @@ dialog.mb-share::backdrop{background:var(--scrim)}
     <h2 id="relTitle">Release notes</h2>
     <div class="release-list">
       <div class="release-entry">
-        <div class="rel-head"><span class="rel-version">v1.1</span><span class="pill">Latest</span><span class="rel-date">Oct 14, 2026</span></div>
+        <div class="rel-head"><span class="rel-version">v1.2</span><span class="pill">Latest</span><span class="rel-date">Oct 14, 2026</span></div>
+        <ul>
+          <li>Icons are back everywhere: the top bar, the bottom bar, menus and buttons had been showing blank boxes</li>
+          <li>The top bar now looks and works the same as in the other mb apps. On phones it shows Search, Data, the light/dark switch and Add item as square icon buttons next to the logo</li>
+        </ul>
+      </div>
+      <div class="release-entry">
+        <div class="rel-head"><span class="rel-version">v1.1</span><span class="rel-date">Oct 14, 2026</span></div>
         <ul>
           <li>About card at the bottom of the FAQ page: version, release date, links and copyright in one place. The Install card moved down next to it</li>
           <li>Installing from matthewbroyer.com: the hub's Install button opens the app with a short install prompt</li>
@@ -4079,6 +4072,11 @@ dialog.mb-share::backdrop{background:var(--scrim)}
 
     document.addEventListener('keydown', function(e){
       if((e.key === 'k' || e.key === 'K') && (e.metaKey || e.ctrlKey)){
+        e.preventDefault();
+        open();
+      } else if(e.key === '/' && !e.metaKey && !e.ctrlKey && !e.altKey){
+        var t = e.target, tag = (t && t.tagName || '').toLowerCase();
+        if(tag === 'input' || tag === 'textarea' || tag === 'select' || (t && t.isContentEditable) || document.querySelector('dialog[open]')) return;
         e.preventDefault();
         open();
       }

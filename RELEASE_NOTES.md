@@ -2,6 +2,11 @@
 
 Newest first. One entry per release, in plain words a user would understand.
 
+## 1.2 · 2026-10-14
+- On computers, the search box, backup status and logo spacing now look exactly like the other mb apps: same size, same "Search…" text, and the "/" key now jumps to search.
+- Icons are back everywhere. The top bar, the bottom bar on phones, menus and buttons had been showing blank boxes because the icon set was missing from the page.
+- The top bar now looks and works the same as in the other mb apps. On phones it shows Search, Data, the light/dark switch and Add item as square icon buttons next to the logo.
+
 ## 1.1 · 2026-10-14
 - New logo, redrawn in the same style as the other mb apps (app icon, tab icon, share image and pages all updated).
 
